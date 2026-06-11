@@ -5,8 +5,11 @@ import 'package:krishix/core/services/location_service.dart';
 import 'package:krishix/core/widgets/app_drawer.dart';
 import 'package:krishix/features/browse/browse_screen.dart';
 import 'package:krishix/features/home/home_screen.dart';
+import 'package:krishix/features/icons/my_ads_screen.dart';
+import 'package:krishix/features/icons/dealer_screen.dart';
 import 'package:krishix/features/post/post_listing_screen.dart';
 import 'package:krishix/features/profile/profile_screen.dart';
+import 'package:krishix/features/icons/chat_screen.dart';
 import 'package:krishix/l10n/app_localizations.dart';
 
 class MainShell extends StatefulWidget {
@@ -32,68 +35,10 @@ class MainShell extends StatefulWidget {
 class _MainShellState extends State<MainShell> {
   var _selectedIndex = 0;
   UserLocation _userLocation = UserLocation.defaultLocation;
-  var _askedLocation = false;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // _promptLocationIfNeeded();
-    });
-  }
 
   void _onTabSelected(int index) {
     if (index == 2) return;
-    setState(() => _selectedIndex = index > 2 ? index - 1 : index);
-  }
-
-  int get _navIndex {
-    if (_selectedIndex >= 2) return _selectedIndex + 1;
-    return _selectedIndex;
-  }
-
-  // Future<void> _promptLocationIfNeeded() async {
-  //   if (_askedLocation || !mounted) return;
-  //   _askedLocation = true;
-
-  //   final l10n = AppLocalizations.of(context)!;
-  //   final allow = await showDialog<bool>(
-  //     context: context,
-  //     builder: (ctx) => AlertDialog(
-  //       title: Text(l10n.allowLocationTitle),
-  //       content: Text(
-  //         l10n.allowLocationMessage,
-  //         style: const TextStyle(fontSize: 17),
-  //       ),
-  //       actions: [
-  //         TextButton(
-  //           onPressed: () => Navigator.pop(ctx, false),
-  //           child: Text(l10n.cancel),
-  //         ),
-  //         ElevatedButton(
-  //           onPressed: () => Navigator.pop(ctx, true),
-  //           child: Text(l10n.useCurrentLocation),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-
-  //   // if (allow == true) {
-  //   //   await _refreshLocation();
-  //   // }
-  // }
-
-  // Future<void> _refreshLocation() async {
-  //   final location = await LocationService.fetchCurrentLocation();
-  //   if (mounted) {
-  //     setState(() => _userLocation = location);
-  //   }
-  // }
-
-  void _showComingSoon(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    setState(() => _selectedIndex = index);
   }
 
   @override
@@ -108,7 +53,7 @@ class _MainShellState extends State<MainShell> {
         loggedInPhone: widget.loggedInPhone,
         onHomeTap: () => setState(() => _selectedIndex = 0),
         onBrowseTap: () => setState(() => _selectedIndex = 1),
-        onProfileTap: () => setState(() => _selectedIndex = 2),
+        onProfileTap: () => setState(() => _selectedIndex = 4),
         onLogout: widget.onLogout,
       ),
       body: Builder(
@@ -118,10 +63,11 @@ class _MainShellState extends State<MainShell> {
           final screens = [
             HomeScreen(
               onMenuTap: openDrawer,
-                userLocation: _userLocation,
-                // onLocationTap: _refreshLocation,
-              ),
-            BrowseScreen(userLocation: _userLocation),
+              userLocation: _userLocation,
+            ),
+            MyAdsScreen(userLocation: _userLocation),
+            DealerScreen(userLocation: _userLocation),
+            ChatScreen(),
             ProfileScreen(
               locale: widget.locale,
               onLocaleChanged: widget.onLocaleChanged,
@@ -137,7 +83,10 @@ class _MainShellState extends State<MainShell> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
+
+      // ✅ Sell FAB — rounded square, half above nav bar
+      floatingActionButton: _SellFab(
+        label: l10n.sell,
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute<void>(
@@ -145,65 +94,153 @@ class _MainShellState extends State<MainShell> {
             ),
           );
         },
-        backgroundColor: AppColors.primaryGreen,
-        elevation: 6,
-        child: const Icon(Icons.add, color: Colors.white, size: 34),
       ),
+
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        height: 76,
-        color: Colors.white,
-        elevation: 10,
-        shadowColor: Colors.black26,
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 10,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _NavItem(
-              icon: Icons.home,
-              label: l10n.home,
-              selected: _navIndex == 0,
-              onTap: () => _onTabSelected(0),
-            ),
-            _NavItem(
-              icon: Icons.search,
-              label: l10n.browse,
-              selected: _navIndex == 1,
-              onTap: () => _onTabSelected(1),
-            ),
-            SizedBox(
-              width: 64,
-              child: Text(
-                l10n.postAd,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 13,
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            _NavItem(
-              icon: Icons.chat_bubble_outline,
-              label: l10n.chat,
-              selected: false,
-              badge: '99+',
-              onTap: () => _showComingSoon(l10n.comingSoon),
-            ),
-            _NavItem(
-              icon: Icons.person_outline,
-              label: l10n.profile,
-              selected: _navIndex == 4,
-              onTap: () => _onTabSelected(4),
-            ),
-          ],
-        ),
+
+      bottomNavigationBar: _KrishixNavBar(
+        selectedIndex: _selectedIndex,
+        onTabSelected: _onTabSelected,
+        l10n: l10n,
       ),
     );
   }
 }
 
+// ─────────────────────────────────────────────
+// ✅ Sell FAB — matches the image exactly
+// ─────────────────────────────────────────────
+class _SellFab extends StatelessWidget {
+  const _SellFab({required this.label, required this.onPressed});
+
+  final String label;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,   // ✅ no fixed SizedBox — grows naturally
+        children: [
+          // ── Rounded square icon ──
+          Container(
+            width: 52,
+            height: 52,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              gradient: const LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xFFE87400),
+                  Color(0xFF1A7A00),
+                ],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.25),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: const Center(
+              child: Icon(
+                Icons.add_rounded,
+                color: Colors.white,
+                size: 36,
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 4),
+
+          // ── Label pill ──
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            decoration: BoxDecoration(
+              color: const Color(0xFF1A6B00),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              label.toUpperCase(),
+              style: const TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w800,
+                color: Colors.white,
+                letterSpacing: 0.8,
+                height: 1.1,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+// ─────────────────────────────────────────────
+// ✅ Bottom Nav Bar
+// ─────────────────────────────────────────────
+class _KrishixNavBar extends StatelessWidget {
+  const _KrishixNavBar({
+    required this.selectedIndex,
+    required this.onTabSelected,
+    required this.l10n,
+  });
+
+  final int selectedIndex;
+  final ValueChanged<int> onTabSelected;
+  final AppLocalizations l10n;
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomAppBar(
+      height: 68,
+      color: Colors.white,
+      elevation: 12,
+      shadowColor: Colors.black26,
+      shape: const CircularNotchedRectangle(),
+      notchMargin: 8,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _NavItem(
+            icon: Icons.home_rounded,
+            label: l10n.home,
+            selected: selectedIndex == 0,
+            onTap: () => onTabSelected(0),
+          ),
+          _NavItem(
+            icon: Icons.list_alt_outlined,
+            label: l10n.myAds,
+            selected: selectedIndex == 1,
+            onTap: () => onTabSelected(1),
+          ),
+          const SizedBox(width: 72),
+          _NavItem(
+            icon: Icons.chat_bubble_outline_rounded,
+            label: l10n.chats,
+            selected: selectedIndex == 3,
+            badge: '99+',
+            onTap: () => onTabSelected(3),
+          ),
+          _NavItem(
+            icon: Icons.storefront_outlined,
+            label: l10n.dealer,
+            selected: selectedIndex == 2,
+            onTap: () => onTabSelected(2),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+// ─────────────────────────────────────────────
+// Nav Item
+// ─────────────────────────────────────────────
 class _NavItem extends StatelessWidget {
   const _NavItem({
     required this.icon,
@@ -221,37 +258,41 @@ class _NavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = selected ? AppColors.primaryGreen : AppColors.textPrimary;
+    final color = selected ? AppColors.primaryGreen : const Color(0xFF757575);
 
     return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
       child: SizedBox(
-        width: 68,
+        width: 64,
+        height: 56, // ✅ explicit — prevents unbounded height inside BottomAppBar
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Stack(
               clipBehavior: Clip.none,
               children: [
-                Icon(icon, color: color, size: 30),
+                Icon(icon, color: color, size: 24), // ✅ was 28 — reduced to fit
                 if (badge != null)
                   Positioned(
-                    right: -12,
-                    top: -8,
+                    right: -10,
+                    top: -5,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 5,
-                        vertical: 2,
+                        horizontal: 4,
+                        vertical: 1,
                       ),
                       decoration: BoxDecoration(
                         color: Colors.red,
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
                         badge!,
                         style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 10,
+                          fontSize: 9,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -259,14 +300,16 @@ class _NavItem extends StatelessWidget {
                   ),
               ],
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 2), // ✅ was 3 — tightened
             Text(
               label,
               style: TextStyle(
-                fontSize: 13,
+                fontSize: 11,
                 color: color,
-                fontWeight: selected ? FontWeight.w700 : FontWeight.w600,
+                fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
               ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis, // ✅ safety net for long labels
             ),
           ],
         ),

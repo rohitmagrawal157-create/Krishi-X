@@ -25,21 +25,17 @@ class AppDrawer extends StatelessWidget {
 
   String _langLabel(Locale loc) {
     switch (loc.languageCode) {
-      case 'hi':
-        return 'हिंदी';
-      case 'mr':
-        return 'मराठी';
-      case 'gu':
-        return 'ગુજરાતી';
+      case 'hi': return 'हिंदी';
+      case 'mr': return 'मराठी';
+      case 'gu': return 'ગુજરાતી';
       case 'en':
-      default:
-        return 'English';
+      default:   return 'English';
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n    = AppLocalizations.of(context)!;
     final locales = AppLocalizations.supportedLocales;
 
     return Drawer(
@@ -48,85 +44,79 @@ class AppDrawer extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+
+            // ── Header ─────────────────────────────────────
             Container(
-              padding: const EdgeInsets.all(AppSpacing.lg),
+              padding: const EdgeInsets.fromLTRB(20, 28, 20, 24),
               color: AppColors.primaryGreen,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(
-                    Icons.agriculture,
-                    color: Colors.white,
-                    size: 48,
+
+                  // ✅ Krishix logo image — no text name below
+                  Image.asset(
+                    'assets/images/krishix_logo.png',
+                    height: 56,
+                    fit: BoxFit.contain,
+                    alignment: Alignment.centerLeft,
+                    errorBuilder: (_, __, ___) {
+                      // Fallback: white text logo if asset missing
+                      return const Text(
+                        'KrishiX',
+                        style: TextStyle(
+                          color:      Colors.white,
+                          fontSize:   28,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0.5,
+                        ),
+                      );
+                    },
                   ),
-                  const SizedBox(height: AppSpacing.sm),
-                  Text(
-                    l10n.appTitle,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 26,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
+
+                  const SizedBox(height: 10),
+
+                  // Tagline
                   Text(
                     l10n.tagline,
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.92),
-                      fontSize: 16,
+                      color:    Colors.white.withOpacity(0.92),
+                      fontSize: 15,
                     ),
                   ),
+
+                  // Phone (if logged in)
                   if (loggedInPhone != null) ...[
-                    const SizedBox(height: AppSpacing.sm),
-                    Text(
-                      '+91 $loggedInPhone',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Icon(Icons.phone_iphone,
+                            size: 16,
+                            color: Colors.white.withOpacity(0.8)),
+                        const SizedBox(width: 6),
+                        Text(
+                          '+91 $loggedInPhone',
+                          style: const TextStyle(
+                            color:      Colors.white,
+                            fontSize:   16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ],
               ),
             ),
+
+            // ── Menu items ─────────────────────────────────
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+                padding: const EdgeInsets.symmetric(
+                    vertical: AppSpacing.sm),
                 children: [
                   _DrawerTile(
-                    icon: Icons.home,
-                    label: l10n.home,
-                    fontSize: 18,
-                    onTap: () {
-                      Navigator.pop(context);
-                      onHomeTap();
-                    },
-                  ),
-                  _DrawerTile(
-                    icon: Icons.search,
-                    label: l10n.browse,
-                    fontSize: 18,
-                    onTap: () {
-                      Navigator.pop(context);
-                      onBrowseTap();
-                    },
-                  ),
-                  _DrawerTile(
-                    icon: Icons.inventory_2_outlined,
-                    label: l10n.myListings,
-                    fontSize: 18,
-                    onTap: () {
-                      Navigator.pop(context);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(l10n.comingSoon)),
-                      );
-                    },
-                  ),
-                  _DrawerTile(
-                    icon: Icons.favorite_border,
+                    icon:  Icons.favorite_border,
                     label: l10n.savedItems,
-                    fontSize: 18,
                     onTap: () {
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -135,9 +125,8 @@ class AppDrawer extends StatelessWidget {
                     },
                   ),
                   _DrawerTile(
-                    icon: Icons.help_outline,
+                    icon:  Icons.help_outline,
                     label: l10n.helpSupport,
-                    fontSize: 18,
                     onTap: () {
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -145,15 +134,18 @@ class AppDrawer extends StatelessWidget {
                       );
                     },
                   ),
+
                   const Divider(height: 28),
+
+                  // ── Language section ──────────────────────
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
                       l10n.language,
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize:   18,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
+                        color:      AppColors.textPrimary,
                       ),
                     ),
                   ),
@@ -161,7 +153,7 @@ class AppDrawer extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Wrap(
-                      spacing: 10,
+                      spacing:    10,
                       runSpacing: 10,
                       children: locales.map((loc) {
                         final selected =
@@ -172,7 +164,7 @@ class AppDrawer extends StatelessWidget {
                             label: Text(
                               _langLabel(loc),
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize:   16,
                                 fontWeight: FontWeight.w600,
                                 color: selected
                                     ? AppColors.primaryGreen
@@ -197,6 +189,8 @@ class AppDrawer extends StatelessWidget {
                 ],
               ),
             ),
+
+            // ── Logout button ───────────────────────────────
             Padding(
               padding: const EdgeInsets.all(AppSpacing.md),
               child: SizedBox(
@@ -206,7 +200,7 @@ class AppDrawer extends StatelessWidget {
                     Navigator.pop(context);
                     onLogout();
                   },
-                  icon: const Icon(Icons.logout, size: 24),
+                  icon:  const Icon(Icons.logout, size: 24),
                   label: Text(
                     l10n.logout,
                     style: const TextStyle(fontSize: 17),
@@ -225,6 +219,9 @@ class AppDrawer extends StatelessWidget {
   }
 }
 
+// ─────────────────────────────────────────────────────────────
+// Drawer tile
+// ─────────────────────────────────────────────────────────────
 class _DrawerTile extends StatelessWidget {
   const _DrawerTile({
     required this.icon,
@@ -234,9 +231,9 @@ class _DrawerTile extends StatelessWidget {
   });
 
   final IconData icon;
-  final String label;
+  final String   label;
   final VoidCallback onTap;
-  final double fontSize;
+  final double   fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -245,9 +242,9 @@ class _DrawerTile extends StatelessWidget {
       title: Text(
         label,
         style: TextStyle(
-          fontSize: fontSize,
+          fontSize:   fontSize,
           fontWeight: FontWeight.w600,
-          color: AppColors.textPrimary,
+          color:      AppColors.textPrimary,
         ),
       ),
       minVerticalPadding: 14,

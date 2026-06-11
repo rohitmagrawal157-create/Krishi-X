@@ -40,6 +40,15 @@ class AppLocalizationsGu extends AppLocalizations {
   String get verifiedSeller => 'ચકાસેલ';
 
   @override
+  String get fruitsAndVegetables => 'ફળો અને શાકભાજી';
+
+  @override
+  String get cropsAndGrains => 'પાક અને અનાજ';
+
+  @override
+  String get seeds => 'બીજ';
+
+  @override
   String get nearYou => 'તમારી પાસે';
 
   @override
@@ -100,7 +109,7 @@ class AppLocalizationsGu extends AppLocalizations {
   String get submitListing => 'જાહેરાત મોકલો';
 
   @override
-  String get comingSoon => 'જલ્દી આવશે';
+  String get comingSoon => 'ટૂંક સમયમાં આવી રહ્યું છે!';
 
   @override
   String get trustBannerTitle => 'વિશ્વાસ સાથે ખરીદો અને વેચો';
@@ -409,6 +418,12 @@ class AppLocalizationsGu extends AppLocalizations {
   String get categoryFertilizer => 'ખાતર બીજ';
 
   @override
+  String get myAds => 'મારી જાહેરાતો';
+
+  @override
+  String get dealer => 'વિક્રેતા';
+
+  @override
   String get categoryOther => 'અન્ય';
 
   @override
@@ -494,6 +509,9 @@ class AppLocalizationsGu extends AppLocalizations {
 
   @override
   String get loadingMore => 'વધુ ઉત્પાદનો લોડ થઈ રહ્યા છે...';
+
+  @override
+  String get chats => 'Chats';
 
   @override
   String kmAway(String distance) {

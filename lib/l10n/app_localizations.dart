@@ -165,6 +165,24 @@ abstract class AppLocalizations {
   /// **'Verified'**
   String get verifiedSeller;
 
+  /// No description provided for @fruitsAndVegetables.
+  ///
+  /// In en, this message translates to:
+  /// **'Fruits & Vegetables'**
+  String get fruitsAndVegetables;
+
+  /// No description provided for @cropsAndGrains.
+  ///
+  /// In en, this message translates to:
+  /// **'Crops & Grains'**
+  String get cropsAndGrains;
+
+  /// No description provided for @seeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Seeds'**
+  String get seeds;
+
   /// No description provided for @nearYou.
   ///
   /// In en, this message translates to:
@@ -222,7 +240,7 @@ abstract class AppLocalizations {
   /// No description provided for @categoryCrops.
   ///
   /// In en, this message translates to:
-  /// **'Crops & Produce'**
+  /// **'Crops & Grains'**
   String get categoryCrops;
 
   /// No description provided for @categoryLivestock.
@@ -288,7 +306,7 @@ abstract class AppLocalizations {
   /// No description provided for @comingSoon.
   ///
   /// In en, this message translates to:
-  /// **'Coming soon'**
+  /// **'Coming Soon!'**
   String get comingSoon;
 
   /// No description provided for @trustBannerTitle.
@@ -903,6 +921,18 @@ abstract class AppLocalizations {
   /// **'Fertilizer & Seeds'**
   String get categoryFertilizer;
 
+  /// No description provided for @myAds.
+  ///
+  /// In en, this message translates to:
+  /// **'My Ads'**
+  String get myAds;
+
+  /// No description provided for @dealer.
+  ///
+  /// In en, this message translates to:
+  /// **'Dealer'**
+  String get dealer;
+
   /// No description provided for @categoryOther.
   ///
   /// In en, this message translates to:
@@ -1076,6 +1106,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Loading more products...'**
   String get loadingMore;
+
+  /// No description provided for @chats.
+  ///
+  /// In en, this message translates to:
+  /// **'Chats'**
+  String get chats;
 
   /// No description provided for @kmAway.
   ///

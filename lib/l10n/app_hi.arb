@@ -11,6 +11,9 @@
   "featuredListings": "विशेष सूची",
   "seeAll": "सब देखें",
   "verifiedSeller": "सत्यापित",
+  "fruitsAndVegetables": "फल और सब्जियाँ",
+  "cropsAndGrains": "फसलें और अनाज",
+  "seeds": "बीज",
   "nearYou": "आपके पास",
   "language": "भाषा",
   "english": "English",
@@ -20,7 +23,7 @@
   "welcomeFarmer": "स्वागत है, किसान!",
   "whatDoYouNeed": "आज आपको क्या चाहिए?",
   "categoryTractors": "ट्रैक्टर और मशीनरी",
-  "categoryCrops": "फसल और सब्ज़ी",
+  "categoryCrops": "फसलें और अनाज",
   "categoryLivestock": "पशु",
   "categoryLand": "कृषि भूमि",
   "categoryRental": "उपकरण किराये पर",
@@ -140,6 +143,9 @@
   "nearbyAds": "पास की सूची",
   "postAd": "विज्ञापन डालें",
   "chat": "चैट",
+  "myAds": "विज्ञापन",
+  "dealer": "डीलर",
+  "comingSoon": "जल्द आ रहा है!",
   "mobileNumber": "मोबाइल नंबर",
   "phoneHint": "98 7654 3210",
   "phoneRequired": "मोबाइल नंबर आवश्यक है",
@@ -166,6 +172,9 @@
   "useCurrentLocation": "मेरी लोकेशन उपयोग करें",
   "loadingMore": "और उत्पाद लोड हो रहे हैं...",
   "kmAway": "{distance} किमी दूर",
+  "myAds": "विज्ञापन",
+  "chats": "चैट",
+  "dealer": "डीलर",
   "@kmAway": {
     "placeholders": {
       "distance": {

@@ -40,6 +40,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get verifiedSeller => 'Verified';
 
   @override
+  String get fruitsAndVegetables => 'Fruits & Vegetables';
+
+  @override
+  String get cropsAndGrains => 'Crops & Grains';
+
+  @override
+  String get seeds => 'Seeds';
+
+  @override
   String get nearYou => 'Near you';
 
   @override
@@ -67,7 +76,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get categoryTractors => 'Tractors & Machinery';
 
   @override
-  String get categoryCrops => 'Crops & Produce';
+  String get categoryCrops => 'Crops & Grains';
 
   @override
   String get categoryLivestock => 'Livestock';
@@ -100,7 +109,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get submitListing => 'Submit Listing';
 
   @override
-  String get comingSoon => 'Coming soon';
+  String get comingSoon => 'Coming Soon!';
 
   @override
   String get trustBannerTitle => 'Buy & sell with confidence';
@@ -409,6 +418,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get categoryFertilizer => 'Fertilizer & Seeds';
 
   @override
+  String get myAds => 'My Ads';
+
+  @override
+  String get dealer => 'Dealer';
+
+  @override
   String get categoryOther => 'Other';
 
   @override
@@ -494,6 +509,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loadingMore => 'Loading more products...';
+
+  @override
+  String get chats => 'Chats';
 
   @override
   String kmAway(String distance) {

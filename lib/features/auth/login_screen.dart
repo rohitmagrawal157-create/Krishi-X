@@ -1,5 +1,14 @@
 // ============================================================
 //  lib/features/auth/login_screen.dart
+//
+//  FIXES APPLIED:
+//  1. OTP boxes — fully responsive fluid sizing (no pixel clamp)
+//     font size, border radius all scale with box size
+//  2. _ArrowButton disabled state — light green bg + white text
+//  3. OTP border fix — filled:true + fillColor:transparent so
+//     TextField never paints over the Container border
+//  4. _OtpRowState — removeListener on dispose (memory leak fix)
+//  5. Keyboard / landscape image — Stack + AnimatedOpacity fix
 // ============================================================
 
 import 'dart:async';
@@ -26,18 +35,24 @@ abstract final class _S {
   static const double logoTopMargin = 40;
 
   static const title = TextStyle(
-    fontSize: 32, fontWeight: FontWeight.w700,
-    color: AppColors.textPrimary, height: 1.2,
+    fontSize: 32,
+    fontWeight: FontWeight.w700,
+    color: AppColors.textPrimary,
+    height: 1.2,
   );
   static const subtitle = TextStyle(
-    fontSize: 17, color: AppColors.textSecondary, height: 1.4,
+    fontSize: 17,
+    color: AppColors.textSecondary,
+    height: 1.4,
   );
   static const label = TextStyle(
-    fontSize: 16, fontWeight: FontWeight.w600,
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
     color: AppColors.textSecondary,
   );
   static const input = TextStyle(
-    fontSize: 18, fontWeight: FontWeight.w500,
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
     color: AppColors.textPrimary,
   );
   static const btn = TextStyle(fontSize: 18, fontWeight: FontWeight.w700);
@@ -53,7 +68,9 @@ abstract final class _S {
 class _PhoneFmt extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue old, TextEditingValue next) {
+    TextEditingValue old,
+    TextEditingValue next,
+  ) {
     final d   = next.text.replaceAll(RegExp(r'\D'), '');
     final lim = d.length > 10 ? d.substring(0, 10) : d;
     final buf = StringBuffer();
@@ -63,7 +80,9 @@ class _PhoneFmt extends TextInputFormatter {
     }
     final s = buf.toString();
     return TextEditingValue(
-        text: s, selection: TextSelection.collapsed(offset: s.length));
+      text: s,
+      selection: TextSelection.collapsed(offset: s.length),
+    );
   }
 }
 
@@ -75,11 +94,12 @@ String? _phoneValidator(String? value, AppLocalizations l10n) {
 }
 
 // ─────────────────────────────────────────────────────────────
-// 3 · SHARED WIDGETS
+// 3 · LOGO
 // ─────────────────────────────────────────────────────────────
 
 class _Logo extends StatelessWidget {
   const _Logo();
+
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.sizeOf(context).width.clamp(280.0, 420.0) * 0.68;
@@ -99,10 +119,21 @@ class _Logo extends StatelessWidget {
                   color: _S.green.withOpacity(0.12),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.agriculture, size: 48, color: _S.green),
+                child: const Icon(
+                  Icons.agriculture,
+                  size: 48,
+                  color: _S.green,
+                ),
               ),
               const SizedBox(height: 8),
-              const Text('KRISHIX', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: _S.green)),
+              const Text(
+                'KRISHIX',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                  color: _S.green,
+                ),
+              ),
             ],
           );
         },
@@ -110,6 +141,10 @@ class _Logo extends StatelessWidget {
     );
   }
 }
+
+// ─────────────────────────────────────────────────────────────
+// 4 · BRAND HEADER + STEP DOTS
+// ─────────────────────────────────────────────────────────────
 
 class _BrandHeader extends StatelessWidget {
   const _BrandHeader({this.showTagline = true, this.step});
@@ -130,7 +165,11 @@ class _BrandHeader extends StatelessWidget {
             child: Text(
               l10n.farmersTagline,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14, color: Colors.grey.shade600, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey.shade600,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         if (step != null) ...[
@@ -153,7 +192,7 @@ class _StepDots extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(total, (i) {
         final active = i < current;
-        final isCur = i == current - 1;
+        final isCur  = i == current - 1;
         return AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           margin: const EdgeInsets.symmetric(horizontal: 4),
@@ -170,7 +209,7 @@ class _StepDots extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────
-// FIXED: Landscape footer is a separate widget, used in Stack
+// 5 · LANDSCAPE FOOTER  (pinned, keyboard-safe)
 // ─────────────────────────────────────────────────────────────
 
 class _LandscapeFooter extends StatelessWidget {
@@ -191,83 +230,82 @@ class _LandscapeFooter extends StatelessWidget {
   }
 }
 
-// ─────────────────────────────────────────────────────────────
-// SCAFFOLD — Fixed bottom image via Stack + MediaQuery padding
-// ─────────────────────────────────────────────────────────────
-//
-// Strategy:
-//   • Use a Stack so the landscape image is ALWAYS pinned at the
-//     physical bottom of the safe area — it never scrolls and
-//     never jumps when the keyboard appears.
-//   • The scroll view sits on top with enough bottom padding to
-//     clear the image height. When the keyboard is open, Flutter
-//     automatically adds extra inset via resizeToAvoidBottomInset,
-//     so content is reachable without fighting the image.
-//   • The image fades out smoothly when the keyboard rises, so it
-//     doesn't visually collide with field error messages.
-// ─────────────────────────────────────────────────────────────
+// Approximate rendered height of the bottom landscape image.
+// Adjust if the image aspect ratio changes.
+const double _kLandscapeH = 120.0;
 
-class _LandscapeFooterHeight {
-  // Approximate rendered height of the bottom landscape asset.
-  // Adjust this constant if you change the image aspect ratio.
-  static const double value = 120.0;
-}
+// ─────────────────────────────────────────────────────────────
+// 6 · _SCAFFOLD
+//
+// KEY BEHAVIOUR:
+//  • resizeToAvoidBottomInset: true  → Scaffold shrinks body when
+//    keyboard opens, so content scrolls above the keyboard.
+//  • Stack inside body → landscape image is Positioned(bottom:0)
+//    so it NEVER moves regardless of keyboard state.
+//  • AnimatedOpacity on the image → smooth fade-out when keyboard
+//    is open so it doesn't collide with form content.
+//  • Bottom padding on scroll view reserves space for the image
+//    when keyboard is closed (so last field isn't hidden behind it).
+// ─────────────────────────────────────────────────────────────
 
 class _Scaffold extends StatelessWidget {
   const _Scaffold({
     required this.body,
     this.footer,
-    this.showBack = false,
+    this.showBack     = false,
     this.onBack,
-    this.showBrand = true,
+    this.showBrand    = true,
     this.showLandscape = true,
     this.step,
   });
 
-  final Widget body;
-  final Widget? footer;
-  final bool showBack;
+  final Widget      body;
+  final Widget?     footer;
+  final bool        showBack;
   final VoidCallback? onBack;
-  final bool showBrand;
-  final bool showLandscape;
-  final int? step;
+  final bool        showBrand;
+  final bool        showLandscape;
+  final int?        step;
 
   @override
   Widget build(BuildContext context) {
     final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     final hasKeyboard    = keyboardHeight > 0;
 
-    // How much bottom space does the scroll view need to reserve so
-    // content never hides behind the landscape image?
-    final imageReserve = showLandscape && !hasKeyboard
-        ? _LandscapeFooterHeight.value
-        : 0.0;
+    // Reserve bottom space so scroll content clears the image
+    // when keyboard is closed. When keyboard is open the Scaffold
+    // itself shrinks, so no extra reservation needed.
+    final imageReserve =
+        showLandscape && !hasKeyboard ? _kLandscapeH : 0.0;
 
     return Scaffold(
       backgroundColor: const Color(0xFFFAFDF8),
-      // Let Flutter resize the body when the keyboard appears so the
-      // scroll view gains the right inset automatically.
+      // true → Scaffold compresses body height when keyboard opens,
+      // giving the SingleChildScrollView room to scroll content up.
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
           onTap: () => FocusScope.of(context).unfocus(),
-          // ── Stack keeps the image fixed at the bottom ──────────
           child: Stack(
             children: [
 
-              // ── 1. Scrollable content ───────────────────────────
+              // ── LAYER 1: scrollable form content ─────────
               Positioned.fill(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     // Back button or top spacer
                     if (showBack)
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: IconButton(
-                          icon: const Icon(Icons.arrow_back, size: 26),
-                          color: AppColors.textPrimary,
-                          onPressed: onBack,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 4, top: 4),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: IconButton(
+                            icon: const Icon(Icons.arrow_back, size: 26),
+                            color: AppColors.textPrimary,
+                            onPressed: onBack,
+                          ),
                         ),
                       )
                     else
@@ -281,8 +319,7 @@ class _Scaffold extends StatelessWidget {
                           _S.hPad,
                           0,
                           _S.hPad,
-                          // Reserve space below content so it clears
-                          // the landscape image when keyboard is closed.
+                          // Keep last widget above landscape image
                           imageReserve + 20,
                         ),
                         child: Column(
@@ -303,13 +340,10 @@ class _Scaffold extends StatelessWidget {
                 ),
               ),
 
-              // ── 2. Landscape image — always pinned at bottom ────
-              //
+              // ── LAYER 2: landscape image pinned at bottom ─
               // Positioned to the physical bottom of the Stack.
-              // AnimatedOpacity fades it out when the keyboard is
-              // visible so error text / button isn't obscured.
-              // The image itself is IgnorePointer so taps fall
-              // through to the content underneath.
+              // AnimatedOpacity fades it when keyboard is open
+              // so error text and buttons are never obscured.
               if (showLandscape)
                 Positioned(
                   left: 0,
@@ -331,7 +365,13 @@ class _Scaffold extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────
-// SHARED BUTTON / FIELD WIDGETS
+// 7 · ARROW BUTTON
+//
+// FIX: disabled state uses light-green background + white text
+//      instead of the default Material grey.
+//      Active:   full green bg (#bannerGreen) + white text
+//      Disabled: light green bg (#A5D6A7)    + white text
+//      Loading:  full green bg               + white spinner
 // ─────────────────────────────────────────────────────────────
 
 class _ArrowButton extends StatelessWidget {
@@ -340,9 +380,10 @@ class _ArrowButton extends StatelessWidget {
     required this.onPressed,
     this.isLoading = false,
   });
-  final String label;
+
+  final String        label;
   final VoidCallback? onPressed;
-  final bool isLoading;
+  final bool          isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -352,19 +393,28 @@ class _ArrowButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: isLoading ? null : onPressed,
         style: ElevatedButton.styleFrom(
+          // Active background
           backgroundColor: _S.green,
-          disabledBackgroundColor: _S.green.withOpacity(0.45),
+          // Active text/icon colour
           foregroundColor: Colors.white,
+          // ── FIX: disabled = light green + white ──────────
+          disabledBackgroundColor: const Color(0xFFA5D6A7),
+          disabledForegroundColor: Colors.white,
+          // ─────────────────────────────────────────────────
           elevation: 0,
+          shadowColor: Colors.transparent,
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(14)),
+            borderRadius: BorderRadius.circular(14),
+          ),
         ),
         child: isLoading
             ? const SizedBox(
                 width: 24,
                 height: 24,
                 child: CircularProgressIndicator(
-                    strokeWidth: 2.5, color: Colors.white),
+                  strokeWidth: 2.5,
+                  color: Colors.white,
+                ),
               )
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -379,8 +429,13 @@ class _ArrowButton extends StatelessWidget {
   }
 }
 
+// ─────────────────────────────────────────────────────────────
+// 8 · TRUST BADGE
+// ─────────────────────────────────────────────────────────────
+
 class _TrustBadge extends StatelessWidget {
   const _TrustBadge();
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -401,9 +456,14 @@ class _TrustBadge extends StatelessWidget {
   }
 }
 
+// ─────────────────────────────────────────────────────────────
+// 9 · FIELD LABEL
+// ─────────────────────────────────────────────────────────────
+
 class _FieldLabel extends StatelessWidget {
   const _FieldLabel({required this.label});
   final String label;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -413,6 +473,10 @@ class _FieldLabel extends StatelessWidget {
   }
 }
 
+// ─────────────────────────────────────────────────────────────
+// 10 · PHONE ICON FIELD
+// ─────────────────────────────────────────────────────────────
+
 class _PhoneIconField extends StatefulWidget {
   const _PhoneIconField({
     required this.controller,
@@ -420,10 +484,11 @@ class _PhoneIconField extends StatefulWidget {
     required this.onChanged,
     this.validator,
   });
-  final TextEditingController controller;
-  final String hintText;
-  final ValueChanged<String> onChanged;
-  final String? Function(String?)? validator;
+
+  final TextEditingController            controller;
+  final String                           hintText;
+  final ValueChanged<String>             onChanged;
+  final String? Function(String?)?       validator;
 
   @override
   State<_PhoneIconField> createState() => _PhoneIconFieldState();
@@ -493,7 +558,181 @@ class _PhoneIconFieldState extends State<_PhoneIconField> {
 }
 
 // ─────────────────────────────────────────────────────────────
-// 4 · LOGIN SCREEN
+// 11 · OTP ROW
+//
+// FIX 1 — Responsive fluid sizing:
+//   OLD: clamp(48, 56) hard-coded px → overflow/underflow on
+//        small (320px) and large (430px+) screens.
+//   NEW: box = totalWidth / 6.4  (solves 6*box + 5*gap = width
+//        where gap ≈ 8% of box). No fixed px clamp.
+//        Font size and border radius also scale with box.
+//
+// FIX 2 — Full border on all 4 sides:
+//   filled:true + fillColor:transparent → TextField paints NO
+//   background, so Container border is never covered.
+//   ClipRRect ensures TextField internal layers don't bleed
+//   outside the rounded corners where the border lives.
+//
+// FIX 3 — Memory leak:
+//   removeListener in dispose() matches every addListener.
+// ─────────────────────────────────────────────────────────────
+
+class _OtpRow extends StatefulWidget {
+  const _OtpRow({
+    required this.controllers,
+    required this.focusNodes,
+    required this.onChanged,
+  });
+
+  final List<TextEditingController>            controllers;
+  final List<FocusNode>                        focusNodes;
+  final void Function(int index, String value) onChanged;
+
+  @override
+  State<_OtpRow> createState() => _OtpRowState();
+}
+
+class _OtpRowState extends State<_OtpRow> {
+  void _onFocusChange() {
+    if (mounted) setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    for (var i = 0; i < widget.focusNodes.length; i++) {
+      final index = i; // capture for closure
+      final fn    = widget.focusNodes[i];
+
+      // Repaint border colour on focus change
+      fn.addListener(_onFocusChange);
+
+      // ── FIX 2: backspace on empty box ────────────────────
+      // onChanged never fires when the field is already empty.
+      // Intercept the raw key event here instead.
+      fn.onKeyEvent = (node, event) {
+        if (event is KeyDownEvent &&
+            event.logicalKey == LogicalKeyboardKey.backspace &&
+            widget.controllers[index].text.isEmpty &&
+            index > 0) {
+          widget.focusNodes[index - 1].requestFocus();
+          return KeyEventResult.handled;
+        }
+        return KeyEventResult.ignored;
+      };
+    }
+  }
+
+  @override
+  void dispose() {
+    for (final fn in widget.focusNodes) {
+      fn.removeListener(_onFocusChange);
+      fn.onKeyEvent = null; // clean up key handler
+    }
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // ── Sizing ───────────────────────────────────────────
+        const int    count   = 6;
+        const double gap     = 10.0;
+        final double boxW    = (constraints.maxWidth - gap * (count - 1)) / count;
+        final double boxH    = boxW * 1.18;
+        final double radius  = boxW * 0.20;
+        final double fontSize = boxW * 0.44;
+
+        // ── FIX 1: vertical padding centres digit in box ────
+        // Natural line height ≈ fontSize * 1.25.
+        // Remaining space split equally top + bottom.
+        final double vPad = ((boxH - fontSize * 1.25) / 2).clamp(0.0, boxH);
+
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(count, (i) {
+            final isFocused = widget.focusNodes[i].hasFocus;
+            final isFilled  = widget.controllers[i].text.isNotEmpty;
+
+            return Padding(
+              padding: EdgeInsets.only(right: i < count - 1 ? gap : 0),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 160),
+                curve: Curves.easeOut,
+                width:  boxW,
+                height: boxH,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(radius),
+                  border: Border.all(
+                    color: isFocused
+                        ? _S.green
+                        : isFilled
+                            ? Colors.grey.shade500
+                            : Colors.grey.shade300,
+                    width: isFocused ? 2.0 : 1.5,
+                  ),
+                  boxShadow: isFocused
+                      ? [
+                          BoxShadow(
+                            color: _S.green.withOpacity(0.16),
+                            blurRadius: 6,
+                            spreadRadius: 1,
+                          ),
+                        ]
+                      : null,
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(radius - 0.5),
+                  child: TextField(
+                    controller: widget.controllers[i],
+                    focusNode:  widget.focusNodes[i],
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.center,
+                    textAlignVertical: TextAlignVertical.center,
+                    maxLength: 1,
+                    cursorColor: _S.green,
+                    cursorWidth: 1.5,
+                    style: TextStyle(
+                      fontSize: fontSize,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textPrimary,
+                    ),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(1),
+                    ],
+                    decoration: InputDecoration(
+                      counterText: '',
+                      filled: true,
+                      fillColor: Colors.transparent,
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      focusedErrorBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      // ── FIX 1: symmetric vPad centres digit ──
+                      contentPadding: EdgeInsets.symmetric(vertical: vPad),
+                      // isDense REMOVED — it collapses line height
+                    ),
+                    onChanged: (v) {
+                      setState(() {}); // repaint border colour
+                      widget.onChanged(i, v);
+                    },
+                  ),
+                ),
+              ),
+            );
+          }),
+        );
+      },
+    );
+  }
+}
+// ─────────────────────────────────────────────────────────────
+// 12 · LOGIN SCREEN
 // ─────────────────────────────────────────────────────────────
 
 class LoginScreen extends StatefulWidget {
@@ -513,7 +752,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _ctrl    = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  var _loading   = false;
+  var   _loading = false;
 
   @override
   void dispose() {
@@ -533,7 +772,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n  = AppLocalizations.of(context)!;
     final valid = UserAuthService.normalizePhone(_ctrl.text).length == 10;
 
     return _Scaffold(
@@ -543,11 +782,17 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(l10n.welcomeBack,
-                textAlign: TextAlign.center, style: _S.title),
+            Text(
+              l10n.welcomeBack,
+              textAlign: TextAlign.center,
+              style: _S.title,
+            ),
             const SizedBox(height: 28),
-            Text(l10n.loginToContinue,
-                textAlign: TextAlign.center, style: _S.subtitle),
+            Text(
+              l10n.loginToContinue,
+              textAlign: TextAlign.center,
+              style: _S.subtitle,
+            ),
             const SizedBox(height: 58),
             _FieldLabel(label: l10n.mobileNumber),
             const SizedBox(height: 8),
@@ -571,7 +816,7 @@ class _LoginScreenState extends State<LoginScreen> {
 }
 
 // ─────────────────────────────────────────────────────────────
-// 5 · OTP VERIFICATION SCREEN
+// 13 · OTP VERIFICATION SCREEN
 // ─────────────────────────────────────────────────────────────
 
 class OtpVerificationScreen extends StatefulWidget {
@@ -585,15 +830,16 @@ class OtpVerificationScreen extends StatefulWidget {
     this.step = 2,
   });
 
-  final String phoneNumber;
-  final String rawPhoneNumber;
-  final String expectedOtp;
-  final Future<void> Function(String phone) onVerified;
-  final VoidCallback onBack;
-  final int step;
+  final String                            phoneNumber;
+  final String                            rawPhoneNumber;
+  final String                            expectedOtp;
+  final Future<void> Function(String)     onVerified;
+  final VoidCallback                      onBack;
+  final int                               step;
 
   @override
-  State<OtpVerificationScreen> createState() => _OtpVerificationScreenState();
+  State<OtpVerificationScreen> createState() =>
+      _OtpVerificationScreenState();
 }
 
 class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
@@ -612,11 +858,13 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     super.initState();
     _otp = widget.expectedOtp;
     _startTimer();
+    // Auto-focus first box after frame
     Future.delayed(
-        const Duration(milliseconds: 100), () => _fns[0].requestFocus());
-    for (final fn in _fns) {
-      fn.addListener(() { if (mounted) setState(() {}); });
-    }
+      const Duration(milliseconds: 100),
+      () { if (mounted) _fns[0].requestFocus(); },
+    );
+    // NOTE: focus listeners are owned by _OtpRow — do NOT add
+    // them here to avoid double setState and memory leaks.
   }
 
   @override
@@ -646,9 +894,12 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
 
   void _onChanged(int i, String v) {
     if (_verified) return;
+    // Auto-advance to next box
     if (v.length == 1 && i < 5) _fns[i + 1].requestFocus();
-    if (v.isEmpty && i > 0)     _fns[i - 1].requestFocus();
+    // Auto-back on delete
+    if (v.isEmpty && i > 0) _fns[i - 1].requestFocus();
     setState(() {});
+    // Auto-verify when all 6 digits are entered
     if (_ctrls.every((c) => c.text.length == 1) && !_loading) _verify();
   }
 
@@ -665,8 +916,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       setState(() => _loading = false);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text(l10n.invalidOtp),
-            backgroundColor: Colors.red),
+          content: Text(l10n.invalidOtp),
+          backgroundColor: Colors.red,
+        ),
       );
       return;
     }
@@ -698,14 +950,16 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return _Scaffold(
-      showBack:    true,
-      onBack:      widget.onBack,
-      step:        widget.step,
-      showBrand:   false,
-      footer:      const _TrustBadge(),
+      showBack:     true,
+      onBack:       widget.onBack,
+      step:         widget.step,
+      showBrand:    false,
+      footer:       const _TrustBadge(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+
+          // SMS icon
           Center(
             child: Container(
               width: 88,
@@ -718,102 +972,68 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
             ),
           ),
           const SizedBox(height: 24),
-          Text(l10n.verifyYourMobile,
-              textAlign: TextAlign.center,
-              style: _S.title.copyWith(fontSize: 28)),
+
+          // Title
+          Text(
+            l10n.verifyYourMobile,
+            textAlign: TextAlign.center,
+            style: _S.title.copyWith(fontSize: 28),
+          ),
           const SizedBox(height: 10),
-          Text(l10n.otpSentTo,
-              textAlign: TextAlign.center, style: _S.subtitle),
+
+          // Subtitle
+          Text(
+            l10n.otpSentTo,
+            textAlign: TextAlign.center,
+            style: _S.subtitle,
+          ),
           const SizedBox(height: 6),
+
+          // Phone number
           Text(
             widget.phoneNumber,
             textAlign: TextAlign.center,
             style: const TextStyle(
-                fontSize: 18, fontWeight: FontWeight.w700, color: _S.green),
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: _S.green,
+            ),
           ),
+
+          // Debug OTP hint (only in debug builds)
           if (kDebugMode) ...[
             const SizedBox(height: 8),
             Text(
               'Demo OTP: $_otp',
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 13,
-                  color: Colors.grey.shade500,
-                  fontFamily: 'monospace'),
+                fontSize: 13,
+                color: Colors.grey.shade500,
+                fontFamily: 'monospace',
+              ),
             ),
           ],
           const SizedBox(height: 28),
 
-          // OTP boxes
-          LayoutBuilder(builder: (context, constraints) {
-            const gap = 12.0;
-            final box =
-                ((constraints.maxWidth - gap * 5) / 6).clamp(48.0, 56.0);
-
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(6, (i) {
-                final focused = _fns[i].hasFocus;
-                final filled  = _ctrls[i].text.isNotEmpty;
-
-                return Padding(
-                  padding: EdgeInsets.only(right: i < 5 ? gap : 0),
-                  child: Container(
-                    width: box,
-                    height: box,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: focused
-                            ? _S.green
-                            : filled
-                                ? Colors.grey.shade400
-                                : Colors.grey.shade300,
-                        width: 2,
-                      ),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: TextFormField(
-                        controller: _ctrls[i],
-                        focusNode: _fns[i],
-                        keyboardType: TextInputType.number,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.textPrimary),
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(1),
-                        ],
-                        decoration: const InputDecoration(
-                          counterText: '',
-                          border: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                          focusedErrorBorder: InputBorder.none,
-                          contentPadding: EdgeInsets.zero,
-                        ),
-                        onChanged: (v) => _onChanged(i, v),
-                      ),
-                    ),
-                  ),
-                );
-              }),
-            );
-          }),
+          // ── OTP BOXES ─────────────────────────────────────
+          // Extracted into _OtpRow for clean separation.
+          // All responsive sizing + border fix lives there.
+          _OtpRow(
+            controllers: _ctrls,
+            focusNodes:  _fns,
+            onChanged:   _onChanged,
+          ),
 
           const SizedBox(height: 22),
 
+          // ── Resend row ────────────────────────────────────
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 '${l10n.otpNotReceived} ',
-                style: TextStyle(fontSize: 15, color: Colors.grey.shade700),
+                style:
+                    TextStyle(fontSize: 15, color: Colors.grey.shade700),
               ),
               GestureDetector(
                 onTap: _canResend && !_verified ? _resend : null,
@@ -833,19 +1053,23 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 Text(
                   '00:${_secs.toString().padLeft(2, '0')}',
                   style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey.shade600),
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey.shade600,
+                  ),
                 ),
               ],
             ],
           ),
           const SizedBox(height: 28),
 
+          // ── Verify button ─────────────────────────────────
+          // Disabled (light green + white) until all 6 digits entered.
           _ArrowButton(
             label: l10n.verifyAndContinue,
             isLoading: _loading || _verified,
-            onPressed: _entered.length == 6 && !_verified ? _verify : null,
+            onPressed:
+                _entered.length == 6 && !_verified ? _verify : null,
           ),
         ],
       ),

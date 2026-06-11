@@ -20,7 +20,7 @@
   "welcomeFarmer": "स्वागत आहे, शेतकरी!",
   "whatDoYouNeed": "आज तुम्हाला काय हवे आहे?",
   "categoryTractors": "ट्रॅक्टर आणि यंत्रे",
-  "categoryCrops": "पिके आणि भाजीपाला",
+  "categoryCrops": "पिके आणि धान्य",
   "categoryLivestock": "पशुधन",
   "categoryLand": "शेती जमीन",
   "categoryRental": "उपकरण भाड्याने",
@@ -140,6 +140,9 @@
   "nearbyAds": "जवळील जाहिराती",
   "postAd": "जाहिरात द्या",
   "chat": "चॅट",
+  "myAds": "जाहिराती",
+  "dealer": "विक्रेता",
+  "comingSoon": "लवकरच येत आहे!",
   "mobileNumber": "मोबाईल नंबर",
   "phoneHint": "98 7654 3210",
   "phoneRequired": "मोबाइल नंबर आवश्यक आहे",
@@ -165,6 +168,9 @@
   "allowLocationMessage": "तुमच्या गावाजवळ ट्रॅक्टर, पिके आणि पशु पाहण्यासाठी लोकेशन परवानगी द्या.",
   "useCurrentLocation": "माझे लोकेशन वापरा",
   "loadingMore": "अजून उत्पादने लोड होत आहेत...",
+  "fruitsAndVegetables": "फळे आणि भाज्या",
+  "cropsAndGrains": "पिके आणि धान्य",
+  "seeds": "बिया",
   "kmAway": "{distance} किमी दूर",
   "@kmAway": {
     "placeholders": {

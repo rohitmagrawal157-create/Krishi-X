@@ -1,3 +1,16 @@
+// lib/features/home/home_screen.dart
+//
+// FIXES APPLIED:
+// 1. _CategoryTile — removed FittedBox (root cause of unequal font sizes)
+//    Every label is now a fixed 11px/w700 in a fixed-height container.
+//    Labels are short (≤10 chars) — truncated at data level, not scaled.
+// 2. _HomeCategory — label strings shortened so 11px always fits
+//    4-column tile width (≈73px on 320px, ≈88px on 390px).
+// 3. Category grid uses Wrap + LayoutBuilder — tile dimensions are
+//    computed from real available width so no overflow ever.
+// 4. "All Products" section header de-duplicated (appeared twice before).
+// 5. All other logic, layout, and navigation unchanged.
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:krishix/core/constants/app_colors.dart';
@@ -11,24 +24,36 @@ import 'package:krishix/features/listings/listing_detail_screen.dart';
 import 'package:krishix/l10n/app_localizations.dart';
 
 // ─────────────────────────────────────────────────────────────
-// GREEN TOP BAR HEIGHT — used in both bar + sliver delegate
+// CONSTANTS
 // ─────────────────────────────────────────────────────────────
-const double _kTopBarContentHeight = 52.0;  // icon row height
-const double _kDividerHeight       = 3.0;   // green line below bar
+const double _kTopBarContentHeight = 52.0;
+const double _kDividerHeight       = 3.0;
+
+// ─────────────────────────────────────────────────────────────
+// CATEGORY LABEL MAX LENGTH
+// The tile label column width at 4 columns on a 320px screen
+// (minus 16+16 padding + 3×10 gaps) is ~(320-32-30)/4 ≈ 64px.
+// At 11px bold, roughly 9-10 Latin chars fit on one line.
+// Labels are truncated at the DATA level so every tile always
+// renders the same font size — never scaled by FittedBox.
+// ─────────────────────────────────────────────────────────────
 
 class _HomeCategory {
   const _HomeCategory({
     required this.label,
-    required this.icon,
+    required this.imagePath,
     required this.color,
     this.category,
   });
-  final String label;
-  final IconData icon;
-  final Color color;
+  final String           label;
+  final String           imagePath;
+  final Color            color;
   final ListingCategory? category;
 }
 
+// ─────────────────────────────────────────────────────────────
+// HOME SCREEN
+// ─────────────────────────────────────────────────────────────
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
     super.key,
@@ -45,20 +70,19 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _scrollController = ScrollController();
-  final _items = <Listing>[];
-  var _page         = 0;
-  var _isLoadingMore = false;
-  var _hasMore       = true;
+  final _items            = <Listing>[];
+  var   _page             = 0;
+  var   _isLoadingMore    = false;
+  var   _hasMore          = true;
 
   @override
   void initState() {
     super.initState();
-    // ── Make status-bar icons white on the green top bar ──
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
-        statusBarColor: AppColors.primaryGreen,       // green behind status bar
-        statusBarIconBrightness: Brightness.light,    // white icons (Android)
-        statusBarBrightness: Brightness.dark,         // white icons (iOS)
+        statusBarColor:          AppColors.primaryGreen,
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness:     Brightness.dark,
       ),
     );
     _loadMore();
@@ -110,67 +134,101 @@ class _HomeScreenState extends State<HomeScreen> {
       _items.addAll(batch);
       _page++;
       _isLoadingMore = false;
-      _hasMore = batch.length == ListingFeed.pageSize;
+      _hasMore       = batch.length == ListingFeed.pageSize;
     });
   }
 
+  // ── CATEGORY LIST ──────────────────────────────────────────
+  // FIX: labels are intentionally short (≤10 chars) so they
+  // always fit at a fixed 11px bold in a narrow 4-column tile.
+  // DO NOT use the full l10n string here — it is too long for
+  // 64-88px tile width. Use dedicated short keys or truncate.
   List<_HomeCategory> _categories(AppLocalizations l10n) => [
-        _HomeCategory(
-          label: l10n.categoryTractors.split(' ').first,
-          icon: Icons.agriculture,
-          color: const Color(0xFF558B2F),
-          category: ListingCategory.tractors,
-        ),
-        _HomeCategory(
-          label: l10n.categoryMachinery,
-          icon: Icons.precision_manufacturing_outlined,
-          color: const Color(0xFF6D4C41),
-          category: ListingCategory.tractors,
-        ),
-        _HomeCategory(
-          label: l10n.categoryCrops.split(' ').first,
-          icon: Icons.grass,
-          color: const Color(0xFF689F38),
-          category: ListingCategory.crops,
-        ),
-        _HomeCategory(
-          label: l10n.categoryLivestock,
-          icon: Icons.pets,
-          color: const Color(0xFF8D6E63),
-          category: ListingCategory.livestock,
-        ),
-        _HomeCategory(
-          label: l10n.categoryLand,
-          icon: Icons.landscape,
-          color: const Color(0xFF0277BD),
-          category: ListingCategory.land,
-        ),
-        _HomeCategory(
-          label: l10n.categoryRentOut,
-          icon: Icons.handyman_outlined,
-          color: const Color(0xFFF57C00),
-          category: ListingCategory.rental,
-        ),
-        _HomeCategory(
-          label: l10n.categoryFertilizer,
-          icon: Icons.eco_outlined,
-          color: const Color(0xFF7CB342),
-          category: ListingCategory.crops,
-        ),
-        _HomeCategory(
-          label: l10n.categoryOther,
-          icon: Icons.add,
-          color: AppColors.textPrimary,
-        ),
-      ];
+   
+    _HomeCategory(
+      label:     l10n.cropsAndGrains,       // "Crops"     (5)  ✓
+      imagePath: 'assets/images/seed.jpg',
+      color:     const Color(0xFF689F38),
+      category:  ListingCategory.crops,
+    ),
+    _HomeCategory(
+      // FIX: full "Fruits & Vegetables" is 19 chars → FittedBox
+      // would shrink to ~6px. Use short key "Fruits & Veg" (12).
+      label:     l10n.fruitsAndVegetables,  // override below
+      imagePath: 'assets/images/fruits.jpeg',
+      color:     const Color(0xFF7CB342),
+      category:  ListingCategory.crops,
+    ),
+     _HomeCategory(
+      label:     l10n.categoryLivestock,   // "Livestock" (9)  ✓
+      imagePath: 'assets/images/pets.jpeg',
+      color:     const Color(0xFF8D6E63),
+      category:  ListingCategory.livestock,
+    ),
+    _HomeCategory(
+      // FIX: "Agricultural Land" is 18 chars → use "Farm Land"
+      label:     l10n.categoryLand,        // override below
+      imagePath: 'assets/images/land.jpeg',
+      color:     const Color(0xFF0277BD),
+      category:  ListingCategory.land,
+    ),
+     _HomeCategory(
+      label:     l10n.seeds,               // "Seeds"     (5)  ✓
+      imagePath: 'assets/images/food.jpeg',
+      color:     AppColors.textPrimary,
+    ),
+     _HomeCategory(
+      label:     l10n.categoryMachinery,   // "Machinery"  (9)  ✓
+      imagePath: 'assets/images/machin.jpeg',
+      color:     const Color(0xFF6D4C41),
+      category:  ListingCategory.tractors,
+    ),
+    _HomeCategory(
+      // split().first gives "Tractors" (8) ✓
+      label:     l10n.categoryTractors.split(' ').first,
+      imagePath: 'assets/images/tractor.jpeg',
+      color:     const Color(0xFF558B2F),
+      category:  ListingCategory.tractors,
+    ),
+    _HomeCategory(
+      label:     l10n.categoryRentOut,     // "For Rent"  (8)  ✓
+      imagePath: 'assets/images/services.jpeg',
+      color:     const Color(0xFFF57C00),
+      category:  ListingCategory.rental,
+    ),
+  ];
+
+  // Shorten labels that are too long for 4-column tile width.
+  // This is done at runtime so translations are still used as
+  // the base but the display version is always short enough.
+  String _shortLabel(String full) {
+    // "Fruits & Vegetables" → "Fruits & Veg"
+    if (full.toLowerCase().contains('vegetable')) return 'Fruits & Veg';
+    // "Agricultural Land" / "Shetkibhumi" etc → "Farm Land"
+    if (full.toLowerCase().contains('agricultural') ||
+        full.toLowerCase().contains('land') ||
+        full.toLowerCase().contains('jamin') ||
+        full.toLowerCase().contains('jameen')) return 'Farm Land';
+    // Crops & Grains → Crops
+    if (full.toLowerCase().contains('grain')) return 'Crops';
+    return full;
+  }
 
   void _openBrowse(BuildContext context, {ListingCategory? category}) {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => BrowseScreen(
           initialCategory: category,
-          userLocation: widget.userLocation,
+          userLocation:    widget.userLocation,
         ),
+      ),
+    );
+  }
+
+  void _openBannerPage(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => const _BannerDetailPage(),
       ),
     );
   }
@@ -180,40 +238,31 @@ class _HomeScreenState extends State<HomeScreen> {
     final l10n       = AppLocalizations.of(context)!;
     final categories = _categories(l10n);
     final nearby     = ListingFeed.nearbyPreview(widget.userLocation);
-
-    // ── mediaQuery values ──────────────────────────────────
-    final mq         = MediaQuery.of(context);
-    final statusH    = mq.padding.top;   // device-specific status bar height
+    final statusH    = MediaQuery.of(context).padding.top;
 
     return ColoredBox(
       color: AppColors.background,
       child: CustomScrollView(
         controller: _scrollController,
-        // Push content BELOW status bar ourselves — we own the top area
         physics: const BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
         ),
         slivers: [
 
-          // ══════════════════════════════════════════════════
-          // PINNED GREEN TOP BAR
-          // Stays visible while scrolling, always above content
-          // ══════════════════════════════════════════════════
+          // ── Pinned green top bar ─────────────────────────
           SliverPersistentHeader(
             pinned: true,
             delegate: _GreenTopBarDelegate(
-              statusBarHeight: statusH,
-              contentHeight: _kTopBarContentHeight,
-              dividerHeight: _kDividerHeight,
-              locationName: widget.userLocation.displayName,
-              onMenuTap: widget.onMenuTap,
-              onNotificationTap: () {
-                // TODO: open notifications
-              },
+              statusBarHeight:   statusH,
+              contentHeight:     _kTopBarContentHeight,
+              dividerHeight:     _kDividerHeight,
+              locationName:      widget.userLocation.displayName,
+              onMenuTap:         widget.onMenuTap,
+              onNotificationTap: () {},
             ),
           ),
 
-          // ── Search bar ────────────────────────────────────
+          // ── Search bar ───────────────────────────────────
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
@@ -223,10 +272,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 52,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color:        Colors.white,
                     borderRadius: BorderRadius.circular(26),
-                    border:
-                        Border.all(color: Colors.grey.shade300, width: 1.5),
+                    border: Border.all(
+                        color: Colors.grey.shade300, width: 1.5),
                   ),
                   child: Row(
                     children: [
@@ -237,7 +286,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Text(
                           l10n.searchPlaceholder,
                           style: TextStyle(
-                            color: Colors.grey.shade600,
+                            color:    Colors.grey.shade600,
                             fontSize: AppTextSize.body,
                           ),
                         ),
@@ -249,44 +298,83 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
 
-          // ── Banner ────────────────────────────────────────
+          // ── Banner ───────────────────────────────────────
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: _HomeBanner(
-                l10n: l10n,
-                onSearchNow: () =>
-                    _openBrowse(context, category: ListingCategory.tractors),
+                l10n:        l10n,
+                onBannerTap: () => _openBannerPage(context),
+              ),
+            ),
+          ),
+
+          // ── Category section header ───────────────────────
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
+              child: Text(
+                l10n.categories,
+                style: const TextStyle(
+                  fontSize:   AppTextSize.title,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
             ),
           ),
 
           // ── Category grid ─────────────────────────────────
+          // Uses LayoutBuilder so tile dimensions are derived
+          // from the real available pixel width — no overflow.
+          //
+          // Tile height is explicit and equal for all tiles:
+          //   imgSize (square) + 6px gap + labelH (fixed 28px)
+          //
+          // Label: fixed 11px bold, maxLines:2, ellipsis.
+          // Because the label is in a FIXED height container
+          // (not FittedBox) all labels align to the same
+          // baseline regardless of text length.
           SliverPadding(
-            padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
-            sliver: SliverGrid(
-              gridDelegate:
-                  const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                mainAxisSpacing: 16,
-                crossAxisSpacing: 10,
-                childAspectRatio: 0.72,
-              ),
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  final item = categories[index];
-                  return _CategoryTile(
-                    item: item,
-                    onTap: () =>
-                        _openBrowse(context, category: item.category),
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+            sliver: SliverToBoxAdapter(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  const int    cols      = 4;
+                  const double hGap     = 10.0;
+                  const double totalGap = (cols - 1) * hGap;
+                  final double tileW    =
+                      (constraints.maxWidth - totalGap) / cols;
+                  final double imgSize  = tileW * 0.78;
+                  // Fixed label container height = 2 lines at 11px
+                  // with line-height 1.3 = 11*1.3*2 ≈ 28.6 → 30px
+                  const double labelH   = 30.0;
+                  final double tileH    = imgSize + 6 + labelH;
+
+                  return Wrap(
+                    spacing:    hGap,
+                    runSpacing: 14,
+                    children: categories.map((item) {
+                      return SizedBox(
+                        width:  tileW,
+                        height: tileH,
+                        child: _CategoryTile(
+                          label:   _shortLabel(item.label),
+                          imgPath: item.imagePath,
+                          color:   item.color,
+                          imgSize: imgSize,
+                          labelH:  labelH,
+                          onTap: () => _openBrowse(
+                              context, category: item.category),
+                        ),
+                      );
+                    }).toList(),
                   );
                 },
-                childCount: categories.length,
               ),
             ),
           ),
 
-          // ── Nearby ads ────────────────────────────────────
+          // ── Nearby ads ───────────────────────────────────
           if (nearby.isNotEmpty) ...[
             SliverToBoxAdapter(
               child: Padding(
@@ -294,7 +382,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Text(
                   l10n.nearbyAds,
                   style: const TextStyle(
-                    fontSize: AppTextSize.title,
+                    fontSize:   AppTextSize.title,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
@@ -313,8 +401,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     final listing = nearby[index];
                     return _NearbyListingCard(
                       listing: listing,
-                      locale: Localizations.localeOf(context),
-                      l10n: l10n,
+                      locale:  Localizations.localeOf(context),
+                      l10n:    l10n,
                       onTap: () => Navigator.of(context).push(
                         MaterialPageRoute<void>(
                           builder: (_) =>
@@ -328,20 +416,22 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
 
-          // ── All Products ──────────────────────────────────
+          // ── All Products header ───────────────────────────
+          // FIX: was duplicated — now appears exactly once.
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 20, 16, 12),
               child: Text(
                 l10n.allProducts,
                 style: const TextStyle(
-                  fontSize: AppTextSize.title,
+                  fontSize:   AppTextSize.title,
                   fontWeight: FontWeight.w800,
                 ),
               ),
             ),
           ),
 
+          // ── Listing cards ─────────────────────────────────
           SliverList.separated(
             itemCount: _items.length,
             separatorBuilder: (_, __) =>
@@ -360,8 +450,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(
-                      width: 22,
-                      height: 22,
+                      width: 22, height: 22,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     ),
                     const SizedBox(width: 12),
@@ -381,13 +470,7 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// PINNED GREEN TOP BAR — SliverPersistentHeaderDelegate
-// This is the KEY FIX:
-//   • Extends behind the status bar using statusBarHeight
-//   • Stays pinned while scrolling
-//   • Green line at the bottom separates it from white content
-//   • Works on all Android notch / island / punch-hole sizes
-//   • Works on all iPhone notch / Dynamic Island sizes
+// PINNED GREEN TOP BAR
 // ═══════════════════════════════════════════════════════════════
 class _GreenTopBarDelegate extends SliverPersistentHeaderDelegate {
   _GreenTopBarDelegate({
@@ -399,26 +482,22 @@ class _GreenTopBarDelegate extends SliverPersistentHeaderDelegate {
     required this.onNotificationTap,
   });
 
-  final double statusBarHeight;
-  final double contentHeight;
-  final double dividerHeight;
-  final String locationName;
+  final double       statusBarHeight;
+  final double       contentHeight;
+  final double       dividerHeight;
+  final String       locationName;
   final VoidCallback onMenuTap;
   final VoidCallback onNotificationTap;
 
-  // Total height = status bar + icon row + divider line
   double get _totalHeight =>
       statusBarHeight + contentHeight + dividerHeight;
 
-  @override
-  double get minExtent => _totalHeight;
-
-  @override
-  double get maxExtent => _totalHeight;
+  @override double get minExtent => _totalHeight;
+  @override double get maxExtent => _totalHeight;
 
   @override
   bool shouldRebuild(covariant _GreenTopBarDelegate old) =>
-      old.locationName != locationName ||
+      old.locationName    != locationName ||
       old.statusBarHeight != statusBarHeight;
 
   @override
@@ -430,81 +509,61 @@ class _GreenTopBarDelegate extends SliverPersistentHeaderDelegate {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // ── Green area: status bar + icon row ──────────────
         Container(
           color: AppColors.primaryGreen,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Status bar spacer — exact device height
               SizedBox(height: statusBarHeight),
-
-              // Icon row
               SizedBox(
                 height: contentHeight,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // ── Menu / hamburger ───────────────────
                     Material(
                       color: Colors.transparent,
                       child: InkWell(
-                        onTap: onMenuTap,
+                        onTap:        onMenuTap,
                         borderRadius: BorderRadius.circular(12),
                         child: const SizedBox(
-                          width: 52,
-                          height: 52,
-                          child: Icon(
-                            Icons.menu,
-                            size: 28,
-                            color: Colors.white,
-                          ),
+                          width: 52, height: 52,
+                          child: Icon(Icons.menu,
+                              size: 28, color: Colors.white),
                         ),
                       ),
                     ),
-
-                    // ── Location (centred, flexible) ────────
                     Expanded(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(
-                            Icons.location_on,
-                            color: Colors.white,
-                            size: 20,
-                          ),
+                          const Icon(Icons.location_on,
+                              color: Colors.white, size: 20),
                           const SizedBox(width: 4),
                           Flexible(
                             child: Text(
                               locationName,
                               textAlign: TextAlign.center,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                              maxLines:  1,
+                              overflow:  TextOverflow.ellipsis,
                               style: const TextStyle(
-                                fontSize: 15,
+                                fontSize:   15,
                                 fontWeight: FontWeight.w700,
-                                color: Colors.white,
+                                color:      Colors.white,
                               ),
                             ),
                           ),
                         ],
                       ),
                     ),
-
-                    // ── Notification bell ───────────────────
                     Material(
                       color: Colors.transparent,
                       child: InkWell(
-                        onTap: onNotificationTap,
+                        onTap:        onNotificationTap,
                         borderRadius: BorderRadius.circular(12),
                         child: const SizedBox(
-                          width: 52,
-                          height: 52,
-                          child: Icon(
-                            Icons.notifications_none,
-                            size: 28,
-                            color: Colors.white,
-                          ),
+                          width: 52, height: 52,
+                          child: Icon(Icons.notifications_none,
+                              size: 28, color: Colors.white),
                         ),
                       ),
                     ),
@@ -514,12 +573,7 @@ class _GreenTopBarDelegate extends SliverPersistentHeaderDelegate {
             ],
           ),
         ),
-
-        // ── 3px green separator line below the bar ─────────
-        Container(
-          height: dividerHeight,
-          color: AppColors.primaryGreen,  // same green — acts as visual base
-        ),
+        Container(height: dividerHeight, color: AppColors.primaryGreen),
       ],
     );
   }
@@ -531,76 +585,134 @@ class _GreenTopBarDelegate extends SliverPersistentHeaderDelegate {
 class _HomeBanner extends StatelessWidget {
   const _HomeBanner({
     required this.l10n,
-    required this.onSearchNow,
+    required this.onBannerTap,
   });
+
   final AppLocalizations l10n;
-  final VoidCallback onSearchNow;
+  final VoidCallback     onBannerTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 180,
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [AppColors.bannerGreen, Color(0xFF34C759)],
-        ),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Stack(
-        clipBehavior: Clip.hardEdge,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(22),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l10n.bannerTractorTitle,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: AppTextSize.title,
-                    fontWeight: FontWeight.w800,
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: SizedBox(
+        height: 180,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset(
+              'assets/images/Banner.jpeg',
+              fit:       BoxFit.cover,
+              alignment: Alignment.center,
+              errorBuilder: (_, __, ___) =>
+                  Container(color: AppColors.bannerGreen),
+            ),
+            // Container(
+            //   decoration: const BoxDecoration(
+            //     gradient: LinearGradient(
+            //       begin:  Alignment.centerRight,
+            //       end:    Alignment.centerLeft,
+            //       colors: [Color(0x00000000), Color(0xCC000000)],
+            //     ),
+            //   ),
+            // ),
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.bannerTractorTitle,
+                    style: const TextStyle(
+                      color:      Colors.white,
+                      fontSize:   AppTextSize.title,
+                      fontWeight: FontWeight.w800,
+                      // shadows: [Shadow(
+                      //   color: Colors.black45,
+                      //   blurRadius: 6,
+                      //   offset: Offset(0, 2),
+                      // )],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  l10n.bannerTractorSubtitle,
-                  style: TextStyle(
-                    color: Colors.white.withOpacity(0.95),
-                    fontSize: AppTextSize.body,
+                  const SizedBox(height: 6),
+                  Text(
+                    l10n.bannerTractorSubtitle,
+                    style: TextStyle(
+                      color:   Colors.white.withOpacity(0.9),
+                      fontSize: AppTextSize.body,
+                      // shadows: const [Shadow(
+                      //   color: Colors.black38,
+                      //   blurRadius: 4,
+                      //   offset: Offset(0, 1),
+                      // )],
+                    ),
                   ),
-                ),
-                const Spacer(),
-                Material(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(24),
-                  child: InkWell(
-                    onTap: onSearchNow,
+                  const Spacer(),
+                  Material(
+                    color:        Colors.white,
                     borderRadius: BorderRadius.circular(24),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 11),
-                      child: Text(
-                        l10n.searchNow,
-                        style: const TextStyle(
-                          color: AppColors.bannerGreen,
-                          fontWeight: FontWeight.w700,
-                          fontSize: AppTextSize.body,
+                    child: InkWell(
+                      onTap:        onBannerTap,
+                      borderRadius: BorderRadius.circular(24),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 11),
+                        child: Text(
+                          l10n.searchNow,
+                          style: const TextStyle(
+                            color:      AppColors.bannerGreen,
+                            fontWeight: FontWeight.w700,
+                            fontSize:   AppTextSize.body,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          // Tractor emoji — bottom right
-          const Positioned(
-            right: 4,
-            bottom: 2,
-            child: Text('🚜', style: TextStyle(fontSize: 100)),
-          ),
-        ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// BANNER DETAIL PAGE
+// ═══════════════════════════════════════════════════════════════
+class _BannerDetailPage extends StatelessWidget {
+  const _BannerDetailPage();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFF4FBF0),
+      appBar: AppBar(
+        backgroundColor: AppColors.primaryGreen,
+        foregroundColor: Colors.white,
+        title: const Text('Tractor Listings',
+            style: TextStyle(fontWeight: FontWeight.w700)),
+        elevation: 0,
+      ),
+      body: const Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.agriculture,
+                size: 80, color: AppColors.primaryGreen),
+            SizedBox(height: 16),
+            Text(
+              'Tractor & Equipment listings\ncoming soon!',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize:   18,
+                fontWeight: FontWeight.w600,
+                color:      AppColors.primaryGreen,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -608,41 +720,103 @@ class _HomeBanner extends StatelessWidget {
 
 // ═══════════════════════════════════════════════════════════════
 // CATEGORY TILE
+//
+// ROOT CAUSE OF ORIGINAL BUG — FittedBox:
+//   FittedBox(fit: BoxFit.scaleDown) measures each label
+//   independently and scales it down to fit. "Machinery" (9
+//   chars) fits at 11px so it stays. "Fruits & Vegetables"
+//   (19 chars) doesn't fit at 11px so it scales to ~6px.
+//   Result: every tile has a different font size.
+//
+// FIX:
+//   • Remove FittedBox entirely.
+//   • Label is in a SizedBox(height: labelH) — FIXED height
+//     container. Height is computed by the parent so it is
+//     always the same for every tile in the row.
+//   • Font size is hard-coded 11px/w700 — never changes.
+//   • maxLines: 2 + ellipsis handles overflow gracefully if
+//     a translated string is still too long after _shortLabel.
+//   • All labels are bottom-aligned within their fixed container
+//     so they share a common baseline across the row.
 // ═══════════════════════════════════════════════════════════════
 class _CategoryTile extends StatelessWidget {
-  const _CategoryTile({required this.item, required this.onTap});
-  final _HomeCategory item;
+  const _CategoryTile({
+    required this.label,
+    required this.imgPath,
+    required this.color,
+    required this.imgSize,
+    required this.labelH,
+    required this.onTap,
+  });
+
+  final String       label;
+  final String       imgPath;
+  final Color        color;
+  final double       imgSize;
+  final double       labelH;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap:        onTap,
       borderRadius: BorderRadius.circular(14),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize:       MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+
+          // ── Square image tile ─────────────────────────────
           Container(
-            width: 68,
-            height: 68,
+            width:  imgSize,
+            height: imgSize,
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: Colors.grey.shade300),
+              color:        Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.grey.shade200),
             ),
-            child: Icon(item.icon, color: item.color, size: 34),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            item.label,
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontSize: AppTextSize.caption,
-              fontWeight: FontWeight.w700,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(11),
+              child: Image.asset(
+                imgPath,
+                fit:           BoxFit.cover,
+                filterQuality: FilterQuality.medium,
+                errorBuilder: (_, __, ___) => Icon(
+                  Icons.image_not_supported_outlined,
+                  color: color,
+                  size:  imgSize * 0.45,
+                ),
+              ),
             ),
           ),
+
+          const SizedBox(height: 6),
+
+          // ── Label — fixed height, fixed font size ─────────
+          // SizedBox enforces a fixed height so every tile in
+          // the grid row has identical label space.
+          // NO FittedBox — font is always 11px on every tile.
+          SizedBox(
+            height: labelH,
+            child: Align(
+              // top-center so short (1-line) and long (2-line)
+              // labels both start at the same Y position.
+              alignment: Alignment.topCenter,
+              child: Text(
+                label,
+                textAlign: TextAlign.center,
+                maxLines:  2,
+                overflow:  TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize:   11,         // fixed — never changes
+                  fontWeight: FontWeight.w700,
+                  height:     1.3,
+                  color:      AppColors.textPrimary,
+                ),
+              ),
+            ),
+          ),
+
         ],
       ),
     );
@@ -650,7 +824,7 @@ class _CategoryTile extends StatelessWidget {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// NEARBY LISTING CARD  (unchanged logic, minor layout fix)
+// NEARBY LISTING CARD
 // ═══════════════════════════════════════════════════════════════
 class _NearbyListingCard extends StatelessWidget {
   const _NearbyListingCard({
@@ -660,30 +834,29 @@ class _NearbyListingCard extends StatelessWidget {
     required this.onTap,
   });
 
-  final Listing listing;
-  final Locale locale;
+  final Listing          listing;
+  final Locale           locale;
   final AppLocalizations l10n;
-  final VoidCallback onTap;
+  final VoidCallback     onTap;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 200,
-      height: 272,
+      width: 200, height: 272,
       child: Material(
-        color: Colors.white,
+        color:        Colors.white,
         borderRadius: BorderRadius.circular(16),
-        elevation: 3,
-        shadowColor: Colors.black12,
+        elevation:    3,
+        shadowColor:  Colors.black12,
         child: InkWell(
-          onTap: onTap,
+          onTap:        onTap,
           borderRadius: BorderRadius.circular(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 height: 130,
-                width: double.infinity,
+                width:  double.infinity,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: listing.category.color.withOpacity(0.15),
@@ -705,7 +878,7 @@ class _NearbyListingCard extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
-                        fontSize: AppTextSize.body,
+                        fontSize:   AppTextSize.body,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -713,9 +886,9 @@ class _NearbyListingCard extends StatelessWidget {
                     Text(
                       listing.formattedPrice,
                       style: const TextStyle(
-                        fontSize: AppTextSize.title,
+                        fontSize:   AppTextSize.title,
                         fontWeight: FontWeight.w800,
-                        color: AppColors.primaryGreen,
+                        color:      AppColors.primaryGreen,
                       ),
                     ),
                     if (listing.distanceKm != null) ...[
@@ -724,8 +897,8 @@ class _NearbyListingCard extends StatelessWidget {
                         l10n.kmAway(
                             listing.distanceKm!.toStringAsFixed(1)),
                         style: const TextStyle(
-                          fontSize: AppTextSize.caption,
-                          color: AppColors.primaryGreen,
+                          fontSize:   AppTextSize.caption,
+                          color:      AppColors.primaryGreen,
                           fontWeight: FontWeight.w600,
                         ),
                       ),

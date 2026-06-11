@@ -40,6 +40,15 @@ class AppLocalizationsMr extends AppLocalizations {
   String get verifiedSeller => 'तपासलेले';
 
   @override
+  String get fruitsAndVegetables => 'फळे आणि भाज्या';
+
+  @override
+  String get cropsAndGrains => 'पिके आणि धान्य';
+
+  @override
+  String get seeds => 'बिया';
+
+  @override
   String get nearYou => 'जवळपास';
 
   @override
@@ -67,7 +76,7 @@ class AppLocalizationsMr extends AppLocalizations {
   String get categoryTractors => 'ट्रॅक्टर आणि यंत्रे';
 
   @override
-  String get categoryCrops => 'पिके आणि भाजीपाला';
+  String get categoryCrops => 'पिके आणि धान्य';
 
   @override
   String get categoryLivestock => 'पशुधन';
@@ -100,7 +109,7 @@ class AppLocalizationsMr extends AppLocalizations {
   String get submitListing => 'जाहिरात पाठवा';
 
   @override
-  String get comingSoon => 'लवकरच येत आहे';
+  String get comingSoon => 'लवकरच येत आहे!';
 
   @override
   String get trustBannerTitle => 'विश्वासाने खरेदी-विक्री करा';
@@ -409,6 +418,12 @@ class AppLocalizationsMr extends AppLocalizations {
   String get categoryFertilizer => 'खत बियाणे';
 
   @override
+  String get myAds => 'जाहिराती';
+
+  @override
+  String get dealer => 'विक्रेता';
+
+  @override
   String get categoryOther => 'इतर';
 
   @override
@@ -494,6 +509,9 @@ class AppLocalizationsMr extends AppLocalizations {
 
   @override
   String get loadingMore => 'अजून उत्पादने लोड होत आहेत...';
+
+  @override
+  String get chats => 'Chats';
 
   @override
   String kmAway(String distance) {
