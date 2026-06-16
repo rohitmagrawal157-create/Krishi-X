@@ -1,3 +1,18 @@
- "fruitsAndVegetables": "फळे आणि भाज्या",
-    "cropsAndGrains": "पिके आणि धान्य",
-    "seeds": "बिया"
+"rentals": "ભાડે",
+  
+  "tractor_rental": "ટ્રેક્ટર ભાડે",
+  "hourly": "કલાકદીઠ",
+  "daily": "દૈનિક",
+  "seasonal": "મોસમી",
+  
+  "machinery_rental": "મશીનરી ભાડે",
+  "rotavator": "રોટાવેટર",
+  "harvester": "હાર્વેસ્ટર",
+  "cultivator": "કલ્ટીવેટર",
+  "seeder": "બીજ વાવણી મશીન",
+  "sprayer": "સ્પ્રેયર",
+  
+  "labour_services": "મજૂર સેવાઓ",
+  "harvest_labour": "લણણી મજૂર",
+  "plantation_labour": "રોપણી મજૂર",
+  "irrigation_labour": "સિંચાઈ મજૂર"

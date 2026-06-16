@@ -30,7 +30,8 @@ class _AuthGateState extends State<AuthGate> {
   String? _phone;
   String? _expectedOtp;
 
-  String _generateOtp() => (Random().nextInt(900000) + 100000).toString();
+  // ── CHANGED: 4-digit OTP (was 6-digit: nextInt(900000) + 100000) ──
+  String _generateOtp() => (Random().nextInt(9000) + 1000).toString();
 
   void _openOtp(String phone) {
     setState(() {

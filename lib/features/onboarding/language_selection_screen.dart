@@ -32,9 +32,9 @@ class _Lang {
 }
 
 const List<_Lang> _kLanguages = [
+  _Lang(locale: Locale('en'), native: 'English',  greeting: 'Hello'),
   _Lang(locale: Locale('hi'), native: 'हिंदी',    greeting: 'नमस्ते'),
   _Lang(locale: Locale('mr'), native: 'मराठी',    greeting: 'नमस्कार'),
-  _Lang(locale: Locale('en'), native: 'English',  greeting: 'Hello'),
   _Lang(locale: Locale('gu'), native: 'ગુજરાતી', greeting: 'નમસ્તે'),
 ];
 
@@ -45,7 +45,7 @@ const List<_Lang> _kLanguages = [
 class LanguageSelectionRoute extends StatefulWidget {
   const LanguageSelectionRoute({
     super.key,
-    required this.initialLocale,
+    this.initialLocale = const Locale('mr'),
     required this.onLocaleChanged,
     required this.onComplete,
     this.onBack,
@@ -70,7 +70,7 @@ class _LanguageSelectionRouteState
   @override
   void initState() {
     super.initState();
-    _selected = widget.initialLocale;
+    _selected = const Locale('mr');
   }
 
   void _onChipTapped(Locale locale) {
@@ -126,7 +126,7 @@ class LanguageSelectionScreen extends StatelessWidget {
 
     final selLang = _kLanguages.firstWhere(
       (l) => l.locale.languageCode == selectedLocale.languageCode,
-      orElse: () => _kLanguages[2],
+      orElse: () => _kLanguages[2], // Marathi as fallback
     );
 
     return Scaffold(

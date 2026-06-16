@@ -421,7 +421,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get myAds => 'My Ads';
 
   @override
-  String get dealer => 'Dealer';
+  String get dealers => 'Dealers';
 
   @override
   String get categoryOther => 'Other';
@@ -434,9 +434,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get postAd => 'Post Ad';
-
-  @override
-  String get chat => 'Chat';
 
   @override
   String get mobileNumber => 'Mobile Number';
@@ -475,7 +472,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fullNameHint => 'Enter your full name';
 
   @override
-  String get fullNameRequired => 'Please enter your full name';
+  String get fullNameRequired => 'Please enter your name';
 
   @override
   String get phoneAlreadyRegistered => 'This number is already registered. Please login.';
@@ -514,7 +511,580 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chats => 'Chats';
 
   @override
+  String get getVerifiedBadge => 'Get Verified';
+
+  @override
+  String get editProfile => 'Edit Profile';
+
+  @override
+  String get mobileNumberHint => '10-digit mobile number';
+
+  @override
+  String get mobileNumberInvalid => 'Enter a valid 10-digit number';
+
+  @override
+  String get profileUpdated => 'Profile updated successfully';
+
+  @override
+  String get inviteFriends => 'Invite your friends to KrishiX';
+
+  @override
   String kmAway(String distance) {
     return '$distance km away';
   }
+
+  @override
+  String get farm_machinery => 'Farm Machinery';
+
+  @override
+  String get tillage_equipment => 'Tillage Equipment';
+
+  @override
+  String get plough => 'Plough';
+
+  @override
+  String get cultivator => 'Cultivator';
+
+  @override
+  String get rotavator => 'Rotavator';
+
+  @override
+  String get harrow => 'Harrow';
+
+  @override
+  String get sowing_planting => 'Sowing & Planting';
+
+  @override
+  String get seed_drill => 'Seed Drill';
+
+  @override
+  String get planter => 'Planter';
+
+  @override
+  String get transplanter => 'Transplanter';
+
+  @override
+  String get harvesting => 'Harvesting';
+
+  @override
+  String get harvester => 'Harvester';
+
+  @override
+  String get thresher => 'Thresher';
+
+  @override
+  String get reaper => 'Reaper';
+
+  @override
+  String get chaff_cutter => 'Chaff Cutter';
+
+  @override
+  String get power_irrigation => 'Power & Irrigation';
+
+  @override
+  String get power_tiller => 'Power Tiller';
+
+  @override
+  String get generator => 'Generator';
+
+  @override
+  String get pump_set => 'Pump Set';
+
+  @override
+  String get sprayer => 'Sprayer';
+
+  @override
+  String get fruits_vegetables => 'Fruits & Vegetables';
+
+  @override
+  String get vegetables => 'Vegetables';
+
+  @override
+  String get onion => 'Onion';
+
+  @override
+  String get tomato => 'Tomato';
+
+  @override
+  String get potato => 'Potato';
+
+  @override
+  String get garlic => 'Garlic';
+
+  @override
+  String get chilli => 'Chilli';
+
+  @override
+  String get brinjal => 'Brinjal';
+
+  @override
+  String get cabbage => 'Cabbage';
+
+  @override
+  String get cauliflower => 'Cauliflower';
+
+  @override
+  String get okra => 'Okra';
+
+  @override
+  String get cucumber => 'Cucumber';
+
+  @override
+  String get fruits => 'Fruits';
+
+  @override
+  String get mango => 'Mango';
+
+  @override
+  String get banana => 'Banana';
+
+  @override
+  String get pomegranate => 'Pomegranate';
+
+  @override
+  String get orange => 'Orange';
+
+  @override
+  String get grapes => 'Grapes';
+
+  @override
+  String get papaya => 'Papaya';
+
+  @override
+  String get guava => 'Guava';
+
+  @override
+  String get watermelon => 'Watermelon';
+
+  @override
+  String get sweet_lime => 'Sweet Lime';
+
+  @override
+  String get livestock => 'Livestock';
+
+  @override
+  String get dairy_animals => 'Dairy Animals';
+
+  @override
+  String get cow => 'Cow';
+
+  @override
+  String get buffalo => 'Buffalo';
+
+  @override
+  String get bull => 'Bull';
+
+  @override
+  String get small_animals => 'Small Animals';
+
+  @override
+  String get goat => 'Goat';
+
+  @override
+  String get sheep => 'Sheep';
+
+  @override
+  String get poultry => 'Poultry';
+
+  @override
+  String get chicken => 'Chicken';
+
+  @override
+  String get duck => 'Duck';
+
+  @override
+  String get turkey => 'Turkey';
+
+  @override
+  String get quail => 'Quail';
+
+  @override
+  String get other_animals => 'Other Animals';
+
+  @override
+  String get horse => 'Horse';
+
+  @override
+  String get camel => 'Camel';
+
+  @override
+  String get rabbit => 'Rabbit';
+
+  @override
+  String get livestock_products => 'Livestock Products';
+
+  @override
+  String get milk_animals => 'Milk Animals';
+
+  @override
+  String get breeding_animals => 'Breeding Animals';
+
+  @override
+  String get organic_manure => 'Organic Manure';
+
+  @override
+  String get farm_land => 'Farm Land';
+
+  @override
+  String get land_for_sale => 'Land For Sale';
+
+  @override
+  String get agricultural_land => 'Agricultural Land';
+
+  @override
+  String get farm_house_land => 'Farm House Land';
+
+  @override
+  String get orchard_land => 'Orchard Land';
+
+  @override
+  String get land_for_lease => 'Land For Lease';
+
+  @override
+  String get short_term_lease => 'Short Term Lease';
+
+  @override
+  String get long_term_lease => 'Long Term Lease';
+
+  @override
+  String get farming_partnerships => 'Farming Partnerships';
+
+  @override
+  String get contract_farming => 'Contract Farming';
+
+  @override
+  String get partnership_farming => 'Partnership Farming';
+
+  @override
+  String get revenue_sharing_farming => 'Revenue Sharing Farming';
+
+  @override
+  String get rentals => 'Rentals';
+
+  @override
+  String get tractor_rental => 'Tractor Rental';
+
+  @override
+  String get hourly => 'Hourly';
+
+  @override
+  String get daily => 'Daily';
+
+  @override
+  String get seasonal => 'Seasonal';
+
+  @override
+  String get machinery_rental => 'Machinery Rental';
+
+  @override
+  String get seeder => 'Seeder';
+
+  @override
+  String get labour_services => 'Labour Services';
+
+  @override
+  String get harvest_labour => 'Harvest Labour';
+
+  @override
+  String get plantation_labour => 'Plantation Labour';
+
+  @override
+  String get irrigation_labour => 'Irrigation Labour';
+
+  @override
+  String get seeds_and_plants => 'Seeds & Plants';
+
+  @override
+  String get wheat_seeds => 'Wheat Seeds';
+
+  @override
+  String get soybean_seeds => 'Soybean Seeds';
+
+  @override
+  String get cotton_seeds => 'Cotton Seeds';
+
+  @override
+  String get vegetable_seeds => 'Vegetable Seeds';
+
+  @override
+  String get plants => 'Plants';
+
+  @override
+  String get fruit_plants => 'Fruit Plants';
+
+  @override
+  String get nursery_plants => 'Nursery Plants';
+
+  @override
+  String get tissue_culture_plants => 'Tissue Culture Plants';
+
+  @override
+  String get land_preparation => 'Land Preparation';
+
+  @override
+  String get disc_harrow => 'Disc Harrow';
+
+  @override
+  String get subsoiler => 'Subsoiler';
+
+  @override
+  String get ridger => 'Ridger';
+
+  @override
+  String get sowing_equipment => 'Sowing Equipment';
+
+  @override
+  String get paddy_seeder => 'Paddy Seeder';
+
+  @override
+  String get fertilizer_drill => 'Fertilizer Drill';
+
+  @override
+  String get crop_protection => 'Crop Protection';
+
+  @override
+  String get power_sprayer => 'Power Sprayer';
+
+  @override
+  String get battery_sprayer => 'Battery Sprayer';
+
+  @override
+  String get boom_sprayer => 'Boom Sprayer';
+
+  @override
+  String get fogging_machine => 'Fogging Machine';
+
+  @override
+  String get harvesting_equipment => 'Harvesting Equipment';
+
+  @override
+  String get mini_harvester => 'Mini Harvester';
+
+  @override
+  String get combine_harvester => 'Combine Harvester';
+
+  @override
+  String get post_harvest => 'Post Harvest';
+
+  @override
+  String get baler => 'Baler';
+
+  @override
+  String get grain_cleaner => 'Grain Cleaner';
+
+  @override
+  String get winnower => 'Winnower';
+
+  @override
+  String get irrigation_equipment => 'Irrigation Equipment';
+
+  @override
+  String get water_pump => 'Water Pump';
+
+  @override
+  String get solar_pump => 'Solar Pump';
+
+  @override
+  String get drip_system => 'Drip System';
+
+  @override
+  String get sprinkler_system => 'Sprinkler System';
+
+  @override
+  String get power_equipment => 'Power Equipment';
+
+  @override
+  String get power_weeder => 'Power Weeder';
+
+  @override
+  String get mini_tiller => 'Mini Tiller';
+
+  @override
+  String get tractors => 'Tractors';
+
+  @override
+  String get used_tractors => 'Used Tractors';
+
+  @override
+  String get under_20_hp => 'Under 20 HP';
+
+  @override
+  String get hp_21_30 => '21–30 HP';
+
+  @override
+  String get hp_31_40 => '31–40 HP';
+
+  @override
+  String get hp_41_50 => '41–50 HP';
+
+  @override
+  String get hp_51_60 => '51–60 HP';
+
+  @override
+  String get above_60_hp => 'Above 60 HP';
+
+  @override
+  String get tractor_brands => 'Tractor Brands';
+
+  @override
+  String get mahindra => 'Mahindra';
+
+  @override
+  String get swaraj => 'Swaraj';
+
+  @override
+  String get john_deere => 'John Deere';
+
+  @override
+  String get sonalika => 'Sonalika';
+
+  @override
+  String get new_holland => 'New Holland';
+
+  @override
+  String get eicher => 'Eicher';
+
+  @override
+  String get massey_ferguson => 'Massey Ferguson';
+
+  @override
+  String get kubota => 'Kubota';
+
+  @override
+  String get escorts => 'Escorts';
+
+  @override
+  String get powertrac => 'Powertrac';
+
+  @override
+  String get same_deutz_fahr => 'Same Deutz Fahr';
+
+  @override
+  String get preet => 'Preet';
+
+  @override
+  String get tractor_parts => 'Tractor Parts';
+
+  @override
+  String get tyres => 'Tyres';
+
+  @override
+  String get batteries => 'Batteries';
+
+  @override
+  String get hydraulic_parts => 'Hydraulic Parts';
+
+  @override
+  String get pto_parts => 'PTO Parts';
+
+  @override
+  String get engine_parts => 'Engine Parts';
+
+  @override
+  String get tractor_seats => 'Tractor Seats';
+
+  @override
+  String get cereals => 'Cereals';
+
+  @override
+  String get pulses => 'Pulses';
+
+  @override
+  String get oil_seeds => 'Oil Seeds';
+
+  @override
+  String get commercial_crops => 'Commercial Crops';
+
+  @override
+  String get wheat => 'Wheat';
+
+  @override
+  String get rice => 'Rice';
+
+  @override
+  String get maize => 'Maize';
+
+  @override
+  String get jowar => 'Jowar';
+
+  @override
+  String get bajra => 'Bajra';
+
+  @override
+  String get barley => 'Barley';
+
+  @override
+  String get tur => 'Tur';
+
+  @override
+  String get chana => 'Chana';
+
+  @override
+  String get moong => 'Moong';
+
+  @override
+  String get udid => 'Udid';
+
+  @override
+  String get masoor => 'Masoor';
+
+  @override
+  String get soybean => 'Soybean';
+
+  @override
+  String get groundnut => 'Groundnut';
+
+  @override
+  String get mustard => 'Mustard';
+
+  @override
+  String get sunflower => 'Sunflower';
+
+  @override
+  String get sesame => 'Sesame';
+
+  @override
+  String get cotton => 'Cotton';
+
+  @override
+  String get sugarcane => 'Sugarcane';
+
+  @override
+  String get tobacco => 'Tobacco';
+
+  @override
+  String get horse_power_hp => 'Horse Power (HP)';
+
+  @override
+  String get drone => 'Drone';
+
+  @override
+  String get drone_harvester => 'Drone Harvester';
+
+  @override
+  String get buy => 'Buy';
+
+  @override
+  String get rent => 'Rent';
+
+  @override
+  String get services => 'Services';
+
+  @override
+  String get lease => 'Lease Land';
+
+  @override
+  String get others => 'Others';
+
+  @override
+  String get allBuyCategories => 'All Buy Categories';
+
+  @override
+  String get allRentCategories => 'All Rent Categories';
+
+  @override
+  String get services_coming_soon => 'Services Coming Soon';
+
+  @override
+  String get services_coming_soon_subtitle => 'We are working on bringing farming services to you. Stay tuned!';
 }

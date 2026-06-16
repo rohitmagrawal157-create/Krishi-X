@@ -46,7 +46,7 @@ class AppLocalizationsMr extends AppLocalizations {
   String get cropsAndGrains => 'पिके आणि धान्य';
 
   @override
-  String get seeds => 'बिया';
+  String get seeds => 'बियाणे';
 
   @override
   String get nearYou => 'जवळपास';
@@ -418,10 +418,10 @@ class AppLocalizationsMr extends AppLocalizations {
   String get categoryFertilizer => 'खत बियाणे';
 
   @override
-  String get myAds => 'जाहिराती';
+  String get myAds => 'माझ्या जाहिराती';
 
   @override
-  String get dealer => 'विक्रेता';
+  String get dealers => 'विक्रेता';
 
   @override
   String get categoryOther => 'इतर';
@@ -434,9 +434,6 @@ class AppLocalizationsMr extends AppLocalizations {
 
   @override
   String get postAd => 'जाहिरात द्या';
-
-  @override
-  String get chat => 'चॅट';
 
   @override
   String get mobileNumber => 'मोबाईल नंबर';
@@ -475,7 +472,7 @@ class AppLocalizationsMr extends AppLocalizations {
   String get fullNameHint => 'तुमचे पूर्ण नाव टाका';
 
   @override
-  String get fullNameRequired => 'कृपया पूर्ण नाव टाका';
+  String get fullNameRequired => 'कृपया तुमचे नाव टाका';
 
   @override
   String get phoneAlreadyRegistered => 'हा नंबर आधीच नोंदणीकृत आहे. कृपया लॉगिन करा.';
@@ -511,10 +508,583 @@ class AppLocalizationsMr extends AppLocalizations {
   String get loadingMore => 'अजून उत्पादने लोड होत आहेत...';
 
   @override
-  String get chats => 'Chats';
+  String get chats => 'चॅट';
+
+  @override
+  String get getVerifiedBadge => 'व्हेरिफाय करा';
+
+  @override
+  String get editProfile => 'प्रोफाइल संपादित करा';
+
+  @override
+  String get mobileNumberHint => '10 अंकी मोबाईल नंबर';
+
+  @override
+  String get mobileNumberInvalid => 'वैध 10 अंकी नंबर टाका';
+
+  @override
+  String get profileUpdated => 'प्रोफाइल यशस्वीरित्या अपडेट झाली';
+
+  @override
+  String get inviteFriends => 'तुमच्या मित्रांना KrishiX वर आमंत्रित करा';
 
   @override
   String kmAway(String distance) {
     return '$distance किमी दूर';
   }
+
+  @override
+  String get farm_machinery => 'शेती यंत्रे';
+
+  @override
+  String get tillage_equipment => 'नांगरणी उपकरणे';
+
+  @override
+  String get plough => 'नांगर';
+
+  @override
+  String get cultivator => 'कल्टीवेटर';
+
+  @override
+  String get rotavator => 'रोटावेटर';
+
+  @override
+  String get harrow => 'हॅरो';
+
+  @override
+  String get sowing_planting => 'पेरणी व लागवड';
+
+  @override
+  String get seed_drill => 'बियाणे ड्रिल';
+
+  @override
+  String get planter => 'प्लांटर';
+
+  @override
+  String get transplanter => 'लागवड यंत्र';
+
+  @override
+  String get harvesting => 'कापणी';
+
+  @override
+  String get harvester => 'हार्वेस्टर';
+
+  @override
+  String get thresher => 'मळणी यंत्र';
+
+  @override
+  String get reaper => 'रीपर';
+
+  @override
+  String get chaff_cutter => 'चाफा कटर';
+
+  @override
+  String get power_irrigation => 'शक्ती व सिंचन';
+
+  @override
+  String get power_tiller => 'पॉवर टिलर';
+
+  @override
+  String get generator => 'जनरेटर';
+
+  @override
+  String get pump_set => 'पंप सेट';
+
+  @override
+  String get sprayer => 'स्प्रेयर';
+
+  @override
+  String get fruits_vegetables => 'फळे व भाज्या';
+
+  @override
+  String get vegetables => 'भाज्या';
+
+  @override
+  String get onion => 'कांदा';
+
+  @override
+  String get tomato => 'टोमॅटो';
+
+  @override
+  String get potato => 'बटाटा';
+
+  @override
+  String get garlic => 'लसूण';
+
+  @override
+  String get chilli => 'मिरची';
+
+  @override
+  String get brinjal => 'वांगी';
+
+  @override
+  String get cabbage => 'कोबी';
+
+  @override
+  String get cauliflower => 'फुलकोबी';
+
+  @override
+  String get okra => 'भेंडी';
+
+  @override
+  String get cucumber => 'काकडी';
+
+  @override
+  String get fruits => 'फळे';
+
+  @override
+  String get mango => 'आंबा';
+
+  @override
+  String get banana => 'केळे';
+
+  @override
+  String get pomegranate => 'डाळिंब';
+
+  @override
+  String get orange => 'संत्रे';
+
+  @override
+  String get grapes => 'द्राक्षे';
+
+  @override
+  String get papaya => 'पपई';
+
+  @override
+  String get guava => 'पेरू';
+
+  @override
+  String get watermelon => 'कलिंगड';
+
+  @override
+  String get sweet_lime => 'मोसंबी';
+
+  @override
+  String get livestock => 'पशुधन';
+
+  @override
+  String get dairy_animals => 'दुग्धजन्य प्राणी';
+
+  @override
+  String get cow => 'गाय';
+
+  @override
+  String get buffalo => 'म्हैस';
+
+  @override
+  String get bull => 'बैल';
+
+  @override
+  String get small_animals => 'लहान प्राणी';
+
+  @override
+  String get goat => 'बकरी';
+
+  @override
+  String get sheep => 'मेंढी';
+
+  @override
+  String get poultry => 'कोंबडीपालन';
+
+  @override
+  String get chicken => 'कोंबडी';
+
+  @override
+  String get duck => 'बदक';
+
+  @override
+  String get turkey => 'टर्की';
+
+  @override
+  String get quail => 'लावा';
+
+  @override
+  String get other_animals => 'इतर प्राणी';
+
+  @override
+  String get horse => 'घोडा';
+
+  @override
+  String get camel => 'उंट';
+
+  @override
+  String get rabbit => 'ससा';
+
+  @override
+  String get livestock_products => 'पशु उत्पादने';
+
+  @override
+  String get milk_animals => 'दूध देणारे प्राणी';
+
+  @override
+  String get breeding_animals => 'प्रजनन प्राणी';
+
+  @override
+  String get organic_manure => 'सेंद्रिय खत';
+
+  @override
+  String get farm_land => 'शेती जमीन';
+
+  @override
+  String get land_for_sale => 'विक्रीसाठी जमीन';
+
+  @override
+  String get agricultural_land => 'शेतीयोग्य जमीन';
+
+  @override
+  String get farm_house_land => 'फार्म हाऊस जमीन';
+
+  @override
+  String get orchard_land => 'बागायत जमीन';
+
+  @override
+  String get land_for_lease => 'भाडेतत्वावर जमीन';
+
+  @override
+  String get short_term_lease => 'अल्पकालीन भाडेतत्व';
+
+  @override
+  String get long_term_lease => 'दीर्घकालीन भाडेतत्व';
+
+  @override
+  String get farming_partnerships => 'शेती भागीदारी';
+
+  @override
+  String get contract_farming => 'करार शेती';
+
+  @override
+  String get partnership_farming => 'भागीदारी शेती';
+
+  @override
+  String get revenue_sharing_farming => 'उत्पन्न वाटप शेती';
+
+  @override
+  String get rentals => 'भाडेतत्वावर';
+
+  @override
+  String get tractor_rental => 'ट्रॅक्टर भाडेतत्वावर';
+
+  @override
+  String get hourly => 'तासिक';
+
+  @override
+  String get daily => 'दैनिक';
+
+  @override
+  String get seasonal => 'हंगामी';
+
+  @override
+  String get machinery_rental => 'यंत्रे भाडेतत्वावर';
+
+  @override
+  String get seeder => 'बियाणे पेरण्याचे यंत्र';
+
+  @override
+  String get labour_services => 'मजुरी सेवा';
+
+  @override
+  String get harvest_labour => 'कापणी मजूर';
+
+  @override
+  String get plantation_labour => 'लागवड मजूर';
+
+  @override
+  String get irrigation_labour => 'सिंचन मजूर';
+
+  @override
+  String get seeds_and_plants => 'बियाणे व रोपे';
+
+  @override
+  String get wheat_seeds => 'गहू बियाणे';
+
+  @override
+  String get soybean_seeds => 'सोयाबीन बियाणे';
+
+  @override
+  String get cotton_seeds => 'कापूस बियाणे';
+
+  @override
+  String get vegetable_seeds => 'भाजीपाला बियाणे';
+
+  @override
+  String get plants => 'रोपे';
+
+  @override
+  String get fruit_plants => 'फळांची रोपे';
+
+  @override
+  String get nursery_plants => 'नर्सरी रोपे';
+
+  @override
+  String get tissue_culture_plants => 'टिश्यू कल्चर रोपे';
+
+  @override
+  String get land_preparation => 'जमीन तयारी';
+
+  @override
+  String get disc_harrow => 'डिस्क हॅरो';
+
+  @override
+  String get subsoiler => 'सबसॉइलर';
+
+  @override
+  String get ridger => 'रिजर';
+
+  @override
+  String get sowing_equipment => 'पेरणी उपकरणे';
+
+  @override
+  String get paddy_seeder => 'भात पेरणी यंत्र';
+
+  @override
+  String get fertilizer_drill => 'खत ड्रिल';
+
+  @override
+  String get crop_protection => 'पीक संरक्षण';
+
+  @override
+  String get power_sprayer => 'पॉवर स्प्रेयर';
+
+  @override
+  String get battery_sprayer => 'बॅटरी स्प्रेयर';
+
+  @override
+  String get boom_sprayer => 'बूम स्प्रेयर';
+
+  @override
+  String get fogging_machine => 'फॉगिंग मशीन';
+
+  @override
+  String get harvesting_equipment => 'कापणी उपकरणे';
+
+  @override
+  String get mini_harvester => 'मिनी हार्वेस्टर';
+
+  @override
+  String get combine_harvester => 'कंबाइन हार्वेस्टर';
+
+  @override
+  String get post_harvest => 'कापणीनंतर';
+
+  @override
+  String get baler => 'बेलर';
+
+  @override
+  String get grain_cleaner => 'धान्य स्वच्छक';
+
+  @override
+  String get winnower => 'विनोवर';
+
+  @override
+  String get irrigation_equipment => 'सिंचन उपकरणे';
+
+  @override
+  String get water_pump => 'वॉटर पंप';
+
+  @override
+  String get solar_pump => 'सोलर पंप';
+
+  @override
+  String get drip_system => 'ड्रिप सिस्टम';
+
+  @override
+  String get sprinkler_system => 'स्प्रिंकलर सिस्टम';
+
+  @override
+  String get power_equipment => 'पॉवर उपकरणे';
+
+  @override
+  String get power_weeder => 'पॉवर वीडर';
+
+  @override
+  String get mini_tiller => 'मिनी टिलर';
+
+  @override
+  String get tractors => 'ट्रॅक्टर';
+
+  @override
+  String get used_tractors => 'यूज्ड ट्रॅक्टर';
+
+  @override
+  String get under_20_hp => '20 एचपी पेक्षा कमी';
+
+  @override
+  String get hp_21_30 => '21–30 एचपी';
+
+  @override
+  String get hp_31_40 => '31–40 एचपी';
+
+  @override
+  String get hp_41_50 => '41–50 एचपी';
+
+  @override
+  String get hp_51_60 => '51–60 एचपी';
+
+  @override
+  String get above_60_hp => '60 एचपी पेक्षा जास्त';
+
+  @override
+  String get tractor_brands => 'ट्रॅक्टर ब्रँड';
+
+  @override
+  String get mahindra => 'महिंद्रा';
+
+  @override
+  String get swaraj => 'स्वराज';
+
+  @override
+  String get john_deere => 'जॉन डियर';
+
+  @override
+  String get sonalika => 'सोनालिका';
+
+  @override
+  String get new_holland => 'न्यू हॉलंड';
+
+  @override
+  String get eicher => 'आयशर';
+
+  @override
+  String get massey_ferguson => 'मॅसी फर्ग्युसन';
+
+  @override
+  String get kubota => 'कुबोटा';
+
+  @override
+  String get escorts => 'एस्कॉर्ट्स';
+
+  @override
+  String get powertrac => 'पॉवरट्रॅक';
+
+  @override
+  String get same_deutz_fahr => 'सेम ड्यूट्ज फार';
+
+  @override
+  String get preet => 'प्रीत';
+
+  @override
+  String get tractor_parts => 'ट्रॅक्टर पार्ट्स';
+
+  @override
+  String get tyres => 'टायर';
+
+  @override
+  String get batteries => 'बॅटरी';
+
+  @override
+  String get hydraulic_parts => 'हायड्रॉलिक पार्ट्स';
+
+  @override
+  String get pto_parts => 'पीटीओ पार्ट्स';
+
+  @override
+  String get engine_parts => 'इंजिन पार्ट्स';
+
+  @override
+  String get tractor_seats => 'ट्रॅक्टर सीट';
+
+  @override
+  String get cereals => 'तृणधान्ये';
+
+  @override
+  String get pulses => 'कडधान्ये';
+
+  @override
+  String get oil_seeds => 'तेलबिया';
+
+  @override
+  String get commercial_crops => 'व्यावसायिक पिके';
+
+  @override
+  String get wheat => 'गहू';
+
+  @override
+  String get rice => 'तांदूळ';
+
+  @override
+  String get maize => 'मका';
+
+  @override
+  String get jowar => 'ज्वारी';
+
+  @override
+  String get bajra => 'बाजरी';
+
+  @override
+  String get barley => 'जव';
+
+  @override
+  String get tur => 'तूर';
+
+  @override
+  String get chana => 'हरभरा';
+
+  @override
+  String get moong => 'मूग';
+
+  @override
+  String get udid => 'उडीद';
+
+  @override
+  String get masoor => 'मसूर';
+
+  @override
+  String get soybean => 'सोयाबीन';
+
+  @override
+  String get groundnut => 'भुईमूग';
+
+  @override
+  String get mustard => 'मोहरी';
+
+  @override
+  String get sunflower => 'सूर्यफूल';
+
+  @override
+  String get sesame => 'तीळ';
+
+  @override
+  String get cotton => 'कापूस';
+
+  @override
+  String get sugarcane => 'ऊस';
+
+  @override
+  String get tobacco => 'तंबाखू';
+
+  @override
+  String get horse_power_hp => 'हॉर्स पॉवर (एचपी)';
+
+  @override
+  String get drone => 'ड्रोन';
+
+  @override
+  String get drone_harvester => 'ड्रोन हार्वेस्टर';
+
+  @override
+  String get buy => 'खरेदी करा';
+
+  @override
+  String get rent => 'भाड्याने घ्या';
+
+  @override
+  String get services => 'सेवा';
+
+  @override
+  String get lease => 'भाडेतत्व';
+
+  @override
+  String get others => 'इतर';
+
+  @override
+  String get allBuyCategories => 'All Buy Categories';
+
+  @override
+  String get allRentCategories => 'All Rent Categories';
+
+  @override
+  String get services_coming_soon => 'सेवा लवकरच येत आहेत';
+
+  @override
+  String get services_coming_soon_subtitle => 'आम्ही तुमच्यासाठी शेती सेवा आणण्यावर काम करत आहोत. लक्ष ठेवा!';
 }

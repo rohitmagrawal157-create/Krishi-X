@@ -1,14 +1,7 @@
 // ============================================================
 //  lib/features/auth/login_screen.dart
 //
-//  FIXES APPLIED:
-//  1. OTP boxes — fully responsive fluid sizing (no pixel clamp)
-//     font size, border radius all scale with box size
-//  2. _ArrowButton disabled state — light green bg + white text
-//  3. OTP border fix — filled:true + fillColor:transparent so
-//     TextField never paints over the Container border
-//  4. _OtpRowState — removeListener on dispose (memory leak fix)
-//  5. Keyboard / landscape image — Stack + AnimatedOpacity fix
+//  UPDATED: OTP changed from 6-digit to 4-digit
 // ============================================================
 
 import 'dart:async';
@@ -231,57 +224,41 @@ class _LandscapeFooter extends StatelessWidget {
 }
 
 // Approximate rendered height of the bottom landscape image.
-// Adjust if the image aspect ratio changes.
 const double _kLandscapeH = 120.0;
 
 // ─────────────────────────────────────────────────────────────
 // 6 · _SCAFFOLD
-//
-// KEY BEHAVIOUR:
-//  • resizeToAvoidBottomInset: true  → Scaffold shrinks body when
-//    keyboard opens, so content scrolls above the keyboard.
-//  • Stack inside body → landscape image is Positioned(bottom:0)
-//    so it NEVER moves regardless of keyboard state.
-//  • AnimatedOpacity on the image → smooth fade-out when keyboard
-//    is open so it doesn't collide with form content.
-//  • Bottom padding on scroll view reserves space for the image
-//    when keyboard is closed (so last field isn't hidden behind it).
 // ─────────────────────────────────────────────────────────────
 
 class _Scaffold extends StatelessWidget {
   const _Scaffold({
     required this.body,
     this.footer,
-    this.showBack     = false,
+    this.showBack      = false,
     this.onBack,
-    this.showBrand    = true,
+    this.showBrand     = true,
     this.showLandscape = true,
     this.step,
   });
 
-  final Widget      body;
-  final Widget?     footer;
-  final bool        showBack;
+  final Widget        body;
+  final Widget?       footer;
+  final bool          showBack;
   final VoidCallback? onBack;
-  final bool        showBrand;
-  final bool        showLandscape;
-  final int?        step;
+  final bool          showBrand;
+  final bool          showLandscape;
+  final int?          step;
 
   @override
   Widget build(BuildContext context) {
     final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     final hasKeyboard    = keyboardHeight > 0;
 
-    // Reserve bottom space so scroll content clears the image
-    // when keyboard is closed. When keyboard is open the Scaffold
-    // itself shrinks, so no extra reservation needed.
     final imageReserve =
         showLandscape && !hasKeyboard ? _kLandscapeH : 0.0;
 
     return Scaffold(
       backgroundColor: const Color(0xFFFAFDF8),
-      // true → Scaffold compresses body height when keyboard opens,
-      // giving the SingleChildScrollView room to scroll content up.
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: GestureDetector(
@@ -295,7 +272,6 @@ class _Scaffold extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    // Back button or top spacer
                     if (showBack)
                       Padding(
                         padding: const EdgeInsets.only(left: 4, top: 4),
@@ -319,7 +295,6 @@ class _Scaffold extends StatelessWidget {
                           _S.hPad,
                           0,
                           _S.hPad,
-                          // Keep last widget above landscape image
                           imageReserve + 20,
                         ),
                         child: Column(
@@ -341,9 +316,6 @@ class _Scaffold extends StatelessWidget {
               ),
 
               // ── LAYER 2: landscape image pinned at bottom ─
-              // Positioned to the physical bottom of the Stack.
-              // AnimatedOpacity fades it when keyboard is open
-              // so error text and buttons are never obscured.
               if (showLandscape)
                 Positioned(
                   left: 0,
@@ -366,12 +338,6 @@ class _Scaffold extends StatelessWidget {
 
 // ─────────────────────────────────────────────────────────────
 // 7 · ARROW BUTTON
-//
-// FIX: disabled state uses light-green background + white text
-//      instead of the default Material grey.
-//      Active:   full green bg (#bannerGreen) + white text
-//      Disabled: light green bg (#A5D6A7)    + white text
-//      Loading:  full green bg               + white spinner
 // ─────────────────────────────────────────────────────────────
 
 class _ArrowButton extends StatelessWidget {
@@ -393,14 +359,10 @@ class _ArrowButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: isLoading ? null : onPressed,
         style: ElevatedButton.styleFrom(
-          // Active background
           backgroundColor: _S.green,
-          // Active text/icon colour
           foregroundColor: Colors.white,
-          // ── FIX: disabled = light green + white ──────────
           disabledBackgroundColor: const Color(0xFFA5D6A7),
           disabledForegroundColor: Colors.white,
-          // ─────────────────────────────────────────────────
           elevation: 0,
           shadowColor: Colors.transparent,
           shape: RoundedRectangleBorder(
@@ -485,10 +447,10 @@ class _PhoneIconField extends StatefulWidget {
     this.validator,
   });
 
-  final TextEditingController            controller;
-  final String                           hintText;
-  final ValueChanged<String>             onChanged;
-  final String? Function(String?)?       validator;
+  final TextEditingController        controller;
+  final String                       hintText;
+  final ValueChanged<String>         onChanged;
+  final String? Function(String?)?   validator;
 
   @override
   State<_PhoneIconField> createState() => _PhoneIconFieldState();
@@ -558,23 +520,12 @@ class _PhoneIconFieldState extends State<_PhoneIconField> {
 }
 
 // ─────────────────────────────────────────────────────────────
-// 11 · OTP ROW
+// 11 · OTP ROW  — 4-digit
 //
-// FIX 1 — Responsive fluid sizing:
-//   OLD: clamp(48, 56) hard-coded px → overflow/underflow on
-//        small (320px) and large (430px+) screens.
-//   NEW: box = totalWidth / 6.4  (solves 6*box + 5*gap = width
-//        where gap ≈ 8% of box). No fixed px clamp.
-//        Font size and border radius also scale with box.
-//
-// FIX 2 — Full border on all 4 sides:
-//   filled:true + fillColor:transparent → TextField paints NO
-//   background, so Container border is never covered.
-//   ClipRRect ensures TextField internal layers don't bleed
-//   outside the rounded corners where the border lives.
-//
-// FIX 3 — Memory leak:
-//   removeListener in dispose() matches every addListener.
+// CHANGED from 6 to 4:
+//   • count = 4
+//   • box sizing divisor adjusted for 4 boxes (wider boxes)
+//   • backspace boundary: index > 0 still correct (generic)
 // ─────────────────────────────────────────────────────────────
 
 class _OtpRow extends StatefulWidget {
@@ -601,15 +552,11 @@ class _OtpRowState extends State<_OtpRow> {
   void initState() {
     super.initState();
     for (var i = 0; i < widget.focusNodes.length; i++) {
-      final index = i; // capture for closure
+      final index = i;
       final fn    = widget.focusNodes[i];
 
-      // Repaint border colour on focus change
       fn.addListener(_onFocusChange);
 
-      // ── FIX 2: backspace on empty box ────────────────────
-      // onChanged never fires when the field is already empty.
-      // Intercept the raw key event here instead.
       fn.onKeyEvent = (node, event) {
         if (event is KeyDownEvent &&
             event.logicalKey == LogicalKeyboardKey.backspace &&
@@ -627,7 +574,7 @@ class _OtpRowState extends State<_OtpRow> {
   void dispose() {
     for (final fn in widget.focusNodes) {
       fn.removeListener(_onFocusChange);
-      fn.onKeyEvent = null; // clean up key handler
+      fn.onKeyEvent = null;
     }
     super.dispose();
   }
@@ -636,17 +583,14 @@ class _OtpRowState extends State<_OtpRow> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        // ── Sizing ───────────────────────────────────────────
-        const int    count   = 6;
-        const double gap     = 10.0;
-        final double boxW    = (constraints.maxWidth - gap * (count - 1)) / count;
-        final double boxH    = boxW * 1.18;
-        final double radius  = boxW * 0.20;
+        // ── Sizing — 4 boxes ─────────────────────────────────
+        const int    count    = 4; // ← CHANGED from 6
+        const double gap      = 14.0;
+        final double boxW     = (constraints.maxWidth - gap * (count - 1)) / count;
+        final double boxH     = boxW * 1.18;
+        final double radius   = boxW * 0.20;
         final double fontSize = boxW * 0.44;
 
-        // ── FIX 1: vertical padding centres digit in box ────
-        // Natural line height ≈ fontSize * 1.25.
-        // Remaining space split equally top + bottom.
         final double vPad = ((boxH - fontSize * 1.25) / 2).clamp(0.0, boxH);
 
         return Row(
@@ -713,12 +657,10 @@ class _OtpRowState extends State<_OtpRow> {
                       errorBorder: InputBorder.none,
                       focusedErrorBorder: InputBorder.none,
                       disabledBorder: InputBorder.none,
-                      // ── FIX 1: symmetric vPad centres digit ──
                       contentPadding: EdgeInsets.symmetric(vertical: vPad),
-                      // isDense REMOVED — it collapses line height
                     ),
                     onChanged: (v) {
-                      setState(() {}); // repaint border colour
+                      setState(() {});
                       widget.onChanged(i, v);
                     },
                   ),
@@ -731,6 +673,7 @@ class _OtpRowState extends State<_OtpRow> {
     );
   }
 }
+
 // ─────────────────────────────────────────────────────────────
 // 12 · LOGIN SCREEN
 // ─────────────────────────────────────────────────────────────
@@ -816,7 +759,7 @@ class _LoginScreenState extends State<LoginScreen> {
 }
 
 // ─────────────────────────────────────────────────────────────
-// 13 · OTP VERIFICATION SCREEN
+// 13 · OTP VERIFICATION SCREEN  — 4-digit
 // ─────────────────────────────────────────────────────────────
 
 class OtpVerificationScreen extends StatefulWidget {
@@ -830,12 +773,12 @@ class OtpVerificationScreen extends StatefulWidget {
     this.step = 2,
   });
 
-  final String                            phoneNumber;
-  final String                            rawPhoneNumber;
-  final String                            expectedOtp;
-  final Future<void> Function(String)     onVerified;
-  final VoidCallback                      onBack;
-  final int                               step;
+  final String                        phoneNumber;
+  final String                        rawPhoneNumber;
+  final String                        expectedOtp;
+  final Future<void> Function(String) onVerified;
+  final VoidCallback                  onBack;
+  final int                           step;
 
   @override
   State<OtpVerificationScreen> createState() =>
@@ -843,8 +786,9 @@ class OtpVerificationScreen extends StatefulWidget {
 }
 
 class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
-  final _ctrls = List.generate(6, (_) => TextEditingController());
-  final _fns   = List.generate(6, (_) => FocusNode());
+  // ── CHANGED: 4 controllers and focus nodes (was 6) ──────
+  final _ctrls = List.generate(4, (_) => TextEditingController());
+  final _fns   = List.generate(4, (_) => FocusNode());
 
   Timer? _timer;
   var _secs      = 25;
@@ -858,13 +802,10 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     super.initState();
     _otp = widget.expectedOtp;
     _startTimer();
-    // Auto-focus first box after frame
     Future.delayed(
       const Duration(milliseconds: 100),
       () { if (mounted) _fns[0].requestFocus(); },
     );
-    // NOTE: focus listeners are owned by _OtpRow — do NOT add
-    // them here to avoid double setState and memory leaks.
   }
 
   @override
@@ -894,19 +835,19 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
 
   void _onChanged(int i, String v) {
     if (_verified) return;
-    // Auto-advance to next box
-    if (v.length == 1 && i < 5) _fns[i + 1].requestFocus();
-    // Auto-back on delete
+    // ── CHANGED: boundary is now 3 (index of last box in 4-digit OTP)
+    if (v.length == 1 && i < 3) _fns[i + 1].requestFocus();
     if (v.isEmpty && i > 0) _fns[i - 1].requestFocus();
     setState(() {});
-    // Auto-verify when all 6 digits are entered
+    // Auto-verify when all 4 digits are entered
     if (_ctrls.every((c) => c.text.length == 1) && !_loading) _verify();
   }
 
   String get _entered => _ctrls.map((c) => c.text).join();
 
   Future<void> _verify() async {
-    if (_verified || _loading || _entered.length != 6) return;
+    // ── CHANGED: guard checks for 4 digits (was 6)
+    if (_verified || _loading || _entered.length != 4) return;
     final l10n = AppLocalizations.of(context)!;
     setState(() => _loading = true);
     await Future.delayed(const Duration(milliseconds: 400));
@@ -931,7 +872,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     if (!_canResend || _verified) return;
     final l10n = AppLocalizations.of(context)!;
     setState(() {
-      _otp = (Random().nextInt(900000) + 100000).toString();
+      // ── CHANGED: generate a 4-digit OTP (was 6-digit)
+      _otp = (Random().nextInt(9000) + 1000).toString();
       for (final c in _ctrls) c.clear();
     });
     _startTimer();
@@ -950,11 +892,11 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return _Scaffold(
-      showBack:     true,
-      onBack:       widget.onBack,
-      step:         widget.step,
-      showBrand:    false,
-      footer:       const _TrustBadge(),
+      showBack:      true,
+      onBack:        widget.onBack,
+      step:          widget.step,
+      showBrand:     false,
+      footer:        const _TrustBadge(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -1015,9 +957,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           ],
           const SizedBox(height: 28),
 
-          // ── OTP BOXES ─────────────────────────────────────
-          // Extracted into _OtpRow for clean separation.
-          // All responsive sizing + border fix lives there.
+          // ── OTP BOXES (4-digit) ───────────────────────────
           _OtpRow(
             controllers: _ctrls,
             focusNodes:  _fns,
@@ -1032,8 +972,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
             children: [
               Text(
                 '${l10n.otpNotReceived} ',
-                style:
-                    TextStyle(fontSize: 15, color: Colors.grey.shade700),
+                style: TextStyle(fontSize: 15, color: Colors.grey.shade700),
               ),
               GestureDetector(
                 onTap: _canResend && !_verified ? _resend : null,
@@ -1064,12 +1003,12 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           const SizedBox(height: 28),
 
           // ── Verify button ─────────────────────────────────
-          // Disabled (light green + white) until all 6 digits entered.
+          // ── CHANGED: checks for 4 digits (was 6)
           _ArrowButton(
             label: l10n.verifyAndContinue,
             isLoading: _loading || _verified,
             onPressed:
-                _entered.length == 6 && !_verified ? _verify : null,
+                _entered.length == 4 && !_verified ? _verify : null,
           ),
         ],
       ),

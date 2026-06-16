@@ -15,11 +15,20 @@ dependencies:
   intl: any
   cupertino_icons: ^1.0.8
   shared_preferences: ^2.3.3
+  share_plus: ^7.2.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/app_icon.png"
+  adaptive_icon_background: "#ffffff"  # white background
+  adaptive_icon_foreground: "assets/icons/app_icon.png"
 
 flutter:
   uses-material-design: true
@@ -28,7 +37,7 @@ flutter:
     - assets/images/final_krishix_logo2.png
     - assets/images/login_bottom.png
     - assets/images/KrishiX.svg
-    - assets/images/splash.jpg
+    - assets/images/splash.jpeg
     - assets/images/tractor.jpeg
     - assets/images/machin.jpeg
     - assets/images/seed.jpeg
@@ -40,4 +49,108 @@ flutter:
     - assets/images/Banner.jpeg
     - assets/images/seed.jpg
     - assets/images/food.jpeg
+    - assets/images/ads1.jpeg
+    - assets/images/ads2.jpeg
+    - assets/images/ads3.jpeg
+    - assets/images/cow1.jpeg
+    - assets/images/cow2.jpeg
+    - assets/images/land1.jpeg
+    - assets/images/land2.jpeg
+    - assets/images/tractor1.webp
+    - assets/images/tractor2.webp
+    - assets/images/machine1.jpeg
+    - assets/images/machine2.jpeg
+    - assets/images/jcb1.jpeg
+    - assets/images/rent2.jpeg
+    - assets/images/jcb1.jpeg
+    - assets/images/machine1.jpeg
+    - assets/images/seeds1.jpeg
+    - assets/images/seeds2.jpeg
+    - assets/images/mango.jpeg
+    - assets/images/veg1.jpeg
+    - assets/images/mango.jpeg
+    - assets/images/veg1.jpeg
+    - assets/images/veg2.jpeg
+    - assets/images/banana.jpeg
+    - assets/images/seeds1.jpeg
+    - assets/images/seeds2.jpeg
+    - assets/images/seeds1.jpeg
+    - assets/images/seeds2.jpeg
+    - assets/images/mango.jpeg
+    - assets/images/veg1.jpeg
+    - assets/icons/app_icon.png
+    # ── Tractors (17–20) ──────────────────────────
+    - assets/sub_ctg/KrishiX_App-17.jpg
+    - assets/sub_ctg/KrishiX_App-18.jpg
+    - assets/sub_ctg/KrishiX_App-19.jpg
+    - assets/sub_ctg/KrishiX_App-20.jpg
+
+    # ── Farm Machinery (21–30) ────────────────────
+    - assets/sub_ctg/KrishiX_App-21.jpg
+    - assets/sub_ctg/KrishiX_App-22.jpg
+    - assets/sub_ctg/KrishiX_App-23.jpg
+    - assets/sub_ctg/KrishiX_App-24.jpg
+    - assets/sub_ctg/KrishiX_App-25.jpg
+    - assets/sub_ctg/KrishiX_App-26.jpg
+    - assets/sub_ctg/KrishiX_App-27.jpg
+    - assets/sub_ctg/KrishiX_App-28.jpg
+    - assets/sub_ctg/KrishiX_App-29.jpg
+    - assets/sub_ctg/KrishiX_App-30.jpg
+
+    # ── Crops & Grains (31–40) ────────────────────
+    - assets/sub_ctg/KrishiX_App-31.jpg
+    - assets/sub_ctg/KrishiX_App-32.jpg
+    - assets/sub_ctg/KrishiX_App-33.jpg
+    - assets/sub_ctg/KrishiX_App-34.jpg
+    - assets/sub_ctg/KrishiX_App-35.jpg
+    - assets/sub_ctg/KrishiX_App-36.jpg
+    - assets/sub_ctg/KrishiX_App-37.jpg
+    - assets/sub_ctg/KrishiX_App-38.jpg
+    - assets/sub_ctg/KrishiX_App-39.jpg
+    - assets/sub_ctg/KrishiX_App-40.jpg
+
+    # ── Vegetables (41–46) ───────────────────────
+    - assets/sub_ctg/KrishiX_App-41.jpg
+    - assets/sub_ctg/KrishiX_App-42.jpg
+    - assets/sub_ctg/KrishiX_App-43.jpg
+    - assets/sub_ctg/KrishiX_App-44.jpg
+    - assets/sub_ctg/KrishiX_App-45.jpg
+    - assets/sub_ctg/KrishiX_App-46.jpg
+
+    # ── Fruits (47–53) ───────────────────────────
+    - assets/sub_ctg/KrishiX_App-47.jpg
+    - assets/sub_ctg/KrishiX_App-48.jpg
+    - assets/sub_ctg/KrishiX_App-49.jpg
+    - assets/sub_ctg/KrishiX_App-50.jpg
+    - assets/sub_ctg/KrishiX_App-51.jpg
+    - assets/sub_ctg/KrishiX_App-52.jpg
+    - assets/sub_ctg/KrishiX_App-53.jpg
+
+    # ── Livestock (54–64) ────────────────────────
+    - assets/sub_ctg/KrishiX_App-54.jpg
+    - assets/sub_ctg/KrishiX_App-55.jpg
+    - assets/sub_ctg/KrishiX_App-56.jpg
+    - assets/sub_ctg/KrishiX_App-57.jpg
+    - assets/sub_ctg/KrishiX_App-58.jpg
+    - assets/sub_ctg/KrishiX_App-59.jpg
+    - assets/sub_ctg/KrishiX_App-60.jpg
+    - assets/sub_ctg/KrishiX_App-61.jpg
+    - assets/sub_ctg/KrishiX_App-62.jpg
+    - assets/sub_ctg/KrishiX_App-63.jpg
+    - assets/sub_ctg/KrishiX_App-64.jpg
+
+    # ── Land (65–70) ─────────────────────────────
+    - assets/sub_ctg/KrishiX_App-65.jpg
+    - assets/sub_ctg/KrishiX_App-66.jpg
+    - assets/sub_ctg/KrishiX_App-67.jpg
+    - assets/sub_ctg/KrishiX_App-68.jpg
+    - assets/sub_ctg/KrishiX_App-69.jpg
+    - assets/sub_ctg/KrishiX_App-70.jpg
+
+    # ── Seeds & Plants (71–74) ───────────────────
+    - assets/sub_ctg/KrishiX_App-71.jpg
+    - assets/sub_ctg/KrishiX_App-72.jpg
+    - assets/sub_ctg/KrishiX_App-73.jpg
+    - assets/sub_ctg/KrishiX_App-74.jpg
+    
    
