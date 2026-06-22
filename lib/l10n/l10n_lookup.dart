@@ -188,6 +188,8 @@ case 'krishix':                     return 'KrishiX';
 case 'services_coming_soon':        return 'Services Coming Soon';
 case 'services_coming_soon_subtitle': return 'We are working on bringing farming services to you. Stay tuned!';
 
+
+
     default: return key; // fallback — surfaces missing keys visibly in QA
   }
 }

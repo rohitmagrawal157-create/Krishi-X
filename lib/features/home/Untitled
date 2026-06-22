@@ -1,0 +1,80 @@
+SliverToBoxAdapter(
+  child: _activeFilter == _CategoryFilter.services
+      ? _ComingSoonCard(locale: loc)
+      : Padding(
+          padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),  // ✅ Reduced side padding
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              const cols     = 4;
+              const hGap     = 4.0;  // ✅ REDUCED: 10 → 4 (horizontal gap kam)
+              const totalGap = (cols - 1) * hGap;
+              final tileW    = (constraints.maxWidth - totalGap) / cols;
+              final imgSize  = tileW * 0.76;  // ✅ Slightly adjusted
+              const labelH   = 28.0;  // ✅ Reduced for better fit
+              final tileH    = imgSize + 4 + labelH;  // ✅ Reduced spacing
+
+              return Column(
+                children: [
+                  Wrap(
+                    spacing: hGap,     // ✅ 4px horizontal gap
+                    runSpacing: 8,     // ✅ Reduced vertical gap (10 → 8)
+                    children: filtered.map((item) {
+                      return SizedBox(
+                        width: tileW,
+                        height: tileH,
+                        child: _CategoryTile(
+                          label: item.label,
+                          imgPath: item.imagePath,
+                          color: item.color,
+                          imgSize: imgSize,
+                          labelH: labelH,
+                          onTap: () => _openCategoryDetail(
+                              context, item.sectionId),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 10),  // ✅ Reduced (12 → 10)
+                  // ── See All button ──────────────
+                  GestureDetector(
+                    onTap: () => _showAllCategoriesSheet(context),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 5),  // ✅ Smaller button
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [
+                            Color(0xFFFF9800),
+                            Color(0xFFF44336),
+                          ],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
+                        borderRadius: BorderRadius.circular(18),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFFF57C00)
+                                .withOpacity(0.25),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        l10n.seeAll,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.2,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                ],
+              );
+            },
+          ),
+        ),
+),

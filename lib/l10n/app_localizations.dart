@@ -1281,7 +1281,7 @@ abstract class AppLocalizations {
   /// **'Vegetables'**
   String get vegetables;
 
-  /// No description provided for @onion.
+  /// Veg - Onion
   ///
   /// In en, this message translates to:
   /// **'Onion'**
@@ -1293,19 +1293,19 @@ abstract class AppLocalizations {
   /// **'Tomato'**
   String get tomato;
 
-  /// No description provided for @potato.
+  /// Veg - Potato
   ///
   /// In en, this message translates to:
   /// **'Potato'**
   String get potato;
 
-  /// No description provided for @garlic.
+  /// Crop - Garlic
   ///
   /// In en, this message translates to:
   /// **'Garlic'**
   String get garlic;
 
-  /// No description provided for @chilli.
+  /// Crop - Chilli
   ///
   /// In en, this message translates to:
   /// **'Chilli'**
@@ -1329,13 +1329,13 @@ abstract class AppLocalizations {
   /// **'Cauliflower'**
   String get cauliflower;
 
-  /// No description provided for @okra.
+  /// Veg - Okra
   ///
   /// In en, this message translates to:
   /// **'Okra'**
   String get okra;
 
-  /// No description provided for @cucumber.
+  /// Veg - Cucumber
   ///
   /// In en, this message translates to:
   /// **'Cucumber'**
@@ -1347,7 +1347,7 @@ abstract class AppLocalizations {
   /// **'Fruits'**
   String get fruits;
 
-  /// No description provided for @mango.
+  /// Fruit - Mango
   ///
   /// In en, this message translates to:
   /// **'Mango'**
@@ -1377,7 +1377,7 @@ abstract class AppLocalizations {
   /// **'Grapes'**
   String get grapes;
 
-  /// No description provided for @papaya.
+  /// Fruit - Papaya
   ///
   /// In en, this message translates to:
   /// **'Papaya'**
@@ -1665,7 +1665,7 @@ abstract class AppLocalizations {
   /// **'Irrigation Labour'**
   String get irrigation_labour;
 
-  /// No description provided for @seeds_and_plants.
+  /// Seeds & Plants section title
   ///
   /// In en, this message translates to:
   /// **'Seeds & Plants'**
@@ -1689,7 +1689,7 @@ abstract class AppLocalizations {
   /// **'Cotton Seeds'**
   String get cotton_seeds;
 
-  /// No description provided for @vegetable_seeds.
+  /// Group - Vegetable Seeds
   ///
   /// In en, this message translates to:
   /// **'Vegetable Seeds'**
@@ -1707,13 +1707,13 @@ abstract class AppLocalizations {
   /// **'Fruit Plants'**
   String get fruit_plants;
 
-  /// No description provided for @nursery_plants.
+  /// Plants - Nursery
   ///
   /// In en, this message translates to:
   /// **'Nursery Plants'**
   String get nursery_plants;
 
-  /// No description provided for @tissue_culture_plants.
+  /// Plants - Tissue Culture
   ///
   /// In en, this message translates to:
   /// **'Tissue Culture Plants'**
@@ -2061,7 +2061,7 @@ abstract class AppLocalizations {
   /// **'Pulses'**
   String get pulses;
 
-  /// No description provided for @oil_seeds.
+  /// Group - Oil Seeds
   ///
   /// In en, this message translates to:
   /// **'Oil Seeds'**
@@ -2073,7 +2073,7 @@ abstract class AppLocalizations {
   /// **'Commercial Crops'**
   String get commercial_crops;
 
-  /// No description provided for @wheat.
+  /// Crop - Wheat
   ///
   /// In en, this message translates to:
   /// **'Wheat'**
@@ -2139,19 +2139,19 @@ abstract class AppLocalizations {
   /// **'Masoor'**
   String get masoor;
 
-  /// No description provided for @soybean.
+  /// Crop - Soybean
   ///
   /// In en, this message translates to:
   /// **'Soybean'**
   String get soybean;
 
-  /// No description provided for @groundnut.
+  /// Crop - Groundnut
   ///
   /// In en, this message translates to:
   /// **'Groundnut'**
   String get groundnut;
 
-  /// No description provided for @mustard.
+  /// Crop - Mustard
   ///
   /// In en, this message translates to:
   /// **'Mustard'**
@@ -2163,19 +2163,19 @@ abstract class AppLocalizations {
   /// **'Sunflower'**
   String get sunflower;
 
-  /// No description provided for @sesame.
+  /// Crop - Sesame
   ///
   /// In en, this message translates to:
   /// **'Sesame'**
   String get sesame;
 
-  /// No description provided for @cotton.
+  /// Crop - Cotton
   ///
   /// In en, this message translates to:
   /// **'Cotton'**
   String get cotton;
 
-  /// No description provided for @sugarcane.
+  /// Crop - Sugarcane
   ///
   /// In en, this message translates to:
   /// **'Sugarcane'**
@@ -2258,6 +2258,1176 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'We are working on bringing farming services to you. Stay tuned!'**
   String get services_coming_soon_subtitle;
+
+  /// No description provided for @sortNewest.
+  ///
+  /// In en, this message translates to:
+  /// **'Newest'**
+  String get sortNewest;
+
+  /// No description provided for @sortPriceLowToHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'Price: Low to High'**
+  String get sortPriceLowToHigh;
+
+  /// No description provided for @sortPriceHighToLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Price: High to Low'**
+  String get sortPriceHighToLow;
+
+  /// No description provided for @filterDealType.
+  ///
+  /// In en, this message translates to:
+  /// **'Deal Type'**
+  String get filterDealType;
+
+  /// No description provided for @filterPriceRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Price Range'**
+  String get filterPriceRange;
+
+  /// No description provided for @filterBrand.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand'**
+  String get filterBrand;
+
+  /// No description provided for @filterHpRange.
+  ///
+  /// In en, this message translates to:
+  /// **'HP Range'**
+  String get filterHpRange;
+
+  /// No description provided for @filterCondition.
+  ///
+  /// In en, this message translates to:
+  /// **'Condition'**
+  String get filterCondition;
+
+  /// No description provided for @filterAnimalType.
+  ///
+  /// In en, this message translates to:
+  /// **'Animal Type'**
+  String get filterAnimalType;
+
+  /// No description provided for @filterBreed.
+  ///
+  /// In en, this message translates to:
+  /// **'Breed'**
+  String get filterBreed;
+
+  /// No description provided for @filterAge.
+  ///
+  /// In en, this message translates to:
+  /// **'Age'**
+  String get filterAge;
+
+  /// No description provided for @filterMilkYield.
+  ///
+  /// In en, this message translates to:
+  /// **'Milk Yield / Day'**
+  String get filterMilkYield;
+
+  /// No description provided for @filterColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Color'**
+  String get filterColor;
+
+  /// No description provided for @filterArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Area'**
+  String get filterArea;
+
+  /// No description provided for @filterSoilType.
+  ///
+  /// In en, this message translates to:
+  /// **'Soil Type'**
+  String get filterSoilType;
+
+  /// No description provided for @filterWaterSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Water Source'**
+  String get filterWaterSource;
+
+  /// No description provided for @filterLegalDeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal / Deed'**
+  String get filterLegalDeed;
+
+  /// No description provided for @filterCropType.
+  ///
+  /// In en, this message translates to:
+  /// **'Crop Type'**
+  String get filterCropType;
+
+  /// No description provided for @filterQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get filterQuantity;
+
+  /// No description provided for @filterGrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Grade'**
+  String get filterGrade;
+
+  /// No description provided for @filterHarvest.
+  ///
+  /// In en, this message translates to:
+  /// **'Harvest'**
+  String get filterHarvest;
+
+  /// No description provided for @filterProduceType.
+  ///
+  /// In en, this message translates to:
+  /// **'Produce Type'**
+  String get filterProduceType;
+
+  /// No description provided for @filterSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Size'**
+  String get filterSize;
+
+  /// No description provided for @filterFreshness.
+  ///
+  /// In en, this message translates to:
+  /// **'Freshness'**
+  String get filterFreshness;
+
+  /// No description provided for @filterEquipmentType.
+  ///
+  /// In en, this message translates to:
+  /// **'Equipment Type'**
+  String get filterEquipmentType;
+
+  /// No description provided for @filterRentalDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental Duration'**
+  String get filterRentalDuration;
+
+  /// No description provided for @filterVerifiedOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified Sellers Only'**
+  String get filterVerifiedOnly;
+
+  /// No description provided for @filterNearbyOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearby Only'**
+  String get filterNearbyOnly;
+
+  /// No description provided for @filters.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get filters;
+
+  /// No description provided for @filtersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters ({count})'**
+  String filtersCount(String count);
+
+  /// No description provided for @reset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get reset;
+
+  /// No description provided for @applyFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply Filters'**
+  String get applyFilters;
+
+  /// No description provided for @forSale.
+  ///
+  /// In en, this message translates to:
+  /// **'For Sale'**
+  String get forSale;
+
+  /// No description provided for @forRent.
+  ///
+  /// In en, this message translates to:
+  /// **'For Rent'**
+  String get forRent;
+
+  /// No description provided for @conditionNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get conditionNew;
+
+  /// No description provided for @conditionUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Used'**
+  String get conditionUsed;
+
+  /// No description provided for @hpUnder20.
+  ///
+  /// In en, this message translates to:
+  /// **'Under 20 HP'**
+  String get hpUnder20;
+
+  /// No description provided for @hp2130.
+  ///
+  /// In en, this message translates to:
+  /// **'21–30 HP'**
+  String get hp2130;
+
+  /// No description provided for @hp3140.
+  ///
+  /// In en, this message translates to:
+  /// **'31–40 HP'**
+  String get hp3140;
+
+  /// No description provided for @hp4150.
+  ///
+  /// In en, this message translates to:
+  /// **'41–50 HP'**
+  String get hp4150;
+
+  /// No description provided for @hp5160.
+  ///
+  /// In en, this message translates to:
+  /// **'51–60 HP'**
+  String get hp5160;
+
+  /// No description provided for @hpAbove60.
+  ///
+  /// In en, this message translates to:
+  /// **'Above 60 HP'**
+  String get hpAbove60;
+
+  /// No description provided for @animalHenPoultry.
+  ///
+  /// In en, this message translates to:
+  /// **'Hen / Poultry'**
+  String get animalHenPoultry;
+
+  /// No description provided for @animalOxBullock.
+  ///
+  /// In en, this message translates to:
+  /// **'Ox / Bullock'**
+  String get animalOxBullock;
+
+  /// No description provided for @animalPig.
+  ///
+  /// In en, this message translates to:
+  /// **'Pig'**
+  String get animalPig;
+
+  /// No description provided for @breedGir.
+  ///
+  /// In en, this message translates to:
+  /// **'Gir'**
+  String get breedGir;
+
+  /// No description provided for @breedSahiwal.
+  ///
+  /// In en, this message translates to:
+  /// **'Sahiwal'**
+  String get breedSahiwal;
+
+  /// No description provided for @breedMurrah.
+  ///
+  /// In en, this message translates to:
+  /// **'Murrah'**
+  String get breedMurrah;
+
+  /// No description provided for @breedHF.
+  ///
+  /// In en, this message translates to:
+  /// **'HF / Holstein'**
+  String get breedHF;
+
+  /// No description provided for @breedJersey.
+  ///
+  /// In en, this message translates to:
+  /// **'Jersey'**
+  String get breedJersey;
+
+  /// No description provided for @breedOsmanabadi.
+  ///
+  /// In en, this message translates to:
+  /// **'Osmanabadi'**
+  String get breedOsmanabadi;
+
+  /// No description provided for @breedSangamneri.
+  ///
+  /// In en, this message translates to:
+  /// **'Sangamneri'**
+  String get breedSangamneri;
+
+  /// No description provided for @breedOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get breedOther;
+
+  /// No description provided for @age01Year.
+  ///
+  /// In en, this message translates to:
+  /// **'0–1 year'**
+  String get age01Year;
+
+  /// No description provided for @age13Years.
+  ///
+  /// In en, this message translates to:
+  /// **'1–3 years'**
+  String get age13Years;
+
+  /// No description provided for @age36Years.
+  ///
+  /// In en, this message translates to:
+  /// **'3–6 years'**
+  String get age36Years;
+
+  /// No description provided for @ageAbove6.
+  ///
+  /// In en, this message translates to:
+  /// **'Above 6 years'**
+  String get ageAbove6;
+
+  /// No description provided for @milk05.
+  ///
+  /// In en, this message translates to:
+  /// **'0–5 L/day'**
+  String get milk05;
+
+  /// No description provided for @milk510.
+  ///
+  /// In en, this message translates to:
+  /// **'5–10 L/day'**
+  String get milk510;
+
+  /// No description provided for @milk1015.
+  ///
+  /// In en, this message translates to:
+  /// **'10–15 L/day'**
+  String get milk1015;
+
+  /// No description provided for @milkAbove15.
+  ///
+  /// In en, this message translates to:
+  /// **'Above 15 L/day'**
+  String get milkAbove15;
+
+  /// No description provided for @colorBlack.
+  ///
+  /// In en, this message translates to:
+  /// **'Black'**
+  String get colorBlack;
+
+  /// No description provided for @colorWhite.
+  ///
+  /// In en, this message translates to:
+  /// **'White'**
+  String get colorWhite;
+
+  /// No description provided for @colorBrown.
+  ///
+  /// In en, this message translates to:
+  /// **'Brown'**
+  String get colorBrown;
+
+  /// No description provided for @colorBlackWhite.
+  ///
+  /// In en, this message translates to:
+  /// **'Black & White'**
+  String get colorBlackWhite;
+
+  /// No description provided for @colorGrey.
+  ///
+  /// In en, this message translates to:
+  /// **'Grey'**
+  String get colorGrey;
+
+  /// No description provided for @colorMixed.
+  ///
+  /// In en, this message translates to:
+  /// **'Mixed'**
+  String get colorMixed;
+
+  /// No description provided for @areaUnder1Acre.
+  ///
+  /// In en, this message translates to:
+  /// **'Under 1 Acre'**
+  String get areaUnder1Acre;
+
+  /// No description provided for @area13Acres.
+  ///
+  /// In en, this message translates to:
+  /// **'1–3 Acres'**
+  String get area13Acres;
+
+  /// No description provided for @area35Acres.
+  ///
+  /// In en, this message translates to:
+  /// **'3–5 Acres'**
+  String get area35Acres;
+
+  /// No description provided for @area510Acres.
+  ///
+  /// In en, this message translates to:
+  /// **'5–10 Acres'**
+  String get area510Acres;
+
+  /// No description provided for @areaAbove10.
+  ///
+  /// In en, this message translates to:
+  /// **'Above 10 Acres'**
+  String get areaAbove10;
+
+  /// No description provided for @soilBlack.
+  ///
+  /// In en, this message translates to:
+  /// **'Black Soil'**
+  String get soilBlack;
+
+  /// No description provided for @soilRed.
+  ///
+  /// In en, this message translates to:
+  /// **'Red Soil'**
+  String get soilRed;
+
+  /// No description provided for @soilAlluvial.
+  ///
+  /// In en, this message translates to:
+  /// **'Alluvial'**
+  String get soilAlluvial;
+
+  /// No description provided for @soilLaterite.
+  ///
+  /// In en, this message translates to:
+  /// **'Laterite'**
+  String get soilLaterite;
+
+  /// No description provided for @soilSandy.
+  ///
+  /// In en, this message translates to:
+  /// **'Sandy'**
+  String get soilSandy;
+
+  /// No description provided for @soilLoamy.
+  ///
+  /// In en, this message translates to:
+  /// **'Loamy'**
+  String get soilLoamy;
+
+  /// No description provided for @waterBorewell.
+  ///
+  /// In en, this message translates to:
+  /// **'Borewell'**
+  String get waterBorewell;
+
+  /// No description provided for @waterCanal.
+  ///
+  /// In en, this message translates to:
+  /// **'Canal'**
+  String get waterCanal;
+
+  /// No description provided for @waterOpenWell.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Well'**
+  String get waterOpenWell;
+
+  /// No description provided for @waterTank.
+  ///
+  /// In en, this message translates to:
+  /// **'Tank'**
+  String get waterTank;
+
+  /// No description provided for @waterRainfed.
+  ///
+  /// In en, this message translates to:
+  /// **'Rainfed Only'**
+  String get waterRainfed;
+
+  /// No description provided for @deed712.
+  ///
+  /// In en, this message translates to:
+  /// **'7/12 Available'**
+  String get deed712;
+
+  /// No description provided for @deedClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear Title'**
+  String get deedClear;
+
+  /// No description provided for @deedLease.
+  ///
+  /// In en, this message translates to:
+  /// **'Lease Land'**
+  String get deedLease;
+
+  /// No description provided for @cropTurDal.
+  ///
+  /// In en, this message translates to:
+  /// **'Tur Dal'**
+  String get cropTurDal;
+
+  /// No description provided for @qtyUnder100kg.
+  ///
+  /// In en, this message translates to:
+  /// **'Under 100 kg'**
+  String get qtyUnder100kg;
+
+  /// No description provided for @qty100500kg.
+  ///
+  /// In en, this message translates to:
+  /// **'100–500 kg'**
+  String get qty100500kg;
+
+  /// No description provided for @qty500kg1ton.
+  ///
+  /// In en, this message translates to:
+  /// **'500 kg–1 Ton'**
+  String get qty500kg1ton;
+
+  /// No description provided for @qty15tons.
+  ///
+  /// In en, this message translates to:
+  /// **'1–5 Tons'**
+  String get qty15tons;
+
+  /// No description provided for @qtyAbove5tons.
+  ///
+  /// In en, this message translates to:
+  /// **'Above 5 Tons'**
+  String get qtyAbove5tons;
+
+  /// No description provided for @gradeA.
+  ///
+  /// In en, this message translates to:
+  /// **'Grade A'**
+  String get gradeA;
+
+  /// No description provided for @gradeB.
+  ///
+  /// In en, this message translates to:
+  /// **'Grade B'**
+  String get gradeB;
+
+  /// No description provided for @gradeC.
+  ///
+  /// In en, this message translates to:
+  /// **'Grade C'**
+  String get gradeC;
+
+  /// No description provided for @harvestFreshWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Fresh (this week)'**
+  String get harvestFreshWeek;
+
+  /// No description provided for @harvestThisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'This month'**
+  String get harvestThisMonth;
+
+  /// No description provided for @harvestThisSeason.
+  ///
+  /// In en, this message translates to:
+  /// **'This season'**
+  String get harvestThisSeason;
+
+  /// No description provided for @harvestStored.
+  ///
+  /// In en, this message translates to:
+  /// **'Stored'**
+  String get harvestStored;
+
+  /// No description provided for @produceSpinach.
+  ///
+  /// In en, this message translates to:
+  /// **'Spinach'**
+  String get produceSpinach;
+
+  /// No description provided for @sizeSmall.
+  ///
+  /// In en, this message translates to:
+  /// **'Small'**
+  String get sizeSmall;
+
+  /// No description provided for @sizeMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get sizeMedium;
+
+  /// No description provided for @sizeLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'Large'**
+  String get sizeLarge;
+
+  /// No description provided for @sizeExtraLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra Large'**
+  String get sizeExtraLarge;
+
+  /// No description provided for @freshnessToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Harvested Today'**
+  String get freshnessToday;
+
+  /// No description provided for @freshness23Days.
+  ///
+  /// In en, this message translates to:
+  /// **'2–3 Days Old'**
+  String get freshness23Days;
+
+  /// No description provided for @freshnessThisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'This Week'**
+  String get freshnessThisWeek;
+
+  /// No description provided for @freshnessColdStored.
+  ///
+  /// In en, this message translates to:
+  /// **'Cold Stored'**
+  String get freshnessColdStored;
+
+  /// No description provided for @rentalJCB.
+  ///
+  /// In en, this message translates to:
+  /// **'JCB / Excavator'**
+  String get rentalJCB;
+
+  /// No description provided for @rentalWeekly.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get rentalWeekly;
+
+  /// No description provided for @rentalMonthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get rentalMonthly;
+
+  /// No description provided for @rentalFullSeason.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Season'**
+  String get rentalFullSeason;
+
+  /// No description provided for @sortNearestFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearest first'**
+  String get sortNearestFirst;
+
+  /// No description provided for @sortLowestPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Lowest price'**
+  String get sortLowestPrice;
+
+  /// No description provided for @sortHighestPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Highest price'**
+  String get sortHighestPrice;
+
+  /// No description provided for @sortLowestRent.
+  ///
+  /// In en, this message translates to:
+  /// **'Lowest rent'**
+  String get sortLowestRent;
+
+  /// No description provided for @sortHighestRent.
+  ///
+  /// In en, this message translates to:
+  /// **'Highest rent'**
+  String get sortHighestRent;
+
+  /// No description provided for @priceTractorLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Under ₹4L'**
+  String get priceTractorLow;
+
+  /// No description provided for @priceTractorMid.
+  ///
+  /// In en, this message translates to:
+  /// **'₹4L–₹6L'**
+  String get priceTractorMid;
+
+  /// No description provided for @priceTractorHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'Above ₹6L'**
+  String get priceTractorHigh;
+
+  /// No description provided for @priceCropLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Under ₹2K'**
+  String get priceCropLow;
+
+  /// No description provided for @priceCropMid.
+  ///
+  /// In en, this message translates to:
+  /// **'₹2K–₹10K'**
+  String get priceCropMid;
+
+  /// No description provided for @priceCropHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'Above ₹10K'**
+  String get priceCropHigh;
+
+  /// No description provided for @priceLivestockLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Under ₹50K'**
+  String get priceLivestockLow;
+
+  /// No description provided for @priceLivestockMid.
+  ///
+  /// In en, this message translates to:
+  /// **'₹50K–₹1L'**
+  String get priceLivestockMid;
+
+  /// No description provided for @priceLivestockHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'Above ₹1L'**
+  String get priceLivestockHigh;
+
+  /// No description provided for @priceLandLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Under ₹15L'**
+  String get priceLandLow;
+
+  /// No description provided for @priceLandMid.
+  ///
+  /// In en, this message translates to:
+  /// **'₹15L–₹30L'**
+  String get priceLandMid;
+
+  /// No description provided for @priceLandHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'Above ₹30L'**
+  String get priceLandHigh;
+
+  /// No description provided for @priceRentalLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Under ₹1K/day'**
+  String get priceRentalLow;
+
+  /// No description provided for @priceRentalMid.
+  ///
+  /// In en, this message translates to:
+  /// **'₹1K–₹3K/day'**
+  String get priceRentalMid;
+
+  /// No description provided for @priceRentalHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'Above ₹3K/day'**
+  String get priceRentalHigh;
+
+  /// No description provided for @priceAllLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Under ₹10K'**
+  String get priceAllLow;
+
+  /// No description provided for @priceAllMid.
+  ///
+  /// In en, this message translates to:
+  /// **'₹10K–₹1L'**
+  String get priceAllMid;
+
+  /// No description provided for @priceAllHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'Above ₹1L'**
+  String get priceAllHigh;
+
+  /// No description provided for @resultsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} results'**
+  String resultsCount(String count);
+
+  /// Group - Cereal Crops
+  ///
+  /// In en, this message translates to:
+  /// **'Cereal Crops'**
+  String get cereal_crops;
+
+  /// Group - Pulse Crops
+  ///
+  /// In en, this message translates to:
+  /// **'Pulse Crops'**
+  String get pulse_crops;
+
+  /// Group - Cash Crops
+  ///
+  /// In en, this message translates to:
+  /// **'Cash Crops'**
+  String get cash_crops;
+
+  /// Group - Spice Crops
+  ///
+  /// In en, this message translates to:
+  /// **'Spice Crops'**
+  String get spice_crops;
+
+  /// Group - Fruit Crops
+  ///
+  /// In en, this message translates to:
+  /// **'Fruit Crops'**
+  String get fruit_crops;
+
+  /// Group - Fodder Crops
+  ///
+  /// In en, this message translates to:
+  /// **'Fodder Crops'**
+  String get fodder_crops;
+
+  /// Group - Plants & Saplings
+  ///
+  /// In en, this message translates to:
+  /// **'Plants & Saplings'**
+  String get plants_and_saplings;
+
+  /// Crop - Rice / Paddy
+  ///
+  /// In en, this message translates to:
+  /// **'Rice / Paddy'**
+  String get rice_paddy;
+
+  /// Crop - Sorghum / Jowar
+  ///
+  /// In en, this message translates to:
+  /// **'Sorghum (Jowar)'**
+  String get sorghum_jowar;
+
+  /// Crop - Pearl Millet / Bajra
+  ///
+  /// In en, this message translates to:
+  /// **'Pearl Millet (Bajra)'**
+  String get pearl_millet_bajra;
+
+  /// Crop - Maize / Corn
+  ///
+  /// In en, this message translates to:
+  /// **'Maize / Corn'**
+  String get maize_corn;
+
+  /// Crop - Barnyard Millet / Bhagar
+  ///
+  /// In en, this message translates to:
+  /// **'Barnyard Millet (Bhagar)'**
+  String get barnyard_millet_bhagar;
+
+  /// Crop - Pigeon Pea / Tur
+  ///
+  /// In en, this message translates to:
+  /// **'Pigeon Pea (Tur)'**
+  String get pigeon_pea_tur;
+
+  /// Crop - Chickpea / Chana
+  ///
+  /// In en, this message translates to:
+  /// **'Chickpea (Chana)'**
+  String get chickpea_chana;
+
+  /// Crop - Green Gram / Moong
+  ///
+  /// In en, this message translates to:
+  /// **'Green Gram (Moong)'**
+  String get green_gram_moong;
+
+  /// Crop - Black Gram / Urad
+  ///
+  /// In en, this message translates to:
+  /// **'Black Gram (Urad)'**
+  String get black_gram_urad;
+
+  /// Crop - Lentil / Masoor
+  ///
+  /// In en, this message translates to:
+  /// **'Lentil (Masoor)'**
+  String get lentil_masoor;
+
+  /// Crop - Field Pea / Vatana
+  ///
+  /// In en, this message translates to:
+  /// **'Field Pea (Vatana)'**
+  String get field_pea_vatana;
+
+  /// Crop - Cowpea / Chawli
+  ///
+  /// In en, this message translates to:
+  /// **'Cowpea (Chawli)'**
+  String get cowpea_chawli;
+
+  /// Crop - Kidney Bean / Rajma
+  ///
+  /// In en, this message translates to:
+  /// **'Kidney Bean (Rajma)'**
+  String get kidney_bean_rajma;
+
+  /// Crop - Safflower / Kardai
+  ///
+  /// In en, this message translates to:
+  /// **'Safflower (Kardai)'**
+  String get safflower;
+
+  /// Crop - Linseed / Flaxseed
+  ///
+  /// In en, this message translates to:
+  /// **'Linseed (Flaxseed)'**
+  String get linseed;
+
+  /// Crop - Castor
+  ///
+  /// In en, this message translates to:
+  /// **'Castor'**
+  String get castor;
+
+  /// Crop - Turmeric
+  ///
+  /// In en, this message translates to:
+  /// **'Turmeric'**
+  String get turmeric;
+
+  /// Crop - Ginger
+  ///
+  /// In en, this message translates to:
+  /// **'Ginger'**
+  String get ginger;
+
+  /// Crop - Coriander
+  ///
+  /// In en, this message translates to:
+  /// **'Coriander'**
+  String get coriander;
+
+  /// Crop - Fenugreek / Methi
+  ///
+  /// In en, this message translates to:
+  /// **'Fenugreek (Methi)'**
+  String get fenugreek;
+
+  /// Crop - Onion Seed
+  ///
+  /// In en, this message translates to:
+  /// **'Onion Seed'**
+  String get onion_seed;
+
+  /// Veg - Ridge Gourd / Dodka
+  ///
+  /// In en, this message translates to:
+  /// **'Ridge Gourd (Dodka)'**
+  String get ridge_gourd;
+
+  /// Veg - Bitter Gourd / Karela
+  ///
+  /// In en, this message translates to:
+  /// **'Bitter Gourd (Karela)'**
+  String get bitter_gourd;
+
+  /// Veg - Bottle Gourd / Dudhi
+  ///
+  /// In en, this message translates to:
+  /// **'Bottle Gourd (Dudhi)'**
+  String get bottle_gourd;
+
+  /// Veg - Dill / Shepu
+  ///
+  /// In en, this message translates to:
+  /// **'Dill (Shepu)'**
+  String get dill;
+
+  /// Fruit - Custard Apple / Sitaphal
+  ///
+  /// In en, this message translates to:
+  /// **'Custard Apple (Sitaphal)'**
+  String get custard_apple;
+
+  /// Fruit - Jamun / Java Plum
+  ///
+  /// In en, this message translates to:
+  /// **'Jamun (Java Plum)'**
+  String get jamun;
+
+  /// Fodder - Maize
+  ///
+  /// In en, this message translates to:
+  /// **'Fodder Maize'**
+  String get fodder_maize;
+
+  /// Fodder - Sorghum
+  ///
+  /// In en, this message translates to:
+  /// **'Fodder Sorghum'**
+  String get fodder_sorghum;
+
+  /// Fodder - Pearl Millet
+  ///
+  /// In en, this message translates to:
+  /// **'Fodder Pearl Millet'**
+  String get fodder_pearl_millet;
+
+  /// Sapling - Mango
+  ///
+  /// In en, this message translates to:
+  /// **'Mango Sapling'**
+  String get mango_sapling;
+
+  /// Sapling - Pomegranate
+  ///
+  /// In en, this message translates to:
+  /// **'Pomegranate Sapling'**
+  String get pomegranate_sapling;
+
+  /// Sapling - Sweet Lime
+  ///
+  /// In en, this message translates to:
+  /// **'Sweet Lime Sapling'**
+  String get sweet_lime_sapling;
+
+  /// Sapling - Orange
+  ///
+  /// In en, this message translates to:
+  /// **'Orange Sapling'**
+  String get orange_sapling;
+
+  /// Sapling - Cashew
+  ///
+  /// In en, this message translates to:
+  /// **'Cashew Sapling'**
+  String get cashew_sapling;
+
+  /// Sapling - Coconut
+  ///
+  /// In en, this message translates to:
+  /// **'Coconut Sapling'**
+  String get coconut_sapling;
+
+  /// Sapling - Teak
+  ///
+  /// In en, this message translates to:
+  /// **'Teak Sapling'**
+  String get teak_sapling;
+
+  /// Sapling - Bamboo
+  ///
+  /// In en, this message translates to:
+  /// **'Bamboo Sapling'**
+  String get bamboo_sapling;
+
+  /// No description provided for @listingRentPerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Rent per day'**
+  String get listingRentPerDay;
+
+  /// No description provided for @listingFixedPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed price'**
+  String get listingFixedPrice;
+
+  /// No description provided for @listingForRent.
+  ///
+  /// In en, this message translates to:
+  /// **'For Rent'**
+  String get listingForRent;
+
+  /// No description provided for @listingForSale.
+  ///
+  /// In en, this message translates to:
+  /// **'For Sale'**
+  String get listingForSale;
+
+  /// No description provided for @listingDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Listing Details'**
+  String get listingDetails;
+
+  /// No description provided for @listingCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get listingCategory;
+
+  /// No description provided for @listingType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get listingType;
+
+  /// No description provided for @listingCondition.
+  ///
+  /// In en, this message translates to:
+  /// **'Condition'**
+  String get listingCondition;
+
+  /// No description provided for @listingPostedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Posted On'**
+  String get listingPostedOn;
+
+  /// No description provided for @listingViews.
+  ///
+  /// In en, this message translates to:
+  /// **'Views'**
+  String get listingViews;
+
+  /// No description provided for @listingMemberSince.
+  ///
+  /// In en, this message translates to:
+  /// **'Member since 2024'**
+  String get listingMemberSince;
+
+  /// No description provided for @listingCall.
+  ///
+  /// In en, this message translates to:
+  /// **'Call'**
+  String get listingCall;
+
+  /// No description provided for @listingWhatsApp.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp'**
+  String get listingWhatsApp;
+
+  /// No description provided for @listingChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat'**
+  String get listingChat;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

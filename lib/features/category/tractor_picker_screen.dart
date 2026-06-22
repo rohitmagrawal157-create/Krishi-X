@@ -29,7 +29,7 @@ class _TractorPickerItem {
 const _kPickerItems = [
   _TractorPickerItem(
     label:     'Tractors',
-    imagePath: 'assets/images/tractor.jpeg',
+    imagePath: 'assets/sub_ctg/KrishiX_App-19.jpg',
     sectionId: CategorySectionId.tractorsBuy,
   ),
   _TractorPickerItem(
@@ -69,13 +69,22 @@ class TractorPickerScreen extends StatelessWidget {
         foregroundColor: Colors.white,
         elevation:       0,
         centerTitle:     false,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            size: 20, color: Colors.white,
-          ),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+       leading: IconButton(
+  icon: const Icon(
+    Icons.arrow_back_ios_new_rounded,
+    size: 24,
+    color: Colors.white,
+    weight: 900.0,  // ✅ Super bold
+  ),
+  onPressed: () => Navigator.of(context).pop(),
+  splashRadius: 24,
+  padding: const EdgeInsets.all(8),
+  constraints: const BoxConstraints(
+    minWidth: 44,
+    minHeight: 44,
+  ),
+),
+
         title: const Text(
           'Tractors',
           style: TextStyle(

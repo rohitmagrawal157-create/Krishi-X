@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:krishix/core/constants/app_colors.dart';
 import 'package:krishix/core/constants/app_spacing.dart';
+import 'package:krishix/core/services/user_auth_service.dart';
 import 'package:krishix/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -49,14 +50,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     setState(() => _isSaving = true);
 
     try {
+      final name  = _nameController.text.trim();
+      final phone = UserAuthService.normalizePhone(_phoneController.text);
+      final oldSessionPhone =
+          UserAuthService.normalizePhone(await UserAuthService.getLoggedInPhone() ?? '');
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('user_name',  _nameController.text.trim());
-      await prefs.setString('user_phone', _phoneController.text.trim());
+      final oldSavedPhone =
+          UserAuthService.normalizePhone(prefs.getString('user_phone') ?? '');
+      final previousPhone = oldSavedPhone.isNotEmpty
+          ? oldSavedPhone
+          : oldSessionPhone;
 
-      widget.onSaved?.call(
-        _nameController.text.trim(),
-        _phoneController.text.trim(),
-      );
+      await prefs.setString('user_name',  name);
+      await prefs.setString('user_phone', phone);
+      if (previousPhone.isNotEmpty && previousPhone != phone) {
+        await prefs.setString('user_previous_phone', previousPhone);
+      }
+      await UserAuthService.registerUser(phone: phone, fullName: name);
+      await UserAuthService.saveSession(phone);
+
+      widget.onSaved?.call(name, phone);
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(

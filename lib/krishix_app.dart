@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:krishix/core/services/location_service.dart';
 import 'package:krishix/core/services/user_auth_service.dart';
 import 'package:krishix/core/theme/app_theme.dart';
 import 'package:krishix/features/auth/auth_gate.dart';
@@ -17,10 +19,12 @@ class KrishiXApp extends StatefulWidget {
 }
 
 class _KrishiXAppState extends State<KrishiXApp> {
+  final _navigatorKey = GlobalKey<NavigatorState>();
   late Locale _locale;
   String? _loggedInPhone;
   var _isBootstrapping = true;
   var _splashDone      = false;
+  var _didRequestStartupLocation = false;
 
   @override
   void initState() {
@@ -45,6 +49,60 @@ class _KrishiXAppState extends State<KrishiXApp> {
         : const Locale('hi');
 
     _restoreSession();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _requestStartupLocationPermission();
+    });
+  }
+
+  Future<void> _requestStartupLocationPermission() async {
+    if (_didRequestStartupLocation) return;
+    _didRequestStartupLocation = true;
+
+    // Let the first Flutter frame attach before Android presents its
+    // native runtime permission sheet.
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    if (!mounted) return;
+    try {
+      final permission = await LocationService.ensurePermission();
+      if (!mounted || permission != LocationPermission.deniedForever) return;
+      await _showLocationSettingsDialog();
+    } catch (_) {
+      // Permission availability is handled again when location is used.
+    }
+  }
+
+  Future<void> _showLocationSettingsDialog() async {
+    final context = _navigatorKey.currentContext;
+    if (context == null) return;
+
+    await showDialog<void>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        icon: const Icon(
+          Icons.location_off_rounded,
+          color: Color(0xFFF57C00),
+          size: 32,
+        ),
+        title: const Text('Location permission required'),
+        content: const Text(
+          'Location access is turned off for KrishiX. Open app settings and '
+          'allow location while using the app.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: const Text('Not now'),
+          ),
+          FilledButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop();
+              LocationService.openAppSettings();
+            },
+            child: const Text('Open settings'),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> _restoreSession() async {
@@ -109,6 +167,7 @@ class _KrishiXAppState extends State<KrishiXApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: _navigatorKey,
       title: 'KrishiX',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light(),

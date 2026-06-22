@@ -558,6 +558,489 @@
 "allRentCategories": "All Rent Categories",
 "services_coming_soon": "Services Coming Soon",
 "services_coming_soon_subtitle": "We are working on bringing farming services to you. Stay tuned!",
+"sortNewest": "Newest",
+"sortPriceLowToHigh": "Price: Low to High",
+"sortPriceHighToLow": "Price: High to Low",
+
+"filterDealType": "Deal Type",
+  "filterPriceRange": "Price Range",
+  "filterBrand": "Brand",
+  "filterHpRange": "HP Range",
+  "filterCondition": "Condition",
+  "filterAnimalType": "Animal Type",
+  "filterBreed": "Breed",
+  "filterAge": "Age",
+  "filterMilkYield": "Milk Yield / Day",
+  "filterColor": "Color",
+  "filterArea": "Area",
+  "filterSoilType": "Soil Type",
+  "filterWaterSource": "Water Source",
+  "filterLegalDeed": "Legal / Deed",
+  "filterCropType": "Crop Type",
+  "filterQuantity": "Quantity",
+  "filterGrade": "Grade",
+  "filterHarvest": "Harvest",
+  "filterProduceType": "Produce Type",
+  "filterSize": "Size",
+  "filterFreshness": "Freshness",
+  "filterEquipmentType": "Equipment Type",
+  "filterRentalDuration": "Rental Duration",
+  "filterVerifiedOnly": "Verified Sellers Only",
+  "filterNearbyOnly": "Nearby Only",
+  "filters": "Filters",
+  "filtersCount": "Filters ({count})",
+  "@filtersCount": {
+    "placeholders": { "count": { "type": "String" } }
+  },
+  "reset": "Reset",
+  "applyFilters": "Apply Filters",
+
+  "forSale": "For Sale",
+  "forRent": "For Rent",
+
+  "conditionNew": "New",
+  "conditionUsed": "Used",
+
+  "hpUnder20": "Under 20 HP",
+  "hp2130": "21–30 HP",
+  "hp3140": "31–40 HP",
+  "hp4150": "41–50 HP",
+  "hp5160": "51–60 HP",
+  "hpAbove60": "Above 60 HP",
+
+  "animalHenPoultry": "Hen / Poultry",
+  "animalOxBullock": "Ox / Bullock",
+  "animalPig": "Pig",
+
+  "breedGir": "Gir",
+  "breedSahiwal": "Sahiwal",
+  "breedMurrah": "Murrah",
+  "breedHF": "HF / Holstein",
+  "breedJersey": "Jersey",
+  "breedOsmanabadi": "Osmanabadi",
+  "breedSangamneri": "Sangamneri",
+  "breedOther": "Other",
+
+  "age01Year": "0–1 year",
+  "age13Years": "1–3 years",
+  "age36Years": "3–6 years",
+  "ageAbove6": "Above 6 years",
+
+  "milk05": "0–5 L/day",
+  "milk510": "5–10 L/day",
+  "milk1015": "10–15 L/day",
+  "milkAbove15": "Above 15 L/day",
+
+  "colorBlack": "Black",
+  "colorWhite": "White",
+  "colorBrown": "Brown",
+  "colorBlackWhite": "Black & White",
+  "colorGrey": "Grey",
+  "colorMixed": "Mixed",
+
+  "areaUnder1Acre": "Under 1 Acre",
+  "area13Acres": "1–3 Acres",
+  "area35Acres": "3–5 Acres",
+  "area510Acres": "5–10 Acres",
+  "areaAbove10": "Above 10 Acres",
+
+  "soilBlack": "Black Soil",
+  "soilRed": "Red Soil",
+  "soilAlluvial": "Alluvial",
+  "soilLaterite": "Laterite",
+  "soilSandy": "Sandy",
+  "soilLoamy": "Loamy",
+
+  "waterBorewell": "Borewell",
+  "waterCanal": "Canal",
+  "waterOpenWell": "Open Well",
+  "waterTank": "Tank",
+  "waterRainfed": "Rainfed Only",
+
+  "deed712": "7/12 Available",
+  "deedClear": "Clear Title",
+  "deedLease": "Lease Land",
+
+  "cropTurDal": "Tur Dal",
+
+  "qtyUnder100kg": "Under 100 kg",
+  "qty100500kg": "100–500 kg",
+  "qty500kg1ton": "500 kg–1 Ton",
+  "qty15tons": "1–5 Tons",
+  "qtyAbove5tons": "Above 5 Tons",
+
+  "gradeA": "Grade A",
+  "gradeB": "Grade B",
+  "gradeC": "Grade C",
+
+  "harvestFreshWeek": "Fresh (this week)",
+  "harvestThisMonth": "This month",
+  "harvestThisSeason": "This season",
+  "harvestStored": "Stored",
+
+  "produceSpinach": "Spinach",
+
+  "sizeSmall": "Small",
+  "sizeMedium": "Medium",
+  "sizeLarge": "Large",
+  "sizeExtraLarge": "Extra Large",
+
+  "freshnessToday": "Harvested Today",
+  "freshness23Days": "2–3 Days Old",
+  "freshnessThisWeek": "This Week",
+  "freshnessColdStored": "Cold Stored",
+
+  "rentalJCB": "JCB / Excavator",
+  "rentalWeekly": "Weekly",
+  "rentalMonthly": "Monthly",
+  "rentalFullSeason": "Full Season",
+
+  "sortNearestFirst": "Nearest first",
+  "sortLowestPrice": "Lowest price",
+  "sortHighestPrice": "Highest price",
+  "sortLowestRent": "Lowest rent",
+  "sortHighestRent": "Highest rent",
+
+  "priceTractorLow": "Under ₹4L",
+  "priceTractorMid": "₹4L–₹6L",
+  "priceTractorHigh": "Above ₹6L",
+  "priceCropLow": "Under ₹2K",
+  "priceCropMid": "₹2K–₹10K",
+  "priceCropHigh": "Above ₹10K",
+  "priceLivestockLow": "Under ₹50K",
+  "priceLivestockMid": "₹50K–₹1L",
+  "priceLivestockHigh": "Above ₹1L",
+  "priceLandLow": "Under ₹15L",
+  "priceLandMid": "₹15L–₹30L",
+  "priceLandHigh": "Above ₹30L",
+  "priceRentalLow": "Under ₹1K/day",
+  "priceRentalMid": "₹1K–₹3K/day",
+  "priceRentalHigh": "Above ₹3K/day",
+  "priceAllLow": "Under ₹10K",
+  "priceAllMid": "₹10K–₹1L",
+  "priceAllHigh": "Above ₹1L",
+
+  "resultsCount": "{count} results",
+  "@resultsCount": {
+    "placeholders": { "count": { "type": "String" } }
+  },
+
+  "allBuyCategories": "All Buy Categories",
+  "allRentCategories": "All Rent Categories",
+
+  "seeds_and_plants": "Seeds & Plants",
+
+  "cereal_crops": "Cereal Crops",
+  "pulse_crops": "Pulse Crops",
+  "oil_seeds": "Oil Seeds",
+  "cash_crops": "Cash Crops",
+  "spice_crops": "Spice Crops",
+  "vegetable_seeds": "Vegetable Seeds",
+  "fruit_crops": "Fruit Crops",
+  "fodder_crops": "Fodder Crops",
+  "plants_and_saplings": "Plants & Saplings",
+
+  "wheat": "Wheat",
+  "rice_paddy": "Rice (Paddy)",
+  "sorghum_jowar": "Sorghum (Jowar)",
+  "pearl_millet_bajra": "Pearl Millet (Bajra)",
+  "maize_corn": "Maize (Corn)",
+  "barnyard_millet_bhagar": "Barnyard Millet (Bhagar)",
+
+  "pigeon_pea_tur": "Pigeon Pea (Tur)",
+  "chickpea_chana": "Chickpea (Chana)",
+  "green_gram_moong": "Green Gram (Moong)",
+  "black_gram_urad": "Black Gram (Urad)",
+  "lentil_masoor": "Lentil (Masoor)",
+  "field_pea_vatana": "Field Pea (Vatana)",
+  "cowpea_chawli": "Cowpea (Chawli)",
+  "kidney_bean_rajma": "Kidney Bean (Rajma)",
+
+  "groundnut": "Groundnut",
+  "mustard": "Mustard",
+  "sesame": "Sesame",
+  "safflower": "Safflower",
+  "linseed": "Linseed",
+  "castor": "Castor",
+
+  "sugarcane": "Sugarcane",
+  "turmeric": "Turmeric",
+  "ginger": "Ginger",
+  "cotton": "Cotton",
+  "soybean": "Soybean",
+
+  "garlic": "Garlic",
+  "chilli": "Chilli",
+  "coriander": "Coriander",
+  "fenugreek": "Fenugreek",
+  "onion_seed": "Onion Seed",
+
+  "onion": "Onion",
+  "potato": "Potato",
+  "okra": "Okra (Bhindi)",
+  "cucumber": "Cucumber",
+  "ridge_gourd": "Ridge Gourd",
+  "bitter_gourd": "Bitter Gourd",
+  "bottle_gourd": "Bottle Gourd",
+  "dill": "Dill",
+
+  "mango": "Mango",
+  "custard_apple": "Custard Apple",
+  "papaya": "Papaya",
+  "jamun": "Jamun",
+
+  "fodder_maize": "Fodder Maize",
+  "fodder_sorghum": "Fodder Sorghum",
+  "fodder_pearl_millet": "Fodder Pearl Millet",
+
+  "mango_sapling": "Mango Sapling",
+  "pomegranate_sapling": "Pomegranate Sapling",
+  "sweet_lime_sapling": "Sweet Lime Sapling",
+  "orange_sapling": "Orange Sapling",
+  "cashew_sapling": "Cashew Sapling",
+  "coconut_sapling": "Coconut Sapling",
+  "teak_sapling": "Teak Sapling",
+  "bamboo_sapling": "Bamboo Sapling",
+  "tissue_culture_plants": "Tissue Culture Plants",
+  "nursery_plants": "Nursery Plants",
+
+  
+  
+  
+  "seeds_and_plants": "Seeds & Plants",
+  "@seeds_and_plants": { "description": "Seeds & Plants section title" },
+
+  
+ 
+  
+  "cereal_crops": "Cereal Crops",
+  "@cereal_crops": { "description": "Group - Cereal Crops" },
+
+  "pulse_crops": "Pulse Crops",
+  "@pulse_crops": { "description": "Group - Pulse Crops" },
+
+  "oil_seeds": "Oil Seeds",
+  "@oil_seeds": { "description": "Group - Oil Seeds" },
+
+  "cash_crops": "Cash Crops",
+  "@cash_crops": { "description": "Group - Cash Crops" },
+
+  "spice_crops": "Spice Crops",
+  "@spice_crops": { "description": "Group - Spice Crops" },
+
+  "vegetable_seeds": "Vegetable Seeds",
+  "@vegetable_seeds": { "description": "Group - Vegetable Seeds" },
+
+  "fruit_crops": "Fruit Crops",
+  "@fruit_crops": { "description": "Group - Fruit Crops" },
+
+  "fodder_crops": "Fodder Crops",
+  "@fodder_crops": { "description": "Group - Fodder Crops" },
+
+  "plants_and_saplings": "Plants & Saplings",
+  "@plants_and_saplings": { "description": "Group - Plants & Saplings" },
+
+
+  
+  "wheat": "Wheat",
+  "@wheat": { "description": "Crop - Wheat" },
+
+  "rice_paddy": "Rice / Paddy",
+  "@rice_paddy": { "description": "Crop - Rice / Paddy" },
+
+  "sorghum_jowar": "Sorghum (Jowar)",
+  "@sorghum_jowar": { "description": "Crop - Sorghum / Jowar" },
+
+  "pearl_millet_bajra": "Pearl Millet (Bajra)",
+  "@pearl_millet_bajra": { "description": "Crop - Pearl Millet / Bajra" },
+
+  "maize_corn": "Maize / Corn",
+  "@maize_corn": { "description": "Crop - Maize / Corn" },
+
+  "barnyard_millet_bhagar": "Barnyard Millet (Bhagar)",
+  "@barnyard_millet_bhagar": { "description": "Crop - Barnyard Millet / Bhagar" },
+
+
+  
+  "pigeon_pea_tur": "Pigeon Pea (Tur)",
+  "@pigeon_pea_tur": { "description": "Crop - Pigeon Pea / Tur" },
+
+  "chickpea_chana": "Chickpea (Chana)",
+  "@chickpea_chana": { "description": "Crop - Chickpea / Chana" },
+
+  "green_gram_moong": "Green Gram (Moong)",
+  "@green_gram_moong": { "description": "Crop - Green Gram / Moong" },
+
+  "black_gram_urad": "Black Gram (Urad)",
+  "@black_gram_urad": { "description": "Crop - Black Gram / Urad" },
+
+  "lentil_masoor": "Lentil (Masoor)",
+  "@lentil_masoor": { "description": "Crop - Lentil / Masoor" },
+
+  "field_pea_vatana": "Field Pea (Vatana)",
+  "@field_pea_vatana": { "description": "Crop - Field Pea / Vatana" },
+
+  "cowpea_chawli": "Cowpea (Chawli)",
+  "@cowpea_chawli": { "description": "Crop - Cowpea / Chawli" },
+
+  "kidney_bean_rajma": "Kidney Bean (Rajma)",
+  "@kidney_bean_rajma": { "description": "Crop - Kidney Bean / Rajma" },
+
+  
+
+  
+  "groundnut": "Groundnut",
+  "@groundnut": { "description": "Crop - Groundnut" },
+
+  "mustard": "Mustard",
+  "@mustard": { "description": "Crop - Mustard" },
+
+  "sesame": "Sesame",
+  "@sesame": { "description": "Crop - Sesame" },
+
+  "safflower": "Safflower (Kardai)",
+  "@safflower": { "description": "Crop - Safflower / Kardai" },
+
+  "linseed": "Linseed (Flaxseed)",
+  "@linseed": { "description": "Crop - Linseed / Flaxseed" },
+
+  "castor": "Castor",
+  "@castor": { "description": "Crop - Castor" },
+
+
+  "sugarcane": "Sugarcane",
+  "@sugarcane": { "description": "Crop - Sugarcane" },
+
+  "turmeric": "Turmeric",
+  "@turmeric": { "description": "Crop - Turmeric" },
+
+  "ginger": "Ginger",
+  "@ginger": { "description": "Crop - Ginger" },
+
+  "cotton": "Cotton",
+  "@cotton": { "description": "Crop - Cotton" },
+
+  "soybean": "Soybean",
+  "@soybean": { "description": "Crop - Soybean" },
+
+  
+  
+  "garlic": "Garlic",
+  "@garlic": { "description": "Crop - Garlic" },
+
+  "chilli": "Chilli",
+  "@chilli": { "description": "Crop - Chilli" },
+
+  "coriander": "Coriander",
+  "@coriander": { "description": "Crop - Coriander" },
+
+  "fenugreek": "Fenugreek (Methi)",
+  "@fenugreek": { "description": "Crop - Fenugreek / Methi" },
+
+  "onion_seed": "Onion Seed",
+  "@onion_seed": { "description": "Crop - Onion Seed" },
+
+  
+
+  
+  "onion": "Onion",
+  "@onion": { "description": "Veg - Onion" },
+
+  "potato": "Potato",
+  "@potato": { "description": "Veg - Potato" },
+
+  "okra": "Okra",
+  "@okra": { "description": "Veg - Okra" },
+
+  "cucumber": "Cucumber",
+  "@cucumber": { "description": "Veg - Cucumber" },
+
+  "ridge_gourd": "Ridge Gourd (Dodka)",
+  "@ridge_gourd": { "description": "Veg - Ridge Gourd / Dodka" },
+
+  "bitter_gourd": "Bitter Gourd (Karela)",
+  "@bitter_gourd": { "description": "Veg - Bitter Gourd / Karela" },
+
+  "bottle_gourd": "Bottle Gourd (Dudhi)",
+  "@bottle_gourd": { "description": "Veg - Bottle Gourd / Dudhi" },
+
+  "dill": "Dill (Shepu)",
+  "@dill": { "description": "Veg - Dill / Shepu" },
+
+  
+
+  
+  "mango": "Mango",
+  "@mango": { "description": "Fruit - Mango" },
+
+  "custard_apple": "Custard Apple (Sitaphal)",
+  "@custard_apple": { "description": "Fruit - Custard Apple / Sitaphal" },
+
+  "papaya": "Papaya",
+  "@papaya": { "description": "Fruit - Papaya" },
+
+  "jamun": "Jamun (Java Plum)",
+  "@jamun": { "description": "Fruit - Jamun / Java Plum" },
+
+  
+
+  
+  "fodder_maize": "Fodder Maize",
+  "@fodder_maize": { "description": "Fodder - Maize" },
+
+  "fodder_sorghum": "Fodder Sorghum",
+  "@fodder_sorghum": { "description": "Fodder - Sorghum" },
+
+  "fodder_pearl_millet": "Fodder Pearl Millet",
+  "@fodder_pearl_millet": { "description": "Fodder - Pearl Millet" },
+
+
+  
+  "mango_sapling": "Mango Sapling",
+  "@mango_sapling": { "description": "Sapling - Mango" },
+
+  "pomegranate_sapling": "Pomegranate Sapling",
+  "@pomegranate_sapling": { "description": "Sapling - Pomegranate" },
+
+  "sweet_lime_sapling": "Sweet Lime Sapling",
+  "@sweet_lime_sapling": { "description": "Sapling - Sweet Lime" },
+
+  "orange_sapling": "Orange Sapling",
+  "@orange_sapling": { "description": "Sapling - Orange" },
+
+  "cashew_sapling": "Cashew Sapling",
+  "@cashew_sapling": { "description": "Sapling - Cashew" },
+
+  "coconut_sapling": "Coconut Sapling",
+  "@coconut_sapling": { "description": "Sapling - Coconut" },
+
+  "teak_sapling": "Teak Sapling",
+  "@teak_sapling": { "description": "Sapling - Teak" },
+
+  "bamboo_sapling": "Bamboo Sapling",
+  "@bamboo_sapling": { "description": "Sapling - Bamboo" },
+
+  "tissue_culture_plants": "Tissue Culture Plants",
+  "@tissue_culture_plants": { "description": "Plants - Tissue Culture" },
+
+  "nursery_plants": "Nursery Plants",
+  "@nursery_plants": { "description": "Plants - Nursery" },
+
+"listingRentPerDay": "Rent per day",
+"listingFixedPrice": "Fixed price",
+"listingForRent": "For Rent",
+"listingForSale": "For Sale",
+"listingDetails": "Listing Details",
+"listingCategory": "Category",
+"listingType": "Type",
+"listingCondition": "Condition",
+"listingPostedOn": "Posted On",
+"listingViews": "Views",
+"listingMemberSince": "Member since 2024",
+"listingCall": "Call",
+"listingWhatsApp": "WhatsApp",
+"listingChat": "Chat",
+
   "@kmAway": {
     "placeholders": {
       "distance": {

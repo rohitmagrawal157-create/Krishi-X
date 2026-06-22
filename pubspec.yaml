@@ -16,6 +16,11 @@ dependencies:
   cupertino_icons: ^1.0.8
   shared_preferences: ^2.3.3
   share_plus: ^7.2.2
+  url_launcher: ^6.3.1
+  photo_view: ^0.15.0
+  carousel_slider: ^5.0.0
+  geolocator: ^13.0.2
+  geocoding: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -136,8 +141,8 @@ flutter:
     - assets/sub_ctg/KrishiX_App-60.jpg
     - assets/sub_ctg/KrishiX_App-61.jpg
     - assets/sub_ctg/KrishiX_App-62.jpg
-    - assets/sub_ctg/KrishiX_App-63.jpg
-    - assets/sub_ctg/KrishiX_App-64.jpg
+    - assets/sub_ctg/KrishiX_App-63.jpeg
+    - assets/sub_ctg/KrishiX_App-64.jpeg
 
     # ── Land (65–70) ─────────────────────────────
     - assets/sub_ctg/KrishiX_App-65.jpg

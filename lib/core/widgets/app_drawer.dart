@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:krishix/core/constants/app_colors.dart';
 import 'package:krishix/core/constants/app_spacing.dart';
+import 'package:krishix/core/services/user_auth_service.dart';
 import 'package:krishix/l10n/app_localizations.dart';
 import 'package:krishix/features/profile/edit_profile_screen.dart';
 import 'package:krishix/features/advertise/advertise_screen.dart';
+import 'package:krishix/features/wishlist/wishlist_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 const Color _kOrange = Color(0xFFFF6B00);
 
 class AppDrawer extends StatefulWidget {
@@ -19,6 +22,7 @@ class AppDrawer extends StatefulWidget {
     required this.onLogout,
     this.loggedInPhone,
     this.userName,
+    this.onPhoneChanged,
   });
 
   final Locale               locale;
@@ -29,6 +33,7 @@ class AppDrawer extends StatefulWidget {
   final VoidCallback         onLogout;
   final String?              loggedInPhone;
   final String?              userName;
+  final ValueChanged<String>? onPhoneChanged;
 
   @override
   State<AppDrawer> createState() => _AppDrawerState();
@@ -53,6 +58,26 @@ class _AppDrawerState extends State<AppDrawer> {
     _displayName = (widget.userName?.trim().isNotEmpty == true)
         ? widget.userName! : 'User';
     _phone = widget.loggedInPhone ?? '';
+    _loadSavedProfile();
+  }
+
+  Future<void> _loadSavedProfile() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final savedName  = prefs.getString('user_name')?.trim() ?? '';
+      final savedPhone =
+          UserAuthService.normalizePhone(prefs.getString('user_phone') ?? '');
+      if (!mounted) return;
+      setState(() {
+        if (savedName.isNotEmpty) _displayName = savedName;
+        if (savedPhone.isNotEmpty) _phone = savedPhone;
+      });
+      if (savedPhone.isNotEmpty && savedPhone != widget.loggedInPhone) {
+        widget.onPhoneChanged?.call(savedPhone);
+      }
+    } catch (_) {
+      // Drawer still works with the constructor values.
+    }
   }
 
   @override
@@ -206,6 +231,7 @@ class _AppDrawerState extends State<AppDrawer> {
                                             ? name : 'User';
                                         _phone = phone;
                                       });
+                                      widget.onPhoneChanged?.call(phone);
                                       widget.onProfileTap();
                                     },
                                   ),
@@ -345,12 +371,19 @@ Expanded(
 
       // 4. Saved Items
       _DrawerTile(
-        icon:      Icons.favorite_border,
-        iconColor: _kOrange,
-        label:     l10n.savedItems,
-        trailing:  _arrow,
-        onTap:     () => _showComingSoon(context),
-      ),
+                    icon:      Icons.favorite_border,
+                    iconColor: _kOrange,
+                    label:     l10n.savedItems,
+                    trailing:  _arrow,
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => const WishlistScreen(),
+                        ),
+                      );
+                    },
+                  ),
 
       _gradientDivider(),
 

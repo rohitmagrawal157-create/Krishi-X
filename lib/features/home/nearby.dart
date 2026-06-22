@@ -1,70 +1,54 @@
 // lib/features/home/nearby.dart
-//
-// Light-green outer box containing header + 6 horizontally
-// scrollable white cards. Scroll works properly because:
-//  • The outer Container has a FIXED intrinsic height
-//    (no unbounded vertical constraints passed to ListView).
-//  • ListView is given an explicit height via SizedBox.
-//  • clipBehavior on the Container is Clip.hardEdge so cards
-//    are clipped at the rounded border — no visual bleed.
-//  • The horizontal ListView itself uses Clip.none so card
-//    shadows are never cut off inside the scroll view.
-
 import 'package:flutter/material.dart';
 import 'package:krishix/core/constants/app_colors.dart';
 import 'package:krishix/core/models/listing.dart';
+import 'package:krishix/core/models/user_location.dart';
 import 'package:krishix/features/browse/browse_screen.dart';
 import 'package:krishix/features/listings/listing_detail_screen.dart';
 import 'package:krishix/l10n/app_localizations.dart';
 
 // ─────────────────────────────────────────────────────────────
-// LAYOUT CONSTANTS
-// Photo height is the only hard value. Info height is derived
-// at runtime so the card Column never overflows regardless of
-// device pixel rounding or font scaling.
-//
-// CARD WIDTH REDUCED: 150 -> 130 (smaller, tighter horizontal
-// cards). Card height trimmed accordingly since the distance
-// row was removed.
+// IMAGE POOL
 // ─────────────────────────────────────────────────────────────
-const double _kHeaderH    = 44.0;
-const double _kPhotoH     = 96.0;   // image area
-const double _kCardW      = 130.0;
-const double _kCardGap    = 10.0;
-const double _kCardRadius = 12.0;
-const double _kListVPad   = 10.0;
-// Card height: photo + price row + title (2 lines)
-const double _kCardH      = 170.0;
-// Container: header + top-pad + card + bottom-pad
-const double _kContainerH = _kHeaderH + _kListVPad + _kCardH + _kListVPad;
+const Map<ListingCategory, List<String>> _nearbyImages = {
+  ListingCategory.livestock: ['assets/images/cow1.jpeg',  'assets/images/cow2.jpeg'],
+  ListingCategory.land:      ['assets/images/land1.jpeg', 'assets/images/land2.jpeg'],
+  ListingCategory.tractors:  ['assets/images/tractor1.webp','assets/images/tractor2.webp','assets/images/machine1.jpeg','assets/images/jcb1.jpeg'],
+  ListingCategory.rental:    ['assets/images/rent2.jpeg', 'assets/images/jcb1.jpeg',   'assets/images/machine1.jpeg'],
+  ListingCategory.crops:     ['assets/images/mango.jpeg', 'assets/images/veg1.jpeg',   'assets/images/veg2.jpeg','assets/images/banana.jpeg','assets/images/seeds1.jpeg'],
+};
 
-// ─────────────────────────────────────────────────────────────
-// PRICE FORMATTING — Indian comma format, e.g. ₹4,50,000
-// No "K" / "Lakh" abbreviations — full digit display.
-// ─────────────────────────────────────────────────────────────
-String _formatPrice(int price) {
-  final str = price.toString();
-  if (str.length <= 3) return '₹$str';
+const List<String> _nearbyFallback = [
+  'assets/images/seeds1.jpeg',
+  'assets/images/mango.jpeg',
+  'assets/images/veg1.jpeg',
+];
 
-  final lastThree = str.substring(str.length - 3);
-  final rest = str.substring(0, str.length - 3);
-
-  final buffer = StringBuffer();
-  for (var i = 0; i < rest.length; i++) {
-    final posFromEnd = rest.length - i;
-    buffer.write(rest[i]);
-    if (posFromEnd > 1 && posFromEnd % 2 == 1) {
-      buffer.write(',');
-    }
-  }
-
-  return '₹$buffer,$lastThree';
+String _assetFor(ListingCategory cat, int index) {
+  final pool = _nearbyImages[cat] ?? _nearbyFallback;
+  return pool[index % pool.length];
 }
 
 // ─────────────────────────────────────────────────────────────
-// NEARBY SECTION  — returns a SliverToBoxAdapter
+// PRICE FORMATTER
 // ─────────────────────────────────────────────────────────────
+String _fmtPrice(int price) {
+  final s = price.toString();
+  if (s.length <= 3) return '₹$s';
+  final last = s.substring(s.length - 3);
+  final rest = s.substring(0, s.length - 3);
+  final buf = StringBuffer();
+  for (var i = 0; i < rest.length; i++) {
+    if (i > 0 && (rest.length - i) % 2 == 0) buf.write(',');
+    buf.write(rest[i]);
+  }
+  return '₹${buf.toString()},$last';
+}
 
+// ─────────────────────────────────────────────────────────────
+// NEARBY SECTION — light-green rounded container,
+// 2-column grid, no horizontal scroll
+// ─────────────────────────────────────────────────────────────
 class NearbySection extends StatelessWidget {
   const NearbySection({
     super.key,
@@ -75,7 +59,7 @@ class NearbySection extends StatelessWidget {
 
   final List<Listing>    nearby;
   final AppLocalizations l10n;
-  final dynamic          userLocation;
+  final UserLocation?    userLocation;
 
   @override
   Widget build(BuildContext context) {
@@ -86,99 +70,72 @@ class NearbySection extends StatelessWidget {
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(14, 18, 14, 0),
-        child: SizedBox(
-          height: _kContainerH,   // ← exact height; no intrinsic measurement
-          child: Container(
-            decoration: BoxDecoration(
-              color:        const Color(0xFFEDF7ED),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: AppColors.primaryGreen.withOpacity(0.22),
-                width: 1,
+        child: Container(
+          decoration: BoxDecoration(
+            color:        const Color(0xFFEDF7ED),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: AppColors.primaryGreen.withOpacity(0.22),
+              width: 1,
+            ),
+          ),
+          padding: const EdgeInsets.fromLTRB(12, 0, 12, 14),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+
+              // ── Header ────────────────────────────────────
+              SizedBox(
+                height: 48,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      l10n.nearbyAds,
+                      style: const TextStyle(
+                        fontSize:   15,
+                        fontWeight: FontWeight.w800,
+                        color:      AppColors.textPrimary,
+                      ),
+                    ),
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) =>
+                              BrowseScreen(userLocation: userLocation),
+                        ),
+                      ),
+                      child: Text(
+                        'View All',
+                        style: TextStyle(
+                          fontSize:        13,
+                          fontWeight:      FontWeight.w600,
+                          color:           AppColors.primaryGreen,
+                          decoration:      TextDecoration.underline,
+                          decorationColor: AppColors.primaryGreen,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            // hardEdge clips cards at rounded corners
-            clipBehavior: Clip.hardEdge,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
 
-                // ── Header row ─────────────────────────────────
-                SizedBox(
-                  height: _kHeaderH,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          l10n.nearbyAds,
-                          style: const TextStyle(
-                            fontSize:   15,
-                            fontWeight: FontWeight.w800,
-                            color:      AppColors.textPrimary,
-                          ),
-                        ),
-                        GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute<void>(
-                              builder: (_) => BrowseScreen(
-                                userLocation: userLocation,
-                              ),
-                            ),
-                          ),
-                          child: Text(
-                            'View All',
-                            style: TextStyle(
-                              fontSize:        13,
-                              fontWeight:      FontWeight.w600,
-                              color:           AppColors.primaryGreen,
-                              decoration:      TextDecoration.underline,
-                              decorationColor: AppColors.primaryGreen,
-                            ),
-                          ),
-                        ),
-                      ],
+              // ── 2-column grid ─────────────────────────────
+              _NearbyGrid(
+                listings:     nearby,
+                l10n:         l10n,
+                onTap: (listing) => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => ListingDetailScreen(
+                      listing:      listing,
+                      userLocation: userLocation,
                     ),
                   ),
                 ),
-
-                // ── Horizontal scroll list ──────────────────────
-                // Expanded fills remaining height = _kListVPad*2 + _kCardH
-                Expanded(
-                  child: ListView.separated(
-                    scrollDirection:  Axis.horizontal,
-                    // Clip.none → card shadows not cut off by scroll view
-                    clipBehavior:     Clip.none,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: _kListVPad,
-                      vertical:   _kListVPad,
-                    ),
-                    itemCount:        nearby.length,
-                    separatorBuilder: (_, __) =>
-                        const SizedBox(width: _kCardGap),
-                    itemBuilder: (context, i) {
-                      final listing = nearby[i];
-                      return NearbyListingCard(
-                        index: i,
-                        listing: listing,
-                        locale:  Localizations.localeOf(context),
-                        l10n:    l10n,
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (_) =>
-                                ListingDetailScreen(listing: listing),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -187,40 +144,92 @@ class NearbySection extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────
-// NEARBY LISTING CARD
+// NEARBY GRID — pairs listings into rows of 2
 // ─────────────────────────────────────────────────────────────
-
-class NearbyListingCard extends StatelessWidget {
-  const NearbyListingCard({
-    super.key,
-    required this.listing,
-    required this.locale,
+class _NearbyGrid extends StatelessWidget {
+  const _NearbyGrid({
+    required this.listings,
     required this.l10n,
     required this.onTap,
-    this.index = 0,
   });
 
-  final Listing          listing;
-  final Locale           locale;
-  final AppLocalizations l10n;
-  final VoidCallback     onTap;
-  final int              index;
+  final List<Listing>        listings;
+  final AppLocalizations     l10n;
+  final ValueChanged<Listing> onTap;
 
   @override
   Widget build(BuildContext context) {
-    final title = listing.localizedTitle(locale);
+    final rows = <Widget>[];
+
+    for (var i = 0; i < listings.length; i += 2) {
+      final left  = listings[i];
+      final right = (i + 1 < listings.length) ? listings[i + 1] : null;
+
+      rows.add(
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: _NearbyCard(
+                listing: left,
+                imgIdx:  i,
+                l10n:    l10n,
+                onTap:   () => onTap(left),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: right != null
+                  ? _NearbyCard(
+                      listing: right,
+                      imgIdx:  i + 1,
+                      l10n:    l10n,
+                      onTap:   () => onTap(right),
+                    )
+                  : const SizedBox.shrink(),
+            ),
+          ],
+        ),
+      );
+
+      if (i + 2 < listings.length) {
+        rows.add(const SizedBox(height: 10));
+      }
+    }
+
+    return Column(children: rows);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// NEARBY CARD — white card inside green container
+// ─────────────────────────────────────────────────────────────
+class _NearbyCard extends StatelessWidget {
+  const _NearbyCard({
+    required this.listing,
+    required this.imgIdx,
+    required this.l10n,
+    required this.onTap,
+  });
+
+  final Listing          listing;
+  final int              imgIdx;
+  final AppLocalizations l10n;
+  final VoidCallback     onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final locale = Localizations.localeOf(context);
 
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width:        _kCardW,
-        height:       _kCardH,
         decoration: BoxDecoration(
           color:        Colors.white,
-          borderRadius: BorderRadius.circular(_kCardRadius),
+          borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color:      Colors.black.withOpacity(0.08),
+              color:      Colors.black.withOpacity(0.06),
               blurRadius: 8,
               offset:     const Offset(0, 2),
             ),
@@ -229,129 +238,104 @@ class NearbyListingCard extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
 
-            // ── Photo — fixed height ───────────────────────
-            SizedBox(
-              width:  _kCardW,
-              height: _kPhotoH,
-              child:  _ListingPhoto(listing: listing, index: index),
+            // ── Image ──────────────────────────────────────
+            AspectRatio(
+              aspectRatio: 4 / 3,
+              child: ColoredBox(
+                color: const Color(0xFFF3F7F0),
+                child: Image.asset(
+                  _assetFor(listing.category, imgIdx),
+                  fit:           BoxFit.cover,
+                  filterQuality: FilterQuality.medium,
+                  errorBuilder: (_, __, ___) =>
+                      const ColoredBox(color: Color(0xFFF3F7F0)),
+                ),
+              ),
             ),
 
-            // ── Info — Expanded fills ALL remaining height ─
-            // No hardcoded info height: Expanded absorbs any
-            // sub-pixel difference from device rounding so the
-            // Column never overflows.
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(8, 6, 8, 6),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
+            // ── Info ───────────────────────────────────────
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 7, 8, 9),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
 
-                    // ₹4,50,000 — full digits, no K/Lakh
-                    Text(
-                      _formatPrice(listing.price),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize:   13,
-                        fontWeight: FontWeight.w800,
-                        color:      Colors.green,
-                        height:     1.2,
-                      ),
+                  // Price
+                  Text(
+                    _fmtPrice(listing.price),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize:   14,
+                      fontWeight: FontWeight.w900,
+                      color:      AppColors.primaryGreen,
                     ),
+                  ),
+                  const SizedBox(height: 3),
 
-                    const SizedBox(height: 3),
+                  // Title
+                  Text(
+                    listing.localizedTitle(locale),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize:   12,
+                      fontWeight: FontWeight.w700,
+                      color:      AppColors.textPrimary,
+                      height:     1.25,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
 
-                    // Full title — fills remaining space
-                    Expanded(
-                      child: Text(
-                        title,
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize:   11,
-                          fontWeight: FontWeight.w600,
-                          color:      AppColors.textPrimary.withOpacity(0.75),
-                          height:     1.3,
+                  // Location
+                  Row(
+                    children: [
+                      Icon(Icons.location_on_outlined,
+                          size: 12, color: Colors.grey.shade600),
+                      const SizedBox(width: 3),
+                      Expanded(
+                        child: Text(
+                          listing.location,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize:   10,
+                            fontWeight: FontWeight.w600,
+                            color:      Colors.grey.shade600,
+                          ),
                         ),
                       ),
+                    ],
+                  ),
+
+                  // Verified
+                  if (listing.isVerified) ...[
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        const Icon(Icons.verified_rounded,
+                            size: 12, color: Color(0xFFF57C00)),
+                        const SizedBox(width: 3),
+                        Text(
+                          l10n.verifiedSeller,
+                          style: const TextStyle(
+                            fontSize:   10,
+                            fontWeight: FontWeight.w800,
+                            color:      Color(0xFFF57C00),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
-                ),
+                ],
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-// ─────────────────────────────────────────────────────────────
-// LISTING PHOTO — uses real images, rotates by listing index
-// ─────────────────────────────────────────────────────────────
-
-const Map<ListingCategory, List<String>> _nearbyImages = {
-  ListingCategory.livestock: [
-    'assets/images/cow1.jpeg',
-    'assets/images/cow2.jpeg',
-  ],
-  ListingCategory.land: [
-    'assets/images/land1.jpeg',
-    'assets/images/land2.jpeg',
-  ],
-  ListingCategory.tractors: [
-    'assets/images/tractor1.webp',
-    'assets/images/tractor2.webp',
-    'assets/images/machine1.jpeg',
-    'assets/images/machine2.jpeg',
-    'assets/images/jcb1.jpeg',
-  ],
-  ListingCategory.rental: [
-    'assets/images/rent2.jpeg',
-    'assets/images/jcb1.jpeg',
-    'assets/images/machine1.jpeg',
-  ],
-  ListingCategory.crops: [
-    'assets/images/mango.jpeg',
-    'assets/images/veg1.jpeg',
-    'assets/images/veg2.jpeg',
-    'assets/images/banana.jpeg',
-    'assets/images/seeds1.jpeg',
-    'assets/images/seeds2.jpeg',
-  ],
-};
-
-const List<String> _nearbyFallback = [
-  'assets/images/seeds1.jpeg',
-  'assets/images/seeds2.jpeg',
-  'assets/images/mango.jpeg',
-  'assets/images/veg1.jpeg',
-];
-
-String _assetForCategory(ListingCategory category, [int index = 0]) {
-  final pool = _nearbyImages[category] ?? _nearbyFallback;
-  return pool[index % pool.length];
-}
-
-class _ListingPhoto extends StatelessWidget {
-  const _ListingPhoto({required this.listing, required this.index});
-  final Listing listing;
-  final int     index;
-
-  @override
-  Widget build(BuildContext context) {
-    return Image.asset(
-      _assetForCategory(listing.category, index),
-      width:         _kCardW,
-      height:        _kPhotoH,
-      fit:           BoxFit.cover,
-      filterQuality: FilterQuality.medium,
-      errorBuilder: (_, __, ___) => ColoredBox(
-        color: listing.category.color.withOpacity(0.12),
       ),
     );
   }

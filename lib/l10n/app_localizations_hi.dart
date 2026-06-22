@@ -792,7 +792,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get irrigation_labour => 'सिंचाई मजदूर';
 
   @override
-  String get seeds_and_plants => 'बीज एवं पौधे';
+  String get seeds_and_plants => 'बीज और पौधे';
 
   @override
   String get wheat_seeds => 'गेहूं के बीज';
@@ -804,7 +804,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get cotton_seeds => 'कपास के बीज';
 
   @override
-  String get vegetable_seeds => 'सब्जियों के बीज';
+  String get vegetable_seeds => 'सब्जी के बीज';
 
   @override
   String get plants => 'पौधे';
@@ -996,7 +996,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get commercial_crops => 'व्यावसायिक फसलें';
 
   @override
-  String get wheat => 'गेहूं';
+  String get wheat => 'गेहूँ';
 
   @override
   String get rice => 'चावल';
@@ -1032,7 +1032,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get soybean => 'सोयाबीन';
 
   @override
-  String get groundnut => 'मूंगफली';
+  String get groundnut => 'मूँगफली';
 
   @override
   String get mustard => 'सरसों';
@@ -1077,14 +1077,603 @@ class AppLocalizationsHi extends AppLocalizations {
   String get others => 'अन्य';
 
   @override
-  String get allBuyCategories => 'All Buy Categories';
+  String get allBuyCategories => 'सभी खरीद श्रेणियां';
 
   @override
-  String get allRentCategories => 'All Rent Categories';
+  String get allRentCategories => 'सभी किराये की श्रेणियां';
 
   @override
   String get services_coming_soon => 'सेवाएं जल्द आ रही हैं';
 
   @override
   String get services_coming_soon_subtitle => 'हम आपके लिए कृषि सेवाएं लाने पर काम कर रहे हैं। जुड़े रहें!';
+
+  @override
+  String get sortNewest => 'नवीनतम';
+
+  @override
+  String get sortPriceLowToHigh => 'कीमत: कम से ज्यादा';
+
+  @override
+  String get sortPriceHighToLow => 'कीमत: ज्यादा से कम';
+
+  @override
+  String get filterDealType => 'डील प्रकार';
+
+  @override
+  String get filterPriceRange => 'मूल्य सीमा';
+
+  @override
+  String get filterBrand => 'ब्रांड';
+
+  @override
+  String get filterHpRange => 'एचपी रेंज';
+
+  @override
+  String get filterCondition => 'स्थिति';
+
+  @override
+  String get filterAnimalType => 'पशु प्रकार';
+
+  @override
+  String get filterBreed => 'नस्ल';
+
+  @override
+  String get filterAge => 'उम्र';
+
+  @override
+  String get filterMilkYield => 'दूध उत्पादन / दिन';
+
+  @override
+  String get filterColor => 'रंग';
+
+  @override
+  String get filterArea => 'क्षेत्र';
+
+  @override
+  String get filterSoilType => 'मिट्टी का प्रकार';
+
+  @override
+  String get filterWaterSource => 'पानी का स्रोत';
+
+  @override
+  String get filterLegalDeed => 'कानूनी / दस्तावेज़';
+
+  @override
+  String get filterCropType => 'फसल प्रकार';
+
+  @override
+  String get filterQuantity => 'मात्रा';
+
+  @override
+  String get filterGrade => 'ग्रेड';
+
+  @override
+  String get filterHarvest => 'कटाई';
+
+  @override
+  String get filterProduceType => 'उपज प्रकार';
+
+  @override
+  String get filterSize => 'आकार';
+
+  @override
+  String get filterFreshness => 'ताजगी';
+
+  @override
+  String get filterEquipmentType => 'उपकरण प्रकार';
+
+  @override
+  String get filterRentalDuration => 'किराये की अवधि';
+
+  @override
+  String get filterVerifiedOnly => 'केवल सत्यापित विक्रेता';
+
+  @override
+  String get filterNearbyOnly => 'केवल पास के';
+
+  @override
+  String get filters => 'फ़िल्टर';
+
+  @override
+  String filtersCount(String count) {
+    return 'फ़िल्टर ($count)';
+  }
+
+  @override
+  String get reset => 'रीसेट';
+
+  @override
+  String get applyFilters => 'फ़िल्टर लगाएं';
+
+  @override
+  String get forSale => 'बिक्री के लिए';
+
+  @override
+  String get forRent => 'किराए के लिए';
+
+  @override
+  String get conditionNew => 'नया';
+
+  @override
+  String get conditionUsed => 'पुराना';
+
+  @override
+  String get hpUnder20 => '20 एचपी से कम';
+
+  @override
+  String get hp2130 => '21–30 एचपी';
+
+  @override
+  String get hp3140 => '31–40 एचपी';
+
+  @override
+  String get hp4150 => '41–50 एचपी';
+
+  @override
+  String get hp5160 => '51–60 एचपी';
+
+  @override
+  String get hpAbove60 => '60 एचपी से अधिक';
+
+  @override
+  String get animalHenPoultry => 'मुर्गी / मुर्गीपालन';
+
+  @override
+  String get animalOxBullock => 'बैल / बलद';
+
+  @override
+  String get animalPig => 'सूअर';
+
+  @override
+  String get breedGir => 'गिर';
+
+  @override
+  String get breedSahiwal => 'साहीवाल';
+
+  @override
+  String get breedMurrah => 'मुर्रा';
+
+  @override
+  String get breedHF => 'एचएफ / होलस्टीन';
+
+  @override
+  String get breedJersey => 'जर्सी';
+
+  @override
+  String get breedOsmanabadi => 'उस्मानाबादी';
+
+  @override
+  String get breedSangamneri => 'संगमनेरी';
+
+  @override
+  String get breedOther => 'अन्य';
+
+  @override
+  String get age01Year => '0–1 वर्ष';
+
+  @override
+  String get age13Years => '1–3 वर्ष';
+
+  @override
+  String get age36Years => '3–6 वर्ष';
+
+  @override
+  String get ageAbove6 => '6 वर्ष से अधिक';
+
+  @override
+  String get milk05 => '0–5 लीटर/दिन';
+
+  @override
+  String get milk510 => '5–10 लीटर/दिन';
+
+  @override
+  String get milk1015 => '10–15 लीटर/दिन';
+
+  @override
+  String get milkAbove15 => '15 लीटर/दिन से अधिक';
+
+  @override
+  String get colorBlack => 'काला';
+
+  @override
+  String get colorWhite => 'सफेद';
+
+  @override
+  String get colorBrown => 'भूरा';
+
+  @override
+  String get colorBlackWhite => 'काला और सफेद';
+
+  @override
+  String get colorGrey => 'धूसर';
+
+  @override
+  String get colorMixed => 'मिश्रित';
+
+  @override
+  String get areaUnder1Acre => '1 एकड़ से कम';
+
+  @override
+  String get area13Acres => '1–3 एकड़';
+
+  @override
+  String get area35Acres => '3–5 एकड़';
+
+  @override
+  String get area510Acres => '5–10 एकड़';
+
+  @override
+  String get areaAbove10 => '10 एकड़ से अधिक';
+
+  @override
+  String get soilBlack => 'काली मिट्टी';
+
+  @override
+  String get soilRed => 'लाल मिट्टी';
+
+  @override
+  String get soilAlluvial => 'जलोढ़ मिट्टी';
+
+  @override
+  String get soilLaterite => 'लेटराइट';
+
+  @override
+  String get soilSandy => 'रेतीली मिट्टी';
+
+  @override
+  String get soilLoamy => 'दोमट मिट्टी';
+
+  @override
+  String get waterBorewell => 'बोरवेल';
+
+  @override
+  String get waterCanal => 'नहर';
+
+  @override
+  String get waterOpenWell => 'खुला कुआं';
+
+  @override
+  String get waterTank => 'तालाब';
+
+  @override
+  String get waterRainfed => 'केवल वर्षा आधारित';
+
+  @override
+  String get deed712 => '7/12 उपलब्ध';
+
+  @override
+  String get deedClear => 'स्पष्ट दस्तावेज़';
+
+  @override
+  String get deedLease => 'पट्टे की जमीन';
+
+  @override
+  String get cropTurDal => 'तूर दाल';
+
+  @override
+  String get qtyUnder100kg => '100 किलो से कम';
+
+  @override
+  String get qty100500kg => '100–500 किलो';
+
+  @override
+  String get qty500kg1ton => '500 किलो–1 टन';
+
+  @override
+  String get qty15tons => '1–5 टन';
+
+  @override
+  String get qtyAbove5tons => '5 टन से अधिक';
+
+  @override
+  String get gradeA => 'ग्रेड A';
+
+  @override
+  String get gradeB => 'ग्रेड B';
+
+  @override
+  String get gradeC => 'ग्रेड C';
+
+  @override
+  String get harvestFreshWeek => 'ताज़ा (इस सप्ताह)';
+
+  @override
+  String get harvestThisMonth => 'इस महीने';
+
+  @override
+  String get harvestThisSeason => 'इस सीजन';
+
+  @override
+  String get harvestStored => 'भंडारित';
+
+  @override
+  String get produceSpinach => 'पालक';
+
+  @override
+  String get sizeSmall => 'छोटा';
+
+  @override
+  String get sizeMedium => 'मध्यम';
+
+  @override
+  String get sizeLarge => 'बड़ा';
+
+  @override
+  String get sizeExtraLarge => 'अतिरिक्त बड़ा';
+
+  @override
+  String get freshnessToday => 'आज कटाई हुई';
+
+  @override
+  String get freshness23Days => '2–3 दिन पुरानी';
+
+  @override
+  String get freshnessThisWeek => 'इस सप्ताह';
+
+  @override
+  String get freshnessColdStored => 'कोल्ड स्टोर';
+
+  @override
+  String get rentalJCB => 'जेसीबी / खुदाई मशीन';
+
+  @override
+  String get rentalWeekly => 'साप्ताहिक';
+
+  @override
+  String get rentalMonthly => 'मासिक';
+
+  @override
+  String get rentalFullSeason => 'पूरा सीजन';
+
+  @override
+  String get sortNearestFirst => 'सबसे नजदीक पहले';
+
+  @override
+  String get sortLowestPrice => 'सबसे कम कीमत';
+
+  @override
+  String get sortHighestPrice => 'सबसे अधिक कीमत';
+
+  @override
+  String get sortLowestRent => 'सबसे कम किराया';
+
+  @override
+  String get sortHighestRent => 'सबसे अधिक किराया';
+
+  @override
+  String get priceTractorLow => '₹4 लाख से कम';
+
+  @override
+  String get priceTractorMid => '₹4–₹6 लाख';
+
+  @override
+  String get priceTractorHigh => '₹6 लाख से अधिक';
+
+  @override
+  String get priceCropLow => '₹2K से कम';
+
+  @override
+  String get priceCropMid => '₹2K–₹10K';
+
+  @override
+  String get priceCropHigh => '₹10K से अधिक';
+
+  @override
+  String get priceLivestockLow => '₹50K से कम';
+
+  @override
+  String get priceLivestockMid => '₹50K–₹1 लाख';
+
+  @override
+  String get priceLivestockHigh => '₹1 लाख से अधिक';
+
+  @override
+  String get priceLandLow => '₹15 लाख से कम';
+
+  @override
+  String get priceLandMid => '₹15–₹30 लाख';
+
+  @override
+  String get priceLandHigh => '₹30 लाख से अधिक';
+
+  @override
+  String get priceRentalLow => '₹1K/दिन से कम';
+
+  @override
+  String get priceRentalMid => '₹1K–₹3K/दिन';
+
+  @override
+  String get priceRentalHigh => '₹3K/दिन से अधिक';
+
+  @override
+  String get priceAllLow => '₹10K से कम';
+
+  @override
+  String get priceAllMid => '₹10K–₹1 लाख';
+
+  @override
+  String get priceAllHigh => '₹1 लाख से अधिक';
+
+  @override
+  String resultsCount(String count) {
+    return '$count परिणाम';
+  }
+
+  @override
+  String get cereal_crops => 'अनाज की फसलें';
+
+  @override
+  String get pulse_crops => 'दलहन फसलें';
+
+  @override
+  String get cash_crops => 'नकदी फसलें';
+
+  @override
+  String get spice_crops => 'मसाला फसलें';
+
+  @override
+  String get fruit_crops => 'फल फसलें';
+
+  @override
+  String get fodder_crops => 'चारा फसलें';
+
+  @override
+  String get plants_and_saplings => 'पौधे और पनीरी';
+
+  @override
+  String get rice_paddy => 'चावल (धान)';
+
+  @override
+  String get sorghum_jowar => 'ज्वार';
+
+  @override
+  String get pearl_millet_bajra => 'बाजरा';
+
+  @override
+  String get maize_corn => 'मक्का';
+
+  @override
+  String get barnyard_millet_bhagar => 'सावाँ (भगर)';
+
+  @override
+  String get pigeon_pea_tur => 'अरहर (तुअर)';
+
+  @override
+  String get chickpea_chana => 'चना';
+
+  @override
+  String get green_gram_moong => 'मूँग';
+
+  @override
+  String get black_gram_urad => 'उड़द';
+
+  @override
+  String get lentil_masoor => 'मसूर';
+
+  @override
+  String get field_pea_vatana => 'मटर (वटाना)';
+
+  @override
+  String get cowpea_chawli => 'लोबिया (चवली)';
+
+  @override
+  String get kidney_bean_rajma => 'राजमा';
+
+  @override
+  String get safflower => 'कुसुम';
+
+  @override
+  String get linseed => 'अलसी';
+
+  @override
+  String get castor => 'अरंडी';
+
+  @override
+  String get turmeric => 'हल्दी';
+
+  @override
+  String get ginger => 'अदरक';
+
+  @override
+  String get coriander => 'धनिया';
+
+  @override
+  String get fenugreek => 'मेथी';
+
+  @override
+  String get onion_seed => 'प्याज के बीज';
+
+  @override
+  String get ridge_gourd => 'तोरई';
+
+  @override
+  String get bitter_gourd => 'करेला';
+
+  @override
+  String get bottle_gourd => 'लौकी';
+
+  @override
+  String get dill => 'सोया (शेपू)';
+
+  @override
+  String get custard_apple => 'शरीफा (सीताफल)';
+
+  @override
+  String get jamun => 'जामुन';
+
+  @override
+  String get fodder_maize => 'चारा मक्का';
+
+  @override
+  String get fodder_sorghum => 'चारा ज्वार';
+
+  @override
+  String get fodder_pearl_millet => 'चारा बाजरा';
+
+  @override
+  String get mango_sapling => 'आम का पौधा';
+
+  @override
+  String get pomegranate_sapling => 'अनार का पौधा';
+
+  @override
+  String get sweet_lime_sapling => 'मौसमी का पौधा';
+
+  @override
+  String get orange_sapling => 'संतरे का पौधा';
+
+  @override
+  String get cashew_sapling => 'काजू का पौधा';
+
+  @override
+  String get coconut_sapling => 'नारियल का पौधा';
+
+  @override
+  String get teak_sapling => 'सागौन का पौधा';
+
+  @override
+  String get bamboo_sapling => 'बाँस का पौधा';
+
+  @override
+  String get listingRentPerDay => 'Rent per day';
+
+  @override
+  String get listingFixedPrice => 'Fixed price';
+
+  @override
+  String get listingForRent => 'For Rent';
+
+  @override
+  String get listingForSale => 'For Sale';
+
+  @override
+  String get listingDetails => 'Listing Details';
+
+  @override
+  String get listingCategory => 'Category';
+
+  @override
+  String get listingType => 'Type';
+
+  @override
+  String get listingCondition => 'Condition';
+
+  @override
+  String get listingPostedOn => 'Posted On';
+
+  @override
+  String get listingViews => 'Views';
+
+  @override
+  String get listingMemberSince => 'Member since 2024';
+
+  @override
+  String get listingCall => 'Call';
+
+  @override
+  String get listingWhatsApp => 'WhatsApp';
+
+  @override
+  String get listingChat => 'Chat';
 }

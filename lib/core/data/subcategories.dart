@@ -33,19 +33,33 @@ class CategoryDetail {
 }
 
 class CategorySectionId {
-  static const String cropsAndGrains  = 'crops_and_grains';
-  static const String fruitsVeg       = 'fruits_veg';
-  static const String livestock       = 'livestock';
+  // ── Buy ──────────────────────────────────────────────────
+  static const String cropsAndGrains      = 'crops_and_grains';
+  static const String fruitsVeg           = 'fruits_veg';
+  static const String livestock           = 'livestock';
+  static const String agricultureLandSale = 'agriculture_land_sale'; // Buy: land for sale only
+  static const String seedsAndPlants      = 'seeds_and_plants';
+  static const String farmMachinery       = 'farm_machinery';
+  static const String tractors            = 'tractors';            // Buy: TractorPickerScreen
+  static const String tractorsBuy         = 'tractors_buy';
+  static const String tractorsParts       = 'tractors_parts';
+
+  // ── Rent ─────────────────────────────────────────────────
+  static const String agricultureLandLease = 'agriculture_land_lease'; // Rent: lease only
+  static const String tractorRental        = 'tractor_rental';
+  static const String farmMachineryRent    = 'farm_machinery_rent';
+  static const String jcbRental            = 'jcb_rental';
+
+  // ── Legacy (kept for backward compat) ───────────────────
   static const String agricultureLand = 'agriculture_land';
-  static const String seedsAndPlants  = 'seeds_and_plants';
-  static const String farmMachinery   = 'farm_machinery';
-  static const String tractors        = 'tractors';
   static const String rentals         = 'rentals';
-  static const String tractorsBuy   = 'tractors_buy';
-  static const String tractorsParts = 'tractors_parts';
 }
 
 const Map<String, CategoryDetail> kCategoryDetails = {
+
+  // ════════════════════════════════════════════════════════
+  // BUY CATEGORIES
+  // ════════════════════════════════════════════════════════
 
   // ── Crops & Grains ───────────────────────────────────────
   CategorySectionId.cropsAndGrains: CategoryDetail(
@@ -89,7 +103,6 @@ const Map<String, CategoryDetail> kCategoryDetails = {
         items: [
           SubcategoryItem(labelKey: 'cotton',    imagePath: 'assets/sub_ctg/KrishiX_App-34.jpg'),
           SubcategoryItem(labelKey: 'sugarcane', imagePath: 'assets/sub_ctg/KrishiX_App-39.jpg'),
-        //   SubcategoryItem(labelKey: 'tobacco',   imagePath: 'assets/sub_ctg/KrishiX_App-34.jpg'),
         ],
       ),
     ],
@@ -145,46 +158,24 @@ const Map<String, CategoryDetail> kCategoryDetails = {
           SubcategoryItem(labelKey: 'cow',     imagePath: 'assets/sub_ctg/KrishiX_App-54.jpg'),
           SubcategoryItem(labelKey: 'buffalo', imagePath: 'assets/sub_ctg/KrishiX_App-55.jpg'),
           SubcategoryItem(labelKey: 'bull',    imagePath: 'assets/sub_ctg/KrishiX_App-56.jpg'),
-          SubcategoryItem(labelKey: 'goat',  imagePath: 'assets/sub_ctg/KrishiX_App-59.jpg'),
-          SubcategoryItem(labelKey: 'sheep', imagePath: 'assets/sub_ctg/KrishiX_App-60.jpg'),
+          SubcategoryItem(labelKey: 'goat',    imagePath: 'assets/sub_ctg/KrishiX_App-59.jpg'),
+          SubcategoryItem(labelKey: 'sheep',   imagePath: 'assets/sub_ctg/KrishiX_App-60.jpg'),
         ],
       ),
-    //   SubcategoryGroup(
-    //     titleKey: 'small_animals',
-    //     items: [
-        
-    //     ],
-    //   ),
       SubcategoryGroup(
         titleKey: 'poultry',
         items: [
           SubcategoryItem(labelKey: 'chicken', imagePath: 'assets/sub_ctg/KrishiX_App-61.jpg'),
-          SubcategoryItem(labelKey: 'duck',    imagePath: 'assets/sub_ctg/KrishiX_App-63.jpg'),
+          SubcategoryItem(labelKey: 'duck',    imagePath: 'assets/sub_ctg/KrishiX_App-63.jpeg'),
           SubcategoryItem(labelKey: 'turkey',  imagePath: 'assets/sub_ctg/KrishiX_App-58.jpg'),
-          SubcategoryItem(labelKey: 'quail',   imagePath: 'assets/sub_ctg/KrishiX_App-64.jpg'),
+          SubcategoryItem(labelKey: 'quail',   imagePath: 'assets/sub_ctg/KrishiX_App-64.jpeg'),
         ],
       ),
-    //   SubcategoryGroup(
-    //     titleKey: 'other_animals',
-    //     items: [
-    //       SubcategoryItem(labelKey: 'horse',  imagePath: 'assets/sub_ctg/KrishiX_App-57.jpg'),
-    //       SubcategoryItem(labelKey: 'camel',  imagePath: 'assets/sub_ctg/KrishiX_App-57.jpg'),
-    //       SubcategoryItem(labelKey: 'rabbit', imagePath: 'assets/sub_ctg/KrishiX_App-60.jpg'),
-    //     ],
-    //   ),
-    //   SubcategoryGroup(
-    //     titleKey: 'livestock_products',
-    //     items: [
-    //       SubcategoryItem(labelKey: 'milk_animals',     imagePath: 'assets/sub_ctg/KrishiX_App-54.jpg'),
-    //       SubcategoryItem(labelKey: 'breeding_animals', imagePath: 'assets/sub_ctg/KrishiX_App-55.jpg'),
-    //       SubcategoryItem(labelKey: 'organic_manure',   imagePath: 'assets/sub_ctg/KrishiX_App-62.jpg'),
-    //     ],
-    //   ),
     ],
   ),
 
-  // ── Agriculture Land ─────────────────────────────────────
-  CategorySectionId.agricultureLand: CategoryDetail(
+  // ── Agriculture Land — BUY (sale only) ───────────────────
+  CategorySectionId.agricultureLandSale: CategoryDetail(
     emoji: '🪴',
     titleKey: 'farm_land',
     listingCategory: ListingCategory.land,
@@ -197,53 +188,140 @@ const Map<String, CategoryDetail> kCategoryDetails = {
           SubcategoryItem(labelKey: 'orchard_land',      imagePath: 'assets/sub_ctg/KrishiX_App-69.jpg'),
         ],
       ),
-      SubcategoryGroup(
-        titleKey: 'land_for_lease',
-        items: [
-            SubcategoryItem(labelKey: 'land_for_lease',        imagePath: 'assets/sub_ctg/KrishiX_App-68.jpg'),
-            SubcategoryItem(labelKey: 'partnership_farming',     imagePath: 'assets/sub_ctg/KrishiX_App-65.jpg'),
-        //   SubcategoryItem(labelKey: 'short_term_lease', imagePath: 'assets/sub_ctg/KrishiX_App-67.jpg'),
-        //   SubcategoryItem(labelKey: 'long_term_lease',  imagePath: 'assets/sub_ctg/KrishiX_App-70.jpg'),
-        ],
-      ),
-    //   SubcategoryGroup(
-    //     titleKey: 'farming_partnerships',
-    //     items: [
-    //       SubcategoryItem(labelKey: 'contract_farming',        imagePath: 'assets/sub_ctg/KrishiX_App-68.jpg'),
-    //       SubcategoryItem(labelKey: 'partnership_farming',     imagePath: 'assets/sub_ctg/KrishiX_App-65.jpg'),
-    //       SubcategoryItem(labelKey: 'revenue_sharing_farming', imagePath: 'assets/sub_ctg/KrishiX_App-66.jpg'),
-    //     ],
-    //   ),
     ],
   ),
 
   // ── Seeds & Plants ───────────────────────────────────────
   CategorySectionId.seedsAndPlants: CategoryDetail(
-    emoji: '🌱',
-    titleKey: 'seeds_and_plants',
-    listingCategory: ListingCategory.crops,
-    groups: [
-      SubcategoryGroup(
-        titleKey: 'seeds',
-        items: [
-          SubcategoryItem(labelKey: 'wheat_seeds',     imagePath: 'assets/sub_ctg/KrishiX_App-71.jpg'),
-          SubcategoryItem(labelKey: 'soybean_seeds',   imagePath: 'assets/sub_ctg/KrishiX_App-71.jpg'),
-          SubcategoryItem(labelKey: 'cotton_seeds',    imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
-          SubcategoryItem(labelKey: 'vegetable_seeds', imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
-        ],
-      ),
-      SubcategoryGroup(
-        titleKey: 'plants',
-        items: [
-          SubcategoryItem(labelKey: 'fruit_plants',          imagePath: 'assets/sub_ctg/KrishiX_App-73.jpg'),
-          SubcategoryItem(labelKey: 'nursery_plants',        imagePath: 'assets/sub_ctg/KrishiX_App-74.jpg'),
-          SubcategoryItem(labelKey: 'tissue_culture_plants', imagePath: 'assets/sub_ctg/KrishiX_App-74.jpg'),
-        ],
-      ),
-    ],
-  ),
+  emoji: '🌱',
+  titleKey: 'seeds_and_plants',
+  listingCategory: ListingCategory.crops,
+  groups: [
 
-  // ── Farm Machinery ───────────────────────────────────────
+    // ── CEREAL CROPS ──────────────────────────────────────
+    SubcategoryGroup(
+      titleKey: 'cereal_crops',
+      items: [
+        SubcategoryItem(labelKey: 'wheat',                  imagePath: 'assets/sub_ctg/KrishiX_App-71.jpg'),
+        SubcategoryItem(labelKey: 'rice_paddy',             imagePath: 'assets/sub_ctg/KrishiX_App-71.jpg'),
+        SubcategoryItem(labelKey: 'sorghum_jowar',          imagePath: 'assets/sub_ctg/KrishiX_App-71.jpg'),
+        SubcategoryItem(labelKey: 'pearl_millet_bajra',     imagePath: 'assets/sub_ctg/KrishiX_App-71.jpg'),
+        SubcategoryItem(labelKey: 'maize_corn',             imagePath: 'assets/sub_ctg/KrishiX_App-71.jpg'),
+        SubcategoryItem(labelKey: 'barnyard_millet_bhagar', imagePath: 'assets/sub_ctg/KrishiX_App-71.jpg'),
+      ],
+    ),
+
+    // ── PULSE CROPS ───────────────────────────────────────
+    SubcategoryGroup(
+      titleKey: 'pulse_crops',
+      items: [
+        SubcategoryItem(labelKey: 'pigeon_pea_tur',     imagePath: 'assets/sub_ctg/KrishiX_App-71.jpg'),
+        SubcategoryItem(labelKey: 'chickpea_chana',     imagePath: 'assets/sub_ctg/KrishiX_App-71.jpg'),
+        SubcategoryItem(labelKey: 'green_gram_moong',   imagePath: 'assets/sub_ctg/KrishiX_App-71.jpg'),
+        SubcategoryItem(labelKey: 'black_gram_urad',    imagePath: 'assets/sub_ctg/KrishiX_App-71.jpg'),
+        SubcategoryItem(labelKey: 'lentil_masoor',      imagePath: 'assets/sub_ctg/KrishiX_App-71.jpg'),
+        SubcategoryItem(labelKey: 'field_pea_vatana',   imagePath: 'assets/sub_ctg/KrishiX_App-71.jpg'),
+        SubcategoryItem(labelKey: 'cowpea_chawli',      imagePath: 'assets/sub_ctg/KrishiX_App-71.jpg'),
+        SubcategoryItem(labelKey: 'kidney_bean_rajma',  imagePath: 'assets/sub_ctg/KrishiX_App-71.jpg'),
+      ],
+    ),
+
+    // ── OIL SEEDS ─────────────────────────────────────────
+    SubcategoryGroup(
+      titleKey: 'oil_seeds',
+      items: [
+        SubcategoryItem(labelKey: 'groundnut',  imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'mustard',    imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'sesame',     imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'safflower',  imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'linseed',    imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'castor',     imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+      ],
+    ),
+
+    // ── CASH CROPS ────────────────────────────────────────
+    SubcategoryGroup(
+      titleKey: 'cash_crops',
+      items: [
+        SubcategoryItem(labelKey: 'sugarcane', imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'turmeric',  imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'ginger',    imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'cotton',    imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'soybean',   imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+      ],
+    ),
+
+    // ── SPICE CROPS ───────────────────────────────────────
+    SubcategoryGroup(
+      titleKey: 'spice_crops',
+      items: [
+        SubcategoryItem(labelKey: 'turmeric',   imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'ginger',     imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'garlic',     imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'chilli',     imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'coriander',  imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'fenugreek',  imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'onion_seed', imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+      ],
+    ),
+
+    // ── VEGETABLE SEEDS ───────────────────────────────────
+    SubcategoryGroup(
+      titleKey: 'vegetable_seeds',
+      items: [
+        SubcategoryItem(labelKey: 'onion',        imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'potato',       imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'okra',         imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'chilli',       imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'cucumber',     imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'ridge_gourd',  imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'bitter_gourd', imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'bottle_gourd', imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'dill',         imagePath: 'assets/sub_ctg/KrishiX_App-72.jpg'),
+      ],
+    ),
+
+    // ── FRUIT CROPS ───────────────────────────────────────
+    SubcategoryGroup(
+      titleKey: 'fruit_crops',
+      items: [
+        SubcategoryItem(labelKey: 'mango',          imagePath: 'assets/sub_ctg/KrishiX_App-73.jpg'),
+        SubcategoryItem(labelKey: 'custard_apple',  imagePath: 'assets/sub_ctg/KrishiX_App-73.jpg'),
+        SubcategoryItem(labelKey: 'papaya',         imagePath: 'assets/sub_ctg/KrishiX_App-73.jpg'),
+        SubcategoryItem(labelKey: 'jamun',          imagePath: 'assets/sub_ctg/KrishiX_App-73.jpg'),
+      ],
+    ),
+
+    // ── FODDER CROPS ──────────────────────────────────────
+    SubcategoryGroup(
+      titleKey: 'fodder_crops',
+      items: [
+        SubcategoryItem(labelKey: 'fodder_maize',        imagePath: 'assets/sub_ctg/KrishiX_App-71.jpg'),
+        SubcategoryItem(labelKey: 'fodder_sorghum',      imagePath: 'assets/sub_ctg/KrishiX_App-71.jpg'),
+        SubcategoryItem(labelKey: 'fodder_pearl_millet', imagePath: 'assets/sub_ctg/KrishiX_App-71.jpg'),
+      ],
+    ),
+
+    // ── PLANTS & SAPLINGS ─────────────────────────────────
+    SubcategoryGroup(
+      titleKey: 'plants_and_saplings',
+      items: [
+        SubcategoryItem(labelKey: 'mango_sapling',       imagePath: 'assets/sub_ctg/KrishiX_App-74.jpg'),
+        SubcategoryItem(labelKey: 'pomegranate_sapling', imagePath: 'assets/sub_ctg/KrishiX_App-74.jpg'),
+        SubcategoryItem(labelKey: 'sweet_lime_sapling',  imagePath: 'assets/sub_ctg/KrishiX_App-74.jpg'),
+        SubcategoryItem(labelKey: 'orange_sapling',      imagePath: 'assets/sub_ctg/KrishiX_App-74.jpg'),
+        SubcategoryItem(labelKey: 'cashew_sapling',      imagePath: 'assets/sub_ctg/KrishiX_App-74.jpg'),
+        SubcategoryItem(labelKey: 'coconut_sapling',     imagePath: 'assets/sub_ctg/KrishiX_App-74.jpg'),
+        SubcategoryItem(labelKey: 'teak_sapling',        imagePath: 'assets/sub_ctg/KrishiX_App-74.jpg'),
+        SubcategoryItem(labelKey: 'bamboo_sapling',      imagePath: 'assets/sub_ctg/KrishiX_App-74.jpg'),
+        SubcategoryItem(labelKey: 'tissue_culture_plants', imagePath: 'assets/sub_ctg/KrishiX_App-74.jpg'),
+        SubcategoryItem(labelKey: 'nursery_plants',      imagePath: 'assets/sub_ctg/KrishiX_App-74.jpg'),
+      ],
+    ),
+
+  ],
+),
+  // ── Farm Machinery — BUY ─────────────────────────────────
   CategorySectionId.farmMachinery: CategoryDetail(
     emoji: '⚙️',
     titleKey: 'farm_machinery',
@@ -285,16 +363,16 @@ const Map<String, CategoryDetail> kCategoryDetails = {
           SubcategoryItem(labelKey: 'mini_harvester',    imagePath: 'assets/sub_ctg/KrishiX_App-23.jpg'),
           SubcategoryItem(labelKey: 'reaper',            imagePath: 'assets/sub_ctg/KrishiX_App-23.jpg'),
           SubcategoryItem(labelKey: 'combine_harvester', imagePath: 'assets/sub_ctg/KrishiX_App-23.jpg'),
-          SubcategoryItem(labelKey: 'Drone Harvester', imagePath: 'assets/sub_ctg/KrishiX_App-23.jpg'),
+          SubcategoryItem(labelKey: 'drone_harvester',   imagePath: 'assets/sub_ctg/KrishiX_App-23.jpg'),
         ],
       ),
       SubcategoryGroup(
         titleKey: 'post_harvest',
         items: [
-          SubcategoryItem(labelKey: 'thresher',     imagePath: 'assets/sub_ctg/KrishiX_App-26.jpg'),
-          SubcategoryItem(labelKey: 'baler',        imagePath: 'assets/sub_ctg/KrishiX_App-26.jpg'),
+          SubcategoryItem(labelKey: 'thresher',      imagePath: 'assets/sub_ctg/KrishiX_App-26.jpg'),
+          SubcategoryItem(labelKey: 'baler',         imagePath: 'assets/sub_ctg/KrishiX_App-26.jpg'),
           SubcategoryItem(labelKey: 'grain_cleaner', imagePath: 'assets/sub_ctg/KrishiX_App-26.jpg'),
-          SubcategoryItem(labelKey: 'winnower',     imagePath: 'assets/sub_ctg/KrishiX_App-26.jpg'),
+          SubcategoryItem(labelKey: 'winnower',      imagePath: 'assets/sub_ctg/KrishiX_App-26.jpg'),
         ],
       ),
       SubcategoryGroup(
@@ -317,65 +395,182 @@ const Map<String, CategoryDetail> kCategoryDetails = {
     ],
   ),
 
-  // ── Tractors ─────────────────────────────────────────────
+  // ── Tractors — BUY (routes to TractorPickerScreen) ───────
   CategorySectionId.tractorsBuy: CategoryDetail(
-  emoji: '🚜',
-  titleKey: 'tractors',
-  listingCategory: ListingCategory.tractors,
-  groups: [
-    SubcategoryGroup(
-      titleKey: 'horse_power_hp',
-      items: [
-        SubcategoryItem(labelKey: 'under_20_hp', imagePath: 'assets/sub_ctg/KrishiX_App-17.jpg'),
-        SubcategoryItem(labelKey: 'hp_21_30',    imagePath: 'assets/sub_ctg/KrishiX_App-18.jpg'),
-        SubcategoryItem(labelKey: 'hp_31_40',    imagePath: 'assets/sub_ctg/KrishiX_App-19.jpg'),
-        SubcategoryItem(labelKey: 'hp_41_50',    imagePath: 'assets/sub_ctg/KrishiX_App-20.jpg'),
-        SubcategoryItem(labelKey: 'hp_51_60',    imagePath: 'assets/sub_ctg/KrishiX_App-17.jpg'),
-        SubcategoryItem(labelKey: 'above_60_hp', imagePath: 'assets/sub_ctg/KrishiX_App-18.jpg'),
-      ],
-    ),
-    SubcategoryGroup(
-      titleKey: 'tractor_brands',
-      items: [
-        SubcategoryItem(labelKey: 'mahindra',        imagePath: 'assets/sub_ctg/KrishiX_App-17.jpg'),
-        SubcategoryItem(labelKey: 'swaraj',          imagePath: 'assets/sub_ctg/KrishiX_App-18.jpg'),
-        SubcategoryItem(labelKey: 'sonalika',        imagePath: 'assets/sub_ctg/KrishiX_App-19.jpg'),
-        SubcategoryItem(labelKey: 'john_deere',      imagePath: 'assets/sub_ctg/KrishiX_App-20.jpg'),
-        SubcategoryItem(labelKey: 'massey_ferguson', imagePath: 'assets/sub_ctg/KrishiX_App-18.jpg'),
-        SubcategoryItem(labelKey: 'powertrac',       imagePath: 'assets/sub_ctg/KrishiX_App-18.jpg'),
-        SubcategoryItem(labelKey: 'Other',          imagePath: 'assets/sub_ctg/KrishiX_App-20.jpg'),
-        // SubcategoryItem(labelKey: 'eicher',          imagePath: 'assets/sub_ctg/KrishiX_App-17.jpg'),
-        
-        // SubcategoryItem(labelKey: 'kubota',          imagePath: 'assets/sub_ctg/KrishiX_App-19.jpg'),
-        // SubcategoryItem(labelKey: 'escorts',         imagePath: 'assets/sub_ctg/KrishiX_App-17.jpg'),
-        // SubcategoryItem(labelKey: 'powertrac',       imagePath: 'assets/sub_ctg/KrishiX_App-18.jpg'),
-        // SubcategoryItem(labelKey: 'same_deutz_fahr', imagePath: 'assets/sub_ctg/KrishiX_App-19.jpg'),
-        // SubcategoryItem(labelKey: 'preet',           imagePath: 'assets/sub_ctg/KrishiX_App-20.jpg'),
-      ],
-    ),
-  ],
-),
+    emoji: '🚜',
+    titleKey: 'tractors',
+    listingCategory: ListingCategory.tractors,
+    groups: [
+      SubcategoryGroup(
+        titleKey: 'horse_power_hp',
+        items: [
+          SubcategoryItem(labelKey: 'under_20_hp', imagePath: 'assets/sub_ctg/KrishiX_App-17.jpg'),
+          SubcategoryItem(labelKey: 'hp_21_30',    imagePath: 'assets/sub_ctg/KrishiX_App-18.jpg'),
+          SubcategoryItem(labelKey: 'hp_31_40',    imagePath: 'assets/sub_ctg/KrishiX_App-19.jpg'),
+          SubcategoryItem(labelKey: 'hp_41_50',    imagePath: 'assets/sub_ctg/KrishiX_App-20.jpg'),
+          SubcategoryItem(labelKey: 'hp_51_60',    imagePath: 'assets/sub_ctg/KrishiX_App-17.jpg'),
+          SubcategoryItem(labelKey: 'above_60_hp', imagePath: 'assets/sub_ctg/KrishiX_App-18.jpg'),
+        ],
+      ),
+      SubcategoryGroup(
+        titleKey: 'tractor_brands',
+        items: [
+          SubcategoryItem(labelKey: 'mahindra',        imagePath: 'assets/sub_ctg/KrishiX_App-17.jpg'),
+          SubcategoryItem(labelKey: 'swaraj',          imagePath: 'assets/sub_ctg/KrishiX_App-18.jpg'),
+          SubcategoryItem(labelKey: 'sonalika',        imagePath: 'assets/sub_ctg/KrishiX_App-19.jpg'),
+          SubcategoryItem(labelKey: 'john_deere',      imagePath: 'assets/sub_ctg/KrishiX_App-20.jpg'),
+          SubcategoryItem(labelKey: 'massey_ferguson', imagePath: 'assets/sub_ctg/KrishiX_App-18.jpg'),
+          SubcategoryItem(labelKey: 'powertrac',       imagePath: 'assets/sub_ctg/KrishiX_App-18.jpg'),
+          SubcategoryItem(labelKey: 'Other',           imagePath: 'assets/sub_ctg/KrishiX_App-20.jpg'),
+        ],
+      ),
+    ],
+  ),
 
-CategorySectionId.tractorsParts: CategoryDetail(
-  emoji: '🔧',
-  titleKey: 'tractor_parts',
-  listingCategory: ListingCategory.tractors,
-  groups: [
-    SubcategoryGroup(
-      titleKey: 'tractor_parts',
-      items: [
-        SubcategoryItem(labelKey: 'tyres',           imagePath: 'assets/sub_ctg/KrishiX_App-17.jpg'),
-        SubcategoryItem(labelKey: 'batteries',       imagePath: 'assets/sub_ctg/KrishiX_App-18.jpg'),
-        SubcategoryItem(labelKey: 'hydraulic_parts', imagePath: 'assets/sub_ctg/KrishiX_App-19.jpg'),
-        SubcategoryItem(labelKey: 'pto_parts',       imagePath: 'assets/sub_ctg/KrishiX_App-20.jpg'),
-        SubcategoryItem(labelKey: 'engine_parts',    imagePath: 'assets/sub_ctg/KrishiX_App-17.jpg'),
-        SubcategoryItem(labelKey: 'tractor_seats',   imagePath: 'assets/sub_ctg/KrishiX_App-18.jpg'),
-      ],
-    ),
-  ],
-),
+  // ── Tractor Parts ────────────────────────────────────────
+  CategorySectionId.tractorsParts: CategoryDetail(
+    emoji: '🔧',
+    titleKey: 'tractor_parts',
+    listingCategory: ListingCategory.tractors,
+    groups: [
+      SubcategoryGroup(
+        titleKey: 'tractor_parts',
+        items: [
+          SubcategoryItem(labelKey: 'tyres',           imagePath: 'assets/sub_ctg/KrishiX_App-17.jpg'),
+          SubcategoryItem(labelKey: 'batteries',       imagePath: 'assets/sub_ctg/KrishiX_App-18.jpg'),
+          SubcategoryItem(labelKey: 'hydraulic_parts', imagePath: 'assets/sub_ctg/KrishiX_App-19.jpg'),
+          SubcategoryItem(labelKey: 'pto_parts',       imagePath: 'assets/sub_ctg/KrishiX_App-20.jpg'),
+          SubcategoryItem(labelKey: 'engine_parts',    imagePath: 'assets/sub_ctg/KrishiX_App-17.jpg'),
+          SubcategoryItem(labelKey: 'tractor_seats',   imagePath: 'assets/sub_ctg/KrishiX_App-18.jpg'),
+        ],
+      ),
+    ],
+  ),
 
-  // ── Rentals ──────────────────────────────────────────────
+  // ════════════════════════════════════════════════════════
+  // RENT CATEGORIES
+  // ════════════════════════════════════════════════════════
+
+  // ── Agriculture Land — RENT (lease only) ─────────────────
+  CategorySectionId.agricultureLandLease: CategoryDetail(
+    emoji: '🌿',
+    titleKey: 'lease_land',
+    listingCategory: ListingCategory.land,
+    groups: [
+      SubcategoryGroup(
+        titleKey: 'land_for_lease',
+        items: [
+          SubcategoryItem(labelKey: 'land_for_lease',     imagePath: 'assets/sub_ctg/KrishiX_App-68.jpg'),
+          SubcategoryItem(labelKey: 'partnership_farming', imagePath: 'assets/sub_ctg/KrishiX_App-65.jpg'),
+        ],
+      ),
+    ],
+  ),
+
+  // ── Tractor Rental ───────────────────────────────────────
+  CategorySectionId.tractorRental: CategoryDetail(
+    emoji: '🚜',
+    titleKey: 'tractor_rental',
+    listingCategory: ListingCategory.rental,
+    groups: [
+      SubcategoryGroup(
+        titleKey: 'tractor_rental',
+        items: [
+          SubcategoryItem(labelKey: 'hourly',   imagePath: 'assets/sub_ctg/KrishiX_App-17.jpg'),
+          SubcategoryItem(labelKey: 'daily',    imagePath: 'assets/sub_ctg/KrishiX_App-18.jpg'),
+          SubcategoryItem(labelKey: 'seasonal', imagePath: 'assets/sub_ctg/KrishiX_App-19.jpg'),
+        ],
+      ),
+    //   SubcategoryGroup(
+    //     titleKey: 'tractor_brands',
+    //     items: [
+    //       SubcategoryItem(labelKey: 'mahindra',        imagePath: 'assets/sub_ctg/KrishiX_App-17.jpg'),
+    //       SubcategoryItem(labelKey: 'swaraj',          imagePath: 'assets/sub_ctg/KrishiX_App-18.jpg'),
+    //       SubcategoryItem(labelKey: 'sonalika',        imagePath: 'assets/sub_ctg/KrishiX_App-19.jpg'),
+    //       SubcategoryItem(labelKey: 'john_deere',      imagePath: 'assets/sub_ctg/KrishiX_App-20.jpg'),
+    //       SubcategoryItem(labelKey: 'massey_ferguson', imagePath: 'assets/sub_ctg/KrishiX_App-18.jpg'),
+    //       SubcategoryItem(labelKey: 'Other',           imagePath: 'assets/sub_ctg/KrishiX_App-20.jpg'),
+    //     ],
+    //   ),
+    ],
+  ),
+
+  // ── Farm Machinery Rent ──────────────────────────────────
+  CategorySectionId.farmMachineryRent: CategoryDetail(
+    emoji: '⚙️',
+    titleKey: 'farm_machinery_rent',
+    listingCategory: ListingCategory.rental,
+    groups: [
+      SubcategoryGroup(
+        titleKey: 'machinery_rental',
+        items: [
+          SubcategoryItem(labelKey: 'rotavator',  imagePath: 'assets/sub_ctg/KrishiX_App-21.jpg'),
+          SubcategoryItem(labelKey: 'harvester',  imagePath: 'assets/sub_ctg/KrishiX_App-23.jpg'),
+          SubcategoryItem(labelKey: 'cultivator', imagePath: 'assets/sub_ctg/KrishiX_App-22.jpg'),
+          SubcategoryItem(labelKey: 'seeder',     imagePath: 'assets/sub_ctg/KrishiX_App-24.jpg'),
+          SubcategoryItem(labelKey: 'sprayer',    imagePath: 'assets/sub_ctg/KrishiX_App-25.jpg'),
+          SubcategoryItem(labelKey: 'thresher',   imagePath: 'assets/sub_ctg/KrishiX_App-26.jpg'),
+          SubcategoryItem(labelKey: 'planter',    imagePath: 'assets/sub_ctg/KrishiX_App-28.jpg'),
+        ],
+      ),
+      SubcategoryGroup(
+        titleKey: 'labour_services',
+        items: [
+          SubcategoryItem(labelKey: 'harvest_labour',    imagePath: 'assets/sub_ctg/KrishiX_App-23.jpg'),
+          SubcategoryItem(labelKey: 'plantation_labour', imagePath: 'assets/sub_ctg/KrishiX_App-65.jpg'),
+          SubcategoryItem(labelKey: 'irrigation_labour', imagePath: 'assets/sub_ctg/KrishiX_App-66.jpg'),
+        ],
+      ),
+    ],
+  ),
+
+  // ── JCB Rental ───────────────────────────────────────────
+  CategorySectionId.jcbRental: CategoryDetail(
+    emoji: '🏗️',
+    titleKey: 'jcb_rental',
+    listingCategory: ListingCategory.rental,
+    groups: [
+      SubcategoryGroup(
+        titleKey: 'jcb_types',
+        items: [
+          SubcategoryItem(labelKey: 'jcb_backhoe',   imagePath: 'assets/sub_ctg/KrishiX_App-23.jpg'),
+          SubcategoryItem(labelKey: 'jcb_excavator',  imagePath: 'assets/sub_ctg/KrishiX_App-22.jpg'),
+          SubcategoryItem(labelKey: 'jcb_loader',     imagePath: 'assets/sub_ctg/KrishiX_App-21.jpg'),
+          SubcategoryItem(labelKey: 'jcb_bulldozer',  imagePath: 'assets/sub_ctg/KrishiX_App-27.jpg'),
+        ],
+      ),
+      SubcategoryGroup(
+        titleKey: 'jcb_rental_duration',
+        items: [
+          SubcategoryItem(labelKey: 'hourly',   imagePath: 'assets/sub_ctg/KrishiX_App-17.jpg'),
+          SubcategoryItem(labelKey: 'daily',    imagePath: 'assets/sub_ctg/KrishiX_App-18.jpg'),
+          SubcategoryItem(labelKey: 'weekly',   imagePath: 'assets/sub_ctg/KrishiX_App-19.jpg'),
+          SubcategoryItem(labelKey: 'seasonal', imagePath: 'assets/sub_ctg/KrishiX_App-20.jpg'),
+        ],
+      ),
+    ],
+  ),
+
+  // ════════════════════════════════════════════════════════
+  // LEGACY — kept for backward compatibility
+  // ════════════════════════════════════════════════════════
+
+  CategorySectionId.agricultureLand: CategoryDetail(
+    emoji: '🪴',
+    titleKey: 'farm_land',
+    listingCategory: ListingCategory.land,
+    groups: [
+      SubcategoryGroup(
+        titleKey: 'land_for_sale',
+        items: [
+          SubcategoryItem(labelKey: 'agricultural_land', imagePath: 'assets/sub_ctg/KrishiX_App-65.jpg'),
+          SubcategoryItem(labelKey: 'farm_house_land',   imagePath: 'assets/sub_ctg/KrishiX_App-66.jpg'),
+          SubcategoryItem(labelKey: 'orchard_land',      imagePath: 'assets/sub_ctg/KrishiX_App-69.jpg'),
+        ],
+      ),
+    ],
+  ),
+
   CategorySectionId.rentals: CategoryDetail(
     emoji: '🔄',
     titleKey: 'rentals',
@@ -387,24 +582,6 @@ CategorySectionId.tractorsParts: CategoryDetail(
           SubcategoryItem(labelKey: 'hourly',   imagePath: 'assets/sub_ctg/KrishiX_App-17.jpg'),
           SubcategoryItem(labelKey: 'daily',    imagePath: 'assets/sub_ctg/KrishiX_App-18.jpg'),
           SubcategoryItem(labelKey: 'seasonal', imagePath: 'assets/sub_ctg/KrishiX_App-19.jpg'),
-        ],
-      ),
-      SubcategoryGroup(
-        titleKey: 'machinery_rental',
-        items: [
-          SubcategoryItem(labelKey: 'rotavator',  imagePath: 'assets/sub_ctg/KrishiX_App-21.jpg'),
-          SubcategoryItem(labelKey: 'harvester',  imagePath: 'assets/sub_ctg/KrishiX_App-23.jpg'),
-          SubcategoryItem(labelKey: 'cultivator', imagePath: 'assets/sub_ctg/KrishiX_App-22.jpg'),
-          SubcategoryItem(labelKey: 'seeder',     imagePath: 'assets/sub_ctg/KrishiX_App-24.jpg'),
-          SubcategoryItem(labelKey: 'sprayer',    imagePath: 'assets/sub_ctg/KrishiX_App-25.jpg'),
-        ],
-      ),
-      SubcategoryGroup(
-        titleKey: 'labour_services',
-        items: [
-          SubcategoryItem(labelKey: 'harvest_labour',    imagePath: 'assets/sub_ctg/KrishiX_App-23.jpg'),
-          SubcategoryItem(labelKey: 'plantation_labour', imagePath: 'assets/sub_ctg/KrishiX_App-65.jpg'),
-          SubcategoryItem(labelKey: 'irrigation_labour', imagePath: 'assets/sub_ctg/KrishiX_App-66.jpg'),
         ],
       ),
     ],

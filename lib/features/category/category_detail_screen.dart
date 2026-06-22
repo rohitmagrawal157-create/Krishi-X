@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:krishix/core/constants/app_colors.dart';
 import 'package:krishix/core/constants/app_spacing.dart';
 import 'package:krishix/core/data/subcategories.dart';
+import 'package:krishix/core/models/listing.dart';
 import 'package:krishix/core/models/user_location.dart';
 import 'package:krishix/features/browse/browse_screen.dart';
 import 'package:krishix/l10n/app_localizations.dart';
@@ -21,16 +22,49 @@ class CategoryDetailScreen extends StatelessWidget {
   void _openSubcategory(
     BuildContext context,
     CategoryDetail detail,
+    SubcategoryItem item,
     String itemLabel,
   ) {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => BrowseScreen(
           initialCategory: detail.listingCategory,
-          userLocation:    userLocation,
+          initialListingType: _listingTypeForDetail(detail),
+          initialDetailLabel: itemLabel,
+          initialDetailKeywords: _keywordsForItem(item, itemLabel),
+          userLocation: userLocation,
         ),
       ),
     );
+  }
+
+  ListingType? _listingTypeForDetail(CategoryDetail detail) {
+    if (detail.listingCategory == ListingCategory.rental) return ListingType.rent;
+    if (sectionId == CategorySectionId.agricultureLandLease) {
+      return ListingType.rent;
+    }
+    return ListingType.sell;
+  }
+
+  List<String> _keywordsForItem(SubcategoryItem item, String itemLabel) {
+    final baseKey = item.labelKey.replaceAll('_', ' ');
+    final keywords = <String>{baseKey, item.labelKey, itemLabel};
+    const aliases = <String, List<String>>{
+      'mahindra': ['Mahindra'],
+      'swaraj': ['Swaraj'],
+      'onion': ['Onion'],
+      'buffalo': ['Buffalo'],
+      'rotavator': ['Rotavator'],
+      'agricultural_land': ['Land'],
+      'farm_house_land': ['Land'],
+      'orchard_land': ['Land'],
+      'land_for_lease': ['Land'],
+      'partnership_farming': ['Land'],
+    };
+
+    keywords.addAll(aliases[item.labelKey] ?? const []);
+
+    return keywords.toList(growable: false);
   }
 
   @override
@@ -45,13 +79,25 @@ class CategoryDetailScreen extends StatelessWidget {
           backgroundColor: AppColors.primaryGreen,
           foregroundColor: Colors.white,
           elevation: 0,
-          // ── white back button, no icon in title ──
-          leading: IconButton(
-            icon: const Icon(
-                Icons.arrow_back_ios_new_rounded,
-                size: 20, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
+         leading: IconButton(
+  icon: const Icon(
+    Icons.arrow_back_ios_new_rounded,
+    size: 22,
+    color: Colors.white,
+    weight: 900.0,
+  ),
+  onPressed: () => Navigator.of(context).pop(),
+  splashRadius: 20,
+  padding: const EdgeInsets.all(6),
+  constraints: const BoxConstraints(
+    minWidth: 40,
+    minHeight: 40,
+  ),
+  style: IconButton.styleFrom(
+    shape: const CircleBorder(),
+    backgroundColor: Colors.white.withOpacity(0.12),
+  ),
+),
           title: const Text('Category'),
         ),
         body: const Center(
@@ -67,15 +113,28 @@ class CategoryDetailScreen extends StatelessWidget {
         foregroundColor: Colors.white,
         elevation: 0,
         centerTitle: false,
-        // ── white back button ──
         leading: IconButton(
-          icon: const Icon(
-              Icons.arrow_back_ios_new_rounded,
-              size: 20, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        // ── title text only — emoji + icon removed ──
+  icon: const Icon(
+    Icons.arrow_back_ios_new_rounded,
+    size: 22,
+    color: Colors.white,
+    weight: 900.0,
+  ),
+  onPressed: () => Navigator.of(context).pop(),
+  splashRadius: 20,
+  padding: const EdgeInsets.all(6),
+  constraints: const BoxConstraints(
+    minWidth: 40,
+    minHeight: 40,
+  ),
+  style: IconButton.styleFrom(
+    shape: const CircleBorder(),
+    backgroundColor: Colors.white.withOpacity(0.12),
+  ),
+),
         title: Text(
+          // l10nLookup handles all titleKeys; new rent keys fall
+          // back gracefully to the key itself if not in ARB yet
           l10nLookup(l10n, detail.titleKey),
           style: const TextStyle(
             fontWeight: FontWeight.w800,
@@ -88,13 +147,13 @@ class CategoryDetailScreen extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
         itemCount: detail.groups.length,
         separatorBuilder: (_, __) => const SizedBox(height: 8),
-        // ── divider line removed ──
         itemBuilder: (context, index) {
           final group = detail.groups[index];
           return _SubcategoryGroupSection(
             group: group,
             l10n:  l10n,
-            onItemTap: (item) => _openSubcategory(context, detail, item),
+            onItemTap: (item, label) =>
+                _openSubcategory(context, detail, item, label),
           );
         },
       ),
@@ -111,14 +170,13 @@ class _SubcategoryGroupSection extends StatelessWidget {
 
   final SubcategoryGroup     group;
   final AppLocalizations     l10n;
-  final ValueChanged<String> onItemTap;
+  final void Function(SubcategoryItem item, String label) onItemTap;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // ── Group title — NO divider line ──
         Text(
           l10nLookup(l10n, group.titleKey),
           style: const TextStyle(
@@ -128,11 +186,9 @@ class _SubcategoryGroupSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 14),
-
-        // ── Grid — same layout as home screen ──
         LayoutBuilder(
           builder: (context, constraints) {
-            const cols     = 4;
+            const cols     = 3;
             const hGap     = 10.0;
             const runGap   = 14.0;
             final totalGap = (cols - 1) * hGap;
@@ -153,21 +209,19 @@ class _SubcategoryGroupSection extends StatelessWidget {
                     label:   label,
                     imgSize: imgSize,
                     labelH:  labelH,
-                    onTap:   () => onItemTap(label),
+                    onTap:   () => onItemTap(item, label),
                   ),
                 );
               }).toList(),
             );
           },
         ),
-
         const SizedBox(height: 16),
       ],
     );
   }
 }
 
-// ── Tile — same style as _CategoryTile in home_screen ──
 class _SubcategoryTile extends StatelessWidget {
   const _SubcategoryTile({
     required this.item,
@@ -192,8 +246,6 @@ class _SubcategoryTile extends StatelessWidget {
         mainAxisSize:       MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-
-          // ── Square image — same as home ──────────────────
           Container(
             width:  imgSize,
             height: imgSize,
@@ -218,10 +270,7 @@ class _SubcategoryTile extends StatelessWidget {
               ),
             ),
           ),
-
           const SizedBox(height: 6),
-
-          // ── Label — same as home ──────────────────────────
           SizedBox(
             height: labelH,
             child: Align(
@@ -232,9 +281,9 @@ class _SubcategoryTile extends StatelessWidget {
                 maxLines:  2,
                 overflow:  TextOverflow.ellipsis,
                 style: const TextStyle(
-                  fontSize:   11,
+                  fontSize:   12,
                   fontWeight: FontWeight.w700,
-                  height:     1.3,
+                  height:     1.25,
                   color:      AppColors.textPrimary,
                 ),
               ),
@@ -245,3 +294,5 @@ class _SubcategoryTile extends StatelessWidget {
     );
   }
 }
+
+
