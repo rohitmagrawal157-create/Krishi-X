@@ -105,9 +105,7 @@ Future<_SavedProfile> _loadSavedProfile() async {
     previousPhone = UserAuthService.normalizePhone(
       prefs.getString('user_previous_phone') ?? '',
     );
-  } catch (_) {
-    // Seller profile should still render if local preferences are unavailable.
-  }
+  } catch (_) {}
 
   final registered = await UserAuthService.findUser(phone);
   if (name.isEmpty) name = registered?.fullName.trim() ?? '';
@@ -133,8 +131,7 @@ class SellerProfileScreen extends StatelessWidget {
   final Listing       listing;
   final UserLocation? userLocation;
 
-  // ── Safe phone getter (fallback to empty string) ──────────
-  String get _phone => listing.sellerPhone ?? '';
+  String get _phone    => listing.sellerPhone ?? '';
   String get _sellerId => listing.sellerId ?? '';
 
   Future<void> _callSeller(BuildContext context, String phone) async {
@@ -147,7 +144,6 @@ class SellerProfileScreen extends StatelessWidget {
       );
       return;
     }
-    // Strip spaces for tel: URI
     final digits = UserAuthService.normalizePhone(phone);
     final uri    = Uri(scheme: 'tel', path: digits);
     final ok     = await launchUrl(uri);
@@ -184,243 +180,214 @@ class SellerProfileScreen extends StatelessWidget {
       builder: (context, snapshot) {
         final profile = snapshot.data ??
             const _SavedProfile(
-              name: '',
-              phone: '',
-              previousPhone: '',
-              loggedInPhone: '',
+              name: '', phone: '', previousPhone: '', loggedInPhone: '',
             );
-        final ownsThisSeller = profile.ownsSellerPhone(_phone);
-        final sellerName = ownsThisSeller && profile.name.isNotEmpty
+        final ownsThisSeller  = profile.ownsSellerPhone(_phone);
+        final sellerName      = ownsThisSeller && profile.name.isNotEmpty
             ? profile.name
             : listing.sellerName;
-        final sellerPhone = ownsThisSeller && profile.phone.isNotEmpty
+        final sellerPhone     = ownsThisSeller && profile.phone.isNotEmpty
             ? profile.phone
             : _phone;
-        final phoneDisplay = sellerPhone.isNotEmpty
+        final phoneDisplay    = sellerPhone.isNotEmpty
             ? '+91 ${UserAuthService.normalizePhone(sellerPhone)}'
             : 'Not available';
-        final ads = _sellerId.isNotEmpty
+        final ads             = _sellerId.isNotEmpty
             ? MockListings.bySeller(_sellerId)
             : <Listing>[];
-        final sellerListings = ads.isNotEmpty ? ads : <Listing>[listing];
-        final memberSince = _earliestDate(
+        final sellerListings  = ads.isNotEmpty ? ads : <Listing>[listing];
+        final memberSince     = _earliestDate(
           sellerListings.expand((ad) => [ad.sellerMemberSince, ad.postedOn]),
         );
         final memberSinceLabel = memberSince != null
             ? _formatMonthYear(memberSince)
             : listing.memberSinceLabel;
         final totalViews = sellerListings.fold<int>(
-          0,
-          (sum, ad) => sum + (ad.viewCount ?? 0),
-        );
-        final totalLikes = sellerListings.fold<int>(
-          0,
-          (sum, ad) => sum + (ad.likeCount ?? 0),
+          0, (sum, ad) => sum + (ad.viewCount ?? 0),
         );
         final initials = sellerName.isNotEmpty
             ? sellerName.trim().split(' ')
                 .take(2).map((w) => w[0].toUpperCase()).join()
             : '?';
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: _kGreen,
-        foregroundColor: Colors.white,
-        elevation:       0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded,
-              size: 20, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: const Text('Seller Profile',
-            style: TextStyle(fontWeight: FontWeight.w800)),
-      ),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
-        children: [
-
-          // ── Identity card ───────────────────────────────
-          Container(
-            width:   double.infinity,
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color:        const Color(0xFFF8FBF8),
-              borderRadius: BorderRadius.circular(16),
-              border:       Border.all(color: Colors.grey.shade200),
+        return Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            backgroundColor: _kGreen,
+            foregroundColor: Colors.white,
+            elevation:       0,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios_new_rounded,
+                  size: 20, color: Colors.white),
+              onPressed: () => Navigator.of(context).pop(),
             ),
-            child: Column(
-              children: [
-                // Avatar
-                Container(
-                  width: 76, height: 76,
-                  decoration: BoxDecoration(
-                    color:        _kGreen.withOpacity(0.12),
-                    borderRadius: BorderRadius.circular(38),
-                    border: Border.all(
-                        color: _kGreen.withOpacity(0.25), width: 2),
-                  ),
-                  child: Center(
-                    child: Text(
-                      initials,
-                      style: const TextStyle(
-                        fontSize:   28,
-                        fontWeight: FontWeight.w800,
-                        color:      _kGreen,
+            title: const Text('Seller Profile',
+                style: TextStyle(fontWeight: FontWeight.w800)),
+          ),
+          body: ListView(
+            padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
+            children: [
+
+              // ── Identity card ────────────────────────────
+              Container(
+                width:   double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color:        const Color(0xFFF8FBF8),
+                  borderRadius: BorderRadius.circular(16),
+                  border:       Border.all(color: Colors.grey.shade200),
+                ),
+                child: Column(
+                  children: [
+                    // Avatar
+                    Container(
+                      width: 76, height: 76,
+                      decoration: BoxDecoration(
+                        color:        _kGreen.withOpacity(0.12),
+                        borderRadius: BorderRadius.circular(38),
+                        border: Border.all(
+                            color: _kGreen.withOpacity(0.25), width: 2),
+                      ),
+                      child: Center(
+                        child: Text(
+                          initials,
+                          style: const TextStyle(
+                            fontSize:   28,
+                            fontWeight: FontWeight.w800,
+                            color:      _kGreen,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
 
-                  const SizedBox(height: 14),
+                    const SizedBox(height: 14),
 
-                Text(
-                  sellerName,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize:   20,
-                    fontWeight: FontWeight.w800,
-                    color:      AppColors.textPrimary,
-                  ),
-                ),
-
-                const SizedBox(height: 8),
-
-                // Verified + Farmer chips
-                Wrap(
-                  alignment:  WrapAlignment.center,
-                  spacing:    8,
-                  runSpacing: 8,
-                  children: [
-                    if (listing.isVerified)
-                      _Chip(
-                        icon:  Icons.verified_rounded,
-                        label: l10n.verifiedSeller,
-                        color: _kOrange,
+                    Text(
+                      sellerName,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize:   20,
+                        fontWeight: FontWeight.w800,
+                        color:      AppColors.textPrimary,
                       ),
-                    const _Chip(
-                      emoji: '',
-                      label: 'Farmer',
-                      color: _kGreen,
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    Wrap(
+                      alignment:  WrapAlignment.center,
+                      spacing:    8,
+                      runSpacing: 8,
+                      children: [
+                        if (listing.isVerified)
+                          _Chip(
+                            icon:  Icons.verified_rounded,
+                            label: l10n.verifiedSeller,
+                            color: _kOrange,
+                          ),
+                        const _Chip(
+                          emoji: '',
+                          label: 'Farmer',
+                          color: _kGreen,
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 18),
+                    Divider(color: Colors.grey.shade200, height: 1),
+                    const SizedBox(height: 16),
+
+                    _ProfileStatsRow(
+                      adsCount: sellerListings.length,
+                      views:    totalViews,
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    _InfoTile(
+                      icon:  Icons.call_rounded,
+                      label: 'Mobile Number',
+                      value: phoneDisplay,
+                      trailing: sellerPhone.isNotEmpty
+                          ? GestureDetector(
+                              onTap: () => _copyPhone(context, sellerPhone),
+                              child: Icon(Icons.copy_rounded,
+                                  size: 18, color: Colors.grey.shade500),
+                            )
+                          : null,
+                    ),
+
+                    const SizedBox(height: 14),
+
+                    _InfoTile(
+                      icon:  Icons.calendar_today_rounded,
+                      label: 'Member Since',
+                      value: memberSinceLabel,
+                    ),
+
+                    const SizedBox(height: 14),
+
+                    _InfoTile(
+                      icon:  Icons.local_offer_rounded,
+                      label: 'Total Ads',
+                      value: '${sellerListings.length} '
+                          '${sellerListings.length == 1 ? 'ad' : 'ads'}',
                     ),
                   ],
                 ),
-
-                const SizedBox(height: 18),
-                Divider(color: Colors.grey.shade200, height: 1),
-                const SizedBox(height: 16),
-
-                _ProfileStatsRow(
-                  adsCount: sellerListings.length,
-                //   likes:    totalLikes,
-                  views:    totalViews,
-                ),
-
-                const SizedBox(height: 16),
-
-                // Mobile number row
-                _InfoTile(
-                  icon:  Icons.call_rounded,
-                  label: 'Mobile Number',
-                  value: phoneDisplay,
-                  trailing: sellerPhone.isNotEmpty
-                      ? GestureDetector(
-                          onTap: () => _copyPhone(context, sellerPhone),
-                          child: Icon(Icons.copy_rounded,
-                              size: 18, color: Colors.grey.shade500),
-                        )
-                      : null,
-                ),
-
-                const SizedBox(height: 14),
-
-                // Member since row
-                _InfoTile(
-                  icon:  Icons.calendar_today_rounded,
-                  label: 'Member Since',
-                  value: memberSinceLabel,
-                ),
-
-                const SizedBox(height: 14),
-
-                // Total ads row
-                _InfoTile(
-                  icon:  Icons.local_offer_rounded,
-                  label: 'Total Ads',
-                  value: '${sellerListings.length} '
-                      '${sellerListings.length == 1 ? 'ad' : 'ads'}',
-                ),
-              ],
-            ),
-          ),
-
-          const SizedBox(height: 16),
-
-          // ── Call button ─────────────────────────────────
-        //   if (sellerPhone.isNotEmpty && !ownsThisSeller)
-        //     SizedBox(
-        //       width:  double.infinity,
-        //       height: 50,
-        //       child: ElevatedButton.icon(
-        //         onPressed: () => _callSeller(context, sellerPhone),
-        //         icon:  const Icon(Icons.call_rounded, size: 18),
-        //         label: Text(
-        //           'Call ${sellerName.split(' ').first}',
-        //           style: const TextStyle(
-        //               fontSize: 15, fontWeight: FontWeight.w800),
-        //         ),
-        //         style: ElevatedButton.styleFrom(
-        //           backgroundColor: _kGreen,
-        //           foregroundColor: Colors.white,
-        //           elevation:       0,
-        //           shape: RoundedRectangleBorder(
-        //               borderRadius: BorderRadius.circular(12)),
-        //         ),
-        //       ),
-        //     ),
-
-        //   const SizedBox(height: 28),
-
-          // ── All ads header ──────────────────────────────
-          Row(
-            children: [
-              Text(
-                'All Ads by $sellerName',
-                style: const TextStyle(
-                  fontSize:   16,
-                  fontWeight: FontWeight.w800,
-                  color:      AppColors.textPrimary,
-                ),
               ),
-              const Spacer(),
-            //   Text(
-            //     '${ads.length}',
-            //     style: TextStyle(
-            //       fontSize:   14,
-            //       fontWeight: FontWeight.w700,
-            //       color:      _kGreen,
-            //     ),
-            //   ),
+
+              const SizedBox(height: 24),
+
+              // ── All ads header ───────────────────────────
+              Row(
+                children: [
+                  Text(
+                    'All Ads by $sellerName',
+                    style: const TextStyle(
+                      fontSize:   16,
+                      fontWeight: FontWeight.w800,
+                      color:      AppColors.textPrimary,
+                    ),
+                  ),
+                  const Spacer(),
+                  // if (ads.isNotEmpty)
+                  //   Container(
+                  //     padding: const EdgeInsets.symmetric(
+                  //         horizontal: 10, vertical: 4),
+                  //     decoration: BoxDecoration(
+                  //       color:        _kGreen.withOpacity(0.10),
+                  //       borderRadius: BorderRadius.circular(20),
+                  //     ),
+                  //     // child: Text(
+                  //     //   '${ads.length} ads',
+                  //     //   style: TextStyle(
+                  //     //     fontSize:   12,
+                  //     //     fontWeight: FontWeight.w700,
+                  //     //     color:      _kGreen,
+                  //     //   ),
+                  //     // ),
+                  //   ),
+                ],
+              ),
+
+              const SizedBox(height: 14),
+
+              if (ads.isEmpty)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24),
+                  child: Center(
+                    child: Text(
+                      'No other ads by this seller.',
+                      style: TextStyle(color: Colors.grey.shade500),
+                    ),
+                  ),
+                )
+              else
+                _SellerAdsList(ads: ads, userLocation: userLocation),
             ],
           ),
-
-          const SizedBox(height: 14),
-
-          if (ads.isEmpty)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 24),
-              child: Center(
-                child: Text(
-                  'No other ads from this seller yet.',
-                  style: TextStyle(color: Colors.grey.shade500),
-                ),
-              ),
-            )
-          else
-            _SellerAdsGrid(ads: ads, userLocation: userLocation),
-        ],
-      ),
-    );
+        );
       },
     );
   }
@@ -476,12 +443,9 @@ class _Chip extends StatelessWidget {
 class _ProfileStatsRow extends StatelessWidget {
   const _ProfileStatsRow({
     required this.adsCount,
-    // required this.likes,
     required this.views,
   });
-
   final int adsCount;
-//   final int likes;
   final int views;
 
   @override
@@ -495,14 +459,6 @@ class _ProfileStatsRow extends StatelessWidget {
             value: _formatCount(adsCount),
           ),
         ),
-        // const SizedBox(width: 8),
-        // Expanded(
-        //   child: _ProfileStat(
-        //     icon:  Icons.favorite_rounded,
-        //     label: 'Likes',
-        //     value: _formatCount(likes),
-        //   ),
-        // ),
         const SizedBox(width: 8),
         Expanded(
           child: _ProfileStat(
@@ -522,7 +478,6 @@ class _ProfileStat extends StatelessWidget {
     required this.label,
     required this.value,
   });
-
   final IconData icon;
   final String   label;
   final String   value;
@@ -630,48 +585,35 @@ class _InfoTile extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────
-// SELLER ADS GRID
+// SELLER ADS LIST  (replaces the old 2-column grid)
 // ─────────────────────────────────────────────────────────────
-class _SellerAdsGrid extends StatelessWidget {
-  const _SellerAdsGrid({required this.ads, this.userLocation});
-  final List<Listing>     ads;
-  final UserLocation?     userLocation;
+class _SellerAdsList extends StatelessWidget {
+  const _SellerAdsList({required this.ads, this.userLocation});
+  final List<Listing>  ads;
+  final UserLocation?  userLocation;
 
   @override
   Widget build(BuildContext context) {
-    final rows = <Widget>[];
-    for (var i = 0; i < ads.length; i += 2) {
-      final left  = ads[i];
-      final right = (i + 1 < ads.length) ? ads[i + 1] : null;
-      rows.add(Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: _SellerAdCard(
-              listing:      left,
-              imgIdx:       i,
-              userLocation: userLocation,
-            ),
+    return Column(
+      children: [
+        for (var i = 0; i < ads.length; i++) ...[
+          _SellerAdCard(
+            listing:      ads[i],
+            imgIdx:       i,
+            userLocation: userLocation,
           ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: right != null
-                ? _SellerAdCard(
-                    listing:      right,
-                    imgIdx:       i + 1,
-                    userLocation: userLocation,
-                  )
-                : const SizedBox.shrink(),
-          ),
+          if (i < ads.length - 1) const SizedBox(height: 10),
         ],
-      ));
-      if (i + 2 < ads.length) rows.add(const SizedBox(height: 10));
-    }
-    return Column(children: rows);
+      ],
+    );
   }
 }
 
-class _SellerAdCard extends StatelessWidget {
+// ─────────────────────────────────────────────────────────────
+// SELLER AD CARD  — horizontal list style matching screenshot
+// Layout: [thumbnail] | [title · price · year · dot · location] | [♡]
+// ─────────────────────────────────────────────────────────────
+class _SellerAdCard extends StatefulWidget {
   const _SellerAdCard({
     required this.listing,
     required this.imgIdx,
@@ -682,81 +624,226 @@ class _SellerAdCard extends StatelessWidget {
   final UserLocation? userLocation;
 
   @override
+  State<_SellerAdCard> createState() => _SellerAdCardState();
+}
+
+class _SellerAdCardState extends State<_SellerAdCard> {
+  bool _saved = false;
+
+  @override
   Widget build(BuildContext context) {
-    final locale = Localizations.localeOf(context);
+    final locale  = Localizations.localeOf(context);
+    final listing = widget.listing;
+
+    // Year — from postedOn or null
+    final year = listing.postedOn?.year.toString();
+
+    // Category label (short)
+    final categoryLabel = _categoryLabel(listing.category);
+
+    // Rental duration suffix
+    final rentSuffix = listing.type == ListingType.rent &&
+            listing.rentalDuration != null
+        ? ' / ${listing.rentalDuration!.toLowerCase()}'
+        : '';
 
     return GestureDetector(
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute<void>(
           builder: (_) => ListingDetailScreen(
             listing:      listing,
-            imageIndex:   imgIdx,
-            userLocation: userLocation,
+            imageIndex:   widget.imgIdx,
+            userLocation: widget.userLocation,
           ),
         ),
       ),
       child: Container(
         decoration: BoxDecoration(
           color:        Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(14),
           border:       Border.all(color: Colors.grey.shade200),
           boxShadow: [
             BoxShadow(
               color:      Colors.black.withOpacity(0.05),
-              blurRadius: 6,
+              blurRadius: 8,
               offset:     const Offset(0, 2),
             ),
           ],
         ),
         clipBehavior: Clip.antiAlias,
-        child: Column(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize:       MainAxisSize.min,
           children: [
-            AspectRatio(
-              aspectRatio: 4 / 3,
+
+            // ── Thumbnail ───────────────────────────────
+            SizedBox(
+              width:  120,
+              height: 110,
               child: Image.asset(
-                _imageFor(listing.category, imgIdx),
+                _imageFor(listing.category, widget.imgIdx),
                 fit:           BoxFit.cover,
                 filterQuality: FilterQuality.medium,
                 errorBuilder:  (_, __, ___) =>
                     const ColoredBox(color: Color(0xFFF3F7F0)),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 7, 8, 9),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    _formatPrice(listing.price),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize:   14,
-                      fontWeight: FontWeight.w900,
-                      color:      _kGreen,
+
+            // ── Info ─────────────────────────────────────
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(12, 10, 8, 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment:  MainAxisAlignment.center,
+                  children: [
+
+                    // Title
+                    Text(
+                      listing.localizedTitle(locale),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize:   14,
+                        fontWeight: FontWeight.w800,
+                        color:      AppColors.textPrimary,
+                        height:     1.3,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 3),
-                  Text(
-                    listing.localizedTitle(locale),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize:   12,
-                      fontWeight: FontWeight.w700,
-                      color:      AppColors.textPrimary,
-                      height:     1.25,
+
+                    const SizedBox(height: 6),
+
+                    // Price
+                    Text(
+                      '${_formatPrice(listing.price)}$rentSuffix',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize:   15,
+                        fontWeight: FontWeight.w900,
+                        color:      _kGreen,
+                      ),
                     ),
-                  ),
-                ],
+
+                    const SizedBox(height: 6),
+
+                    // Year • Category  (meta row)
+                    Row(
+                      children: [
+                        if (year != null) ...[
+                          Text(
+                            year,
+                            style: TextStyle(
+                              fontSize:   12,
+                              fontWeight: FontWeight.w600,
+                              color:      Colors.grey.shade500,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: Container(
+                              width: 3, height: 3,
+                              decoration: BoxDecoration(
+                                color:  Colors.grey.shade400,
+                                shape:  BoxShape.circle,
+                              ),
+                            ),
+                          ),
+                        ],
+                        Flexible(
+                          child: Text(
+                            categoryLabel,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize:   12,
+                              fontWeight: FontWeight.w600,
+                              color:      Colors.grey.shade500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 4),
+
+                    // Location
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(Icons.location_on_rounded,
+                            size: 12, color: _kOrange),
+                        const SizedBox(width: 3),
+                        Flexible(
+                          child: Text(
+                            listing.location,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize:   11,
+                              fontWeight: FontWeight.w600,
+                              color:      Colors.grey.shade600,
+                            ),
+                          ),
+                        ),
+                        if (listing.distanceKm != null) ...[
+                          Text(
+                            '  •  ${listing.distanceKm!.toStringAsFixed(1)} km',
+                            style: TextStyle(
+                              fontSize:   11,
+                              color:      Colors.grey.shade500,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
+
+            // ── Save / heart button ─────────────────────
+            // Padding(
+            //   padding: const EdgeInsets.fromLTRB(0, 10, 10, 0),
+            //   child: GestureDetector(
+            //     onTap: () => setState(() => _saved = !_saved),
+            //     child: Container(
+            //       width:  34, height: 34,
+            //       decoration: BoxDecoration(
+            //         color:        _saved
+            //             ? Colors.red.withOpacity(0.08)
+            //             : Colors.grey.shade100,
+            //         borderRadius: BorderRadius.circular(17),
+            //         border: Border.all(
+            //           color: _saved
+            //               ? Colors.red.withOpacity(0.25)
+            //               : Colors.grey.shade300,
+            //           width: 1,
+            //         ),
+            //       ),
+            //       // child: Icon(
+            //       //   _saved
+            //       //       ? Icons.favorite_rounded
+            //       //       : Icons.favorite_border_rounded,
+            //       //   size:  16,
+            //       //   color: _saved ? Colors.red : _kGreen,
+            //       // ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),
     );
+  }
+
+  String _categoryLabel(ListingCategory cat) {
+    switch (cat) {
+      case ListingCategory.tractors:  return 'Tractor';
+      case ListingCategory.livestock: return 'Livestock';
+      case ListingCategory.land:      return 'Farm Land';
+      case ListingCategory.crops:     return 'Crops';
+      case ListingCategory.rental:    return 'Rental';
+      default:                        return 'Other';
+    }
   }
 }

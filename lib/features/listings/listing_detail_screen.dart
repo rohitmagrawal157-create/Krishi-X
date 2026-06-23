@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:math' as math;
 
@@ -19,7 +18,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 
 const Color _kGreen  = AppColors.primaryGreen;
 const Color _kOrange = Color(0xFFF57C00);
-
 
 // Orange gradient — wishlist, dots, page counter
 const LinearGradient _kOrangeGrad = LinearGradient(
@@ -440,6 +438,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
             foregroundColor:           Colors.white,
             automaticallyImplyLeading: false,
             leading: IconButton(
+              // FIX: white background, green icon
               icon: _whiteIconBtn(Icons.arrow_back_ios_new_rounded),
               onPressed: () => Navigator.of(context).pop(),
             ),
@@ -467,23 +466,25 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                 ),
                 onPressed: () => setState(() => _saved = !_saved),
               ),
-              // Share — white background with green icon
+              // FIX: Share — white background, green icon
               IconButton(
                 icon: Container(
                   width:  38, height: 38,
                   decoration: BoxDecoration(
                     color:        Colors.white,
                     borderRadius: BorderRadius.circular(19),
-                    boxShadow: const [
+                    border: Border.all(
+                        color: _kGreen.withOpacity(0.25), width: 1),
+                    boxShadow: [
                       BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 5,
-                        offset: Offset(0, 2),
+                        color:      Colors.black.withOpacity(0.12),
+                        blurRadius: 6,
+                        offset:     const Offset(0, 2),
                       ),
                     ],
                   ),
                   child: _isSharing
-                      ? const SizedBox(
+                      ? SizedBox(
                           width: 16, height: 16,
                           child: CircularProgressIndicator(
                               strokeWidth: 2, color: _kGreen))
@@ -590,7 +591,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
 
                   const SizedBox(height: 12),
 
-                  // ── Location + live distance ───────────────
+                  // ── Location + live distance ──────────
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -710,18 +711,21 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
     );
   }
 
-  // ── White icon button helper ─────────────────────────────
+  // ── White circle icon button (back + share) ──────────────
+  // FIX: white bg, subtle green border, green icon — replaces old green gradient
   Widget _whiteIconBtn(IconData icon) {
     return Container(
       width:  38, height: 38,
       decoration: BoxDecoration(
         color:        Colors.white,
         borderRadius: BorderRadius.circular(19),
-        boxShadow: const [
+        border: Border.all(
+            color: _kGreen.withOpacity(0.25), width: 1),
+        boxShadow: [
           BoxShadow(
-            color: Colors.black26,
-            blurRadius: 5,
-            offset: Offset(0, 2),
+            color:      Colors.black.withOpacity(0.12),
+            blurRadius: 6,
+            offset:     const Offset(0, 2),
           ),
         ],
       ),
@@ -825,9 +829,9 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                   ),
                 ),
 
-                // Dot indicators — active dot uses orange gradient
+                // Dot indicators — full width, truly centered
                 Positioned(
-                  bottom: 14, left: 0, right: 60,
+                  bottom: 14, left: 0, right: 0,
                   child: IgnorePointer(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -853,21 +857,24 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                 ),
 
                 // Page counter — orange gradient pill, bottom-right
+                // Positioned independently so it never shifts the dot center
                 Positioned(
                   bottom: 10, right: 14,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 5),
-                    decoration: BoxDecoration(
-                      gradient:     _kOrangeGrad,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      '${currentIdx + 1}/${_images.length}',
-                      style: const TextStyle(
-                        color:      Colors.white,
-                        fontSize:   12,
-                        fontWeight: FontWeight.w700,
+                  child: IgnorePointer(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 5),
+                      decoration: BoxDecoration(
+                        gradient:     _kOrangeGrad,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        '${currentIdx + 1}/${_images.length}',
+                        style: const TextStyle(
+                          color:      Colors.white,
+                          fontSize:   12,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
                   ),

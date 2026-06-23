@@ -9,6 +9,13 @@ import 'package:krishix/features/browse/browse_screen.dart';
 import 'package:krishix/l10n/app_localizations.dart';
 import 'package:krishix/l10n/l10n_lookup.dart';
 
+// ── Ad banners — cycles through all 3 ───────────────────────
+const List<String> _adBanners = [
+  'assets/images/ads1.jpeg',
+  'assets/images/ads2.jpeg',
+  'assets/images/ads3.jpeg',
+];
+
 class CategoryDetailScreen extends StatelessWidget {
   const CategoryDetailScreen({
     super.key,
@@ -28,18 +35,20 @@ class CategoryDetailScreen extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => BrowseScreen(
-          initialCategory: detail.listingCategory,
-          initialListingType: _listingTypeForDetail(detail),
-          initialDetailLabel: itemLabel,
+          initialCategory:       detail.listingCategory,
+          initialListingType:    _listingTypeForDetail(detail),
+          initialDetailLabel:    itemLabel,
           initialDetailKeywords: _keywordsForItem(item, itemLabel),
-          userLocation: userLocation,
+          userLocation:          userLocation,
         ),
       ),
     );
   }
 
   ListingType? _listingTypeForDetail(CategoryDetail detail) {
-    if (detail.listingCategory == ListingCategory.rental) return ListingType.rent;
+    if (detail.listingCategory == ListingCategory.rental) {
+      return ListingType.rent;
+    }
     if (sectionId == CategorySectionId.agricultureLandLease) {
       return ListingType.rent;
     }
@@ -47,24 +56,40 @@ class CategoryDetailScreen extends StatelessWidget {
   }
 
   List<String> _keywordsForItem(SubcategoryItem item, String itemLabel) {
-    final baseKey = item.labelKey.replaceAll('_', ' ');
+    final baseKey  = item.labelKey.replaceAll('_', ' ');
     final keywords = <String>{baseKey, item.labelKey, itemLabel};
-    const aliases = <String, List<String>>{
-      'mahindra': ['Mahindra'],
-      'swaraj': ['Swaraj'],
-      'onion': ['Onion'],
-      'buffalo': ['Buffalo'],
-      'rotavator': ['Rotavator'],
+    const aliases  = <String, List<String>>{
+      'mahindra':          ['Mahindra'],
+      'swaraj':            ['Swaraj'],
+      'onion':             ['Onion'],
+      'buffalo':           ['Buffalo'],
+      'rotavator':         ['Rotavator'],
       'agricultural_land': ['Land'],
-      'farm_house_land': ['Land'],
-      'orchard_land': ['Land'],
-      'land_for_lease': ['Land'],
+      'farm_house_land':   ['Land'],
+      'orchard_land':      ['Land'],
+      'land_for_lease':    ['Land'],
       'partnership_farming': ['Land'],
     };
-
     keywords.addAll(aliases[item.labelKey] ?? const []);
-
     return keywords.toList(growable: false);
+  }
+
+  Widget _backButton(BuildContext context) {
+    return IconButton(
+      icon: const Icon(
+        Icons.arrow_back_ios_new_rounded,
+        size:  22,
+        color: Colors.white,
+      ),
+      onPressed:    () => Navigator.of(context).pop(),
+      splashRadius: 20,
+      padding:      const EdgeInsets.all(6),
+      constraints:  const BoxConstraints(minWidth: 40, minHeight: 40),
+      style: IconButton.styleFrom(
+        shape:           const CircleBorder(),
+        backgroundColor: Colors.white.withOpacity(0.12),
+      ),
+    );
   }
 
   @override
@@ -78,27 +103,9 @@ class CategoryDetailScreen extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: AppColors.primaryGreen,
           foregroundColor: Colors.white,
-          elevation: 0,
-         leading: IconButton(
-  icon: const Icon(
-    Icons.arrow_back_ios_new_rounded,
-    size: 22,
-    color: Colors.white,
-    weight: 900.0,
-  ),
-  onPressed: () => Navigator.of(context).pop(),
-  splashRadius: 20,
-  padding: const EdgeInsets.all(6),
-  constraints: const BoxConstraints(
-    minWidth: 40,
-    minHeight: 40,
-  ),
-  style: IconButton.styleFrom(
-    shape: const CircleBorder(),
-    backgroundColor: Colors.white.withOpacity(0.12),
-  ),
-),
-          title: const Text('Category'),
+          elevation:       0,
+          leading:         _backButton(context),
+          title:           const Text('Category'),
         ),
         body: const Center(
           child: Text('No subcategories available yet.'),
@@ -106,35 +113,40 @@ class CategoryDetailScreen extends StatelessWidget {
       );
     }
 
+    // ── Build interleaved list: group → ad → group → ad … ──
+    final List<Widget> bodyItems = [];
+
+    for (var i = 0; i < detail.groups.length; i++) {
+      final group = detail.groups[i];
+
+      // ── Subcategory group ──────────────────────────────
+      bodyItems.add(
+        _SubcategoryGroupSection(
+          group: group,
+          l10n:  l10n,
+          onItemTap: (item, label) =>
+              _openSubcategory(context, detail, item, label),
+        ),
+      );
+
+      // ── Ad banner after every group ────────────────────
+      bodyItems.add(
+        _AdBanner(imagePath: _adBanners[i % _adBanners.length]),
+      );
+
+      // ── Small gap after the ad ─────────────────────────
+      bodyItems.add(const SizedBox(height: 16));
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: AppColors.primaryGreen,
         foregroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: false,
-        leading: IconButton(
-  icon: const Icon(
-    Icons.arrow_back_ios_new_rounded,
-    size: 22,
-    color: Colors.white,
-    weight: 900.0,
-  ),
-  onPressed: () => Navigator.of(context).pop(),
-  splashRadius: 20,
-  padding: const EdgeInsets.all(6),
-  constraints: const BoxConstraints(
-    minWidth: 40,
-    minHeight: 40,
-  ),
-  style: IconButton.styleFrom(
-    shape: const CircleBorder(),
-    backgroundColor: Colors.white.withOpacity(0.12),
-  ),
-),
+        elevation:       0,
+        centerTitle:     false,
+        leading:         _backButton(context),
         title: Text(
-          // l10nLookup handles all titleKeys; new rent keys fall
-          // back gracefully to the key itself if not in ARB yet
           l10nLookup(l10n, detail.titleKey),
           style: const TextStyle(
             fontWeight: FontWeight.w800,
@@ -143,24 +155,39 @@ class CategoryDetailScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: ListView.separated(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
-        itemCount: detail.groups.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 8),
-        itemBuilder: (context, index) {
-          final group = detail.groups[index];
-          return _SubcategoryGroupSection(
-            group: group,
-            l10n:  l10n,
-            onItemTap: (item, label) =>
-                _openSubcategory(context, detail, item, label),
-          );
-        },
+      body: ListView(
+        padding:  const EdgeInsets.fromLTRB(16, 16, 16, 32),
+        children: bodyItems,
       ),
     );
   }
 }
 
+// ─────────────────────────────────────────────────────────────
+// AD BANNER
+// ─────────────────────────────────────────────────────────────
+class _AdBanner extends StatelessWidget {
+  const _AdBanner({required this.imagePath});
+  final String imagePath;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: Image.asset(
+        imagePath,
+        width:        double.infinity,
+        fit:          BoxFit.fitWidth,
+        filterQuality: FilterQuality.medium,
+        errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// SUBCATEGORY GROUP SECTION
+// ─────────────────────────────────────────────────────────────
 class _SubcategoryGroupSection extends StatelessWidget {
   const _SubcategoryGroupSection({
     required this.group,
@@ -168,8 +195,8 @@ class _SubcategoryGroupSection extends StatelessWidget {
     required this.onItemTap,
   });
 
-  final SubcategoryGroup     group;
-  final AppLocalizations     l10n;
+  final SubcategoryGroup group;
+  final AppLocalizations l10n;
   final void Function(SubcategoryItem item, String label) onItemTap;
 
   @override
@@ -216,12 +243,15 @@ class _SubcategoryGroupSection extends StatelessWidget {
             );
           },
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
       ],
     );
   }
 }
 
+// ─────────────────────────────────────────────────────────────
+// SUBCATEGORY TILE
+// ─────────────────────────────────────────────────────────────
 class _SubcategoryTile extends StatelessWidget {
   const _SubcategoryTile({
     required this.item,
@@ -253,8 +283,7 @@ class _SubcategoryTile extends StatelessWidget {
               color:        const Color(0xFFEDF7ED),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: AppColors.primaryGreen.withOpacity(0.22),
-              ),
+                  color: AppColors.primaryGreen.withOpacity(0.22)),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(11),
@@ -294,5 +323,3 @@ class _SubcategoryTile extends StatelessWidget {
     );
   }
 }
-
-

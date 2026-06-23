@@ -688,11 +688,11 @@ class _GreenTopBarDelegate extends SliverPersistentHeaderDelegate {
                               ),
                               if (onLocationTap != null) ...[
                                 const SizedBox(width: 2),
-                                Icon(
-                                  Icons.my_location_rounded,
-                                  color: Colors.white.withOpacity(0.85),
-                                  size: 16,
-                                ),
+                                // Icon(
+                                //   Icons.my_location_rounded,
+                                //   color: Colors.white.withOpacity(0.85),
+                                //   size: 16,
+                                // ),
                               ],
                             ],
                           ),
