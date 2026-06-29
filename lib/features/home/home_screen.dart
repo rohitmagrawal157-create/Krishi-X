@@ -16,8 +16,14 @@ import 'package:krishix/features/category/category_detail_screen.dart';
 import 'package:krishix/features/category/tractor_picker_screen.dart';
 import 'package:krishix/features/wishlist/wishlist_screen.dart';
 
-const double _kTopBarContentHeight = 52.0;
-const double _kDividerHeight       = 3.0;
+// ── Row 1: status + location row height ──────────────────────
+const double _kRow1Height    = 48.0;
+// ── Row 2: search + icons row height ─────────────────────────
+const double _kRow2Height    = 52.0;
+const double _kDividerHeight = 1.0;
+// Total pinned header = status bar + row1 + divider + row2
+double _totalHeaderHeight(double statusBarH) =>
+    statusBarH + _kRow1Height + _kDividerHeight + _kRow2Height + 8;
 
 enum _CategoryFilter { buy, rent, services }
 
@@ -41,7 +47,7 @@ String _tr(String key, String locale) {
     case 'buy':
       if (locale == 'hi') return 'खरीदें';
       if (locale == 'mr') return 'खरेदी करा';
-      if (locale == 'gu') return 'ખરીદો';
+      if (locale == 'gu') return 'ખरीदો';
       return 'Buy';
     case 'rent':
       if (locale == 'hi') return 'किराया';
@@ -66,7 +72,7 @@ String _tr(String key, String locale) {
     case 'lease_land':
       if (locale == 'hi') return 'जमीन किराये पर';
       if (locale == 'mr') return 'जमीन भाड्याने';
-      if (locale == 'gu') return 'જમીન ભાડે';
+      if (locale == 'gu') return 'જमीন ભાડे';
       return 'Lease Land';
     case 'tractor_rental':
       if (locale == 'hi') return 'ट्रैक्टर किराया';
@@ -76,22 +82,22 @@ String _tr(String key, String locale) {
     case 'farm_machinery_rent':
       if (locale == 'hi') return 'कृषि यंत्र किराया';
       if (locale == 'mr') return 'शेती यंत्र भाडे';
-      if (locale == 'gu') return 'ખેત મશીન ભાડે';
+      if (locale == 'gu') return 'ખेत મशीन ભাડे';
       return 'Farm Machinery';
     case 'jcb_rental':
       if (locale == 'hi') return 'JCB किराया';
       if (locale == 'mr') return 'JCB भाडे';
-      if (locale == 'gu') return 'JCB ભાડે';
+      if (locale == 'gu') return 'JCB ભाડे';
       return 'JCB Rental';
     case 'all_buy':
       if (locale == 'hi') return 'सभी खरीद श्रेणियां';
       if (locale == 'mr') return 'सर्व खरेदी श्रेणी';
-      if (locale == 'gu') return 'બધી ખरीद શ્રેणीઓ';
+      if (locale == 'gu') return 'બधी ખरीद શ્રेणIઓ';
       return 'All Buy Categories';
     case 'all_rent':
       if (locale == 'hi') return 'सभी किराया श्रेणियां';
       if (locale == 'mr') return 'सर्व भाडे श्रेणी';
-      if (locale == 'gu') return 'બधી ભાડે શ્રેणीઓ';
+      if (locale == 'gu') return 'બধी ભાડे શ્રेणIઓ';
       return 'All Rent Categories';
     default:
       return key;
@@ -106,8 +112,8 @@ class HomeScreen extends StatefulWidget {
     this.onLocationTap,
   });
 
-  final VoidCallback  onMenuTap;
-  final UserLocation  userLocation;
+  final VoidCallback             onMenuTap;
+  final UserLocation             userLocation;
   final Future<void> Function()? onLocationTap;
 
   @override
@@ -141,8 +147,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void didUpdateWidget(covariant HomeScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.userLocation.displayName !=
-            widget.userLocation.displayName ||
+    if (oldWidget.userLocation.displayName != widget.userLocation.displayName ||
+        oldWidget.userLocation.city != widget.userLocation.city ||
+        oldWidget.userLocation.district != widget.userLocation.district ||
+        oldWidget.userLocation.state != widget.userLocation.state ||
+        oldWidget.userLocation.scope != widget.userLocation.scope ||
         oldWidget.userLocation.latitude != widget.userLocation.latitude ||
         oldWidget.userLocation.longitude != widget.userLocation.longitude) {
       _resetAndReload();
@@ -267,17 +276,15 @@ class _HomeScreenState extends State<HomeScreen> {
       return;
     }
     if (sectionId == CategorySectionId.tractorRental) {
-      Navigator.of(context).push(
-        MaterialPageRoute<void>(
-          builder: (_) => BrowseScreen(
-            initialCategory: ListingCategory.rental,
-            initialListingType: ListingType.rent,
-            initialDetailLabel: 'Tractor Rental',
-            initialDetailKeywords: const ['tractor'],
-            userLocation: widget.userLocation,
-          ),
+      Navigator.of(context).push(MaterialPageRoute<void>(
+        builder: (_) => BrowseScreen(
+          initialCategory:       ListingCategory.rental,
+          initialListingType:    ListingType.rent,
+          initialDetailLabel:    'Tractor Rental',
+          initialDetailKeywords: const ['tractor'],
+          userLocation:          widget.userLocation,
         ),
-      );
+      ));
       return;
     }
     Navigator.of(context).push(MaterialPageRoute<void>(
@@ -295,11 +302,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _showAllCategoriesSheet(BuildContext context) {
-    final l10n    = AppLocalizations.of(context)!;
-    final loc     = l10n.localeName;
-    final allCats = _allCategories(l10n);
+    final l10n      = AppLocalizations.of(context)!;
+    final loc       = l10n.localeName;
+    final allCats   = _allCategories(l10n);
     final sheetCats = allCats.where((c) => c.filter == _activeFilter).toList();
-    final title = _activeFilter == _CategoryFilter.buy
+    final title     = _activeFilter == _CategoryFilter.buy
         ? _tr('all_buy', loc) : _tr('all_rent', loc);
 
     showModalBottomSheet<void>(
@@ -323,7 +330,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 width: 40, height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
+                  color:        Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -333,18 +340,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   children: [
                     Text(title,
-                      style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.w800,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
+                        style: const TextStyle(
+                            fontSize:   18,
+                            fontWeight: FontWeight.w800,
+                            color:      AppColors.textPrimary)),
                     const Spacer(),
                     GestureDetector(
                       onTap: () => Navigator.pop(sheetCtx),
                       child: Container(
-                        width: 32, height: 32,
+                        width:  32, height: 32,
                         decoration: BoxDecoration(
-                          color: Colors.grey.shade100,
+                          color:        Colors.grey.shade100,
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: const Icon(Icons.close,
@@ -362,15 +368,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   controller: scrollCtrl,
                   padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4, mainAxisSpacing: 16,
-                    crossAxisSpacing: 10, childAspectRatio: 0.78,
+                    crossAxisCount:  4,
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 10,
+                    childAspectRatio: 0.78,
                   ),
-                  itemCount: sheetCats.length,
+                  itemCount:   sheetCats.length,
                   itemBuilder: (_, i) {
                     final cat = sheetCats[i];
                     return _SheetCategoryTile(
-                      label: cat.label, imagePath: cat.imagePath,
-                      color: cat.color,
+                      label:     cat.label,
+                      imagePath: cat.imagePath,
+                      color:     cat.color,
                       onTap: () {
                         Navigator.pop(sheetCtx);
                         _openCategoryDetail(context, cat.sectionId);
@@ -388,9 +397,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n    = AppLocalizations.of(context)!;
-    final loc     = l10n.localeName;
-    final allCats = _allCategories(l10n);
+    final l10n     = AppLocalizations.of(context)!;
+    final loc      = l10n.localeName;
+    final allCats  = _allCategories(l10n);
     final filtered = allCats.where((c) => c.filter == _activeFilter).toList();
     final statusH  = MediaQuery.of(context).padding.top;
 
@@ -399,69 +408,32 @@ class _HomeScreenState extends State<HomeScreen> {
       child: CustomScrollView(
         controller: _scrollController,
         physics: const BouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics(),
-        ),
+            parent: AlwaysScrollableScrollPhysics()),
         slivers: [
 
-          // ── Pinned green top bar ─────────────────────────
+          // ── TWO-ROW PINNED HEADER ──────────────────────────
           SliverPersistentHeader(
             pinned: true,
-            delegate: _GreenTopBarDelegate(
+            delegate: _TwoRowHeaderDelegate(
               statusBarHeight:   statusH,
-              contentHeight:     _kTopBarContentHeight,
-              dividerHeight:     _kDividerHeight,
-              locationName:      widget.userLocation.displayName,
+              locationName:      widget.userLocation.headerLabel,
               onMenuTap:         widget.onMenuTap,
               onLocationTap:     widget.onLocationTap,
+              onSearchTap:       () => _openBrowse(context),
               onNotificationTap: () {},
-              onWishlistTap:     () {
-                Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => const WishlistScreen(),
-                  ),
-                );
+              onWishlistTap: () {
+                Navigator.of(context).push(MaterialPageRoute<void>(
+                  builder: (_) => const WishlistScreen(),
+                ));
               },
-            ),
-          ),
-
-          // ── Search bar ───────────────────────────────────
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
-              child: GestureDetector(
-                onTap: () => _openBrowse(context),
-                child: Container(
-                  height:  52,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  decoration: BoxDecoration(
-                    color:        Colors.white,
-                    borderRadius: BorderRadius.circular(26),
-                    border: Border.all(color: Colors.grey.shade300, width: 1.5),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.search, color: Colors.grey.shade600, size: 26),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Text(
-                          l10n.searchPlaceholder,
-                          style: TextStyle(
-                            color: Colors.grey.shade600,
-                            fontSize: AppTextSize.body,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              l10n: l10n,
             ),
           ),
 
           // ── Banner ───────────────────────────────────────
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
               child: _HomeBanner(
                 l10n:        l10n,
                 onBannerTap: () => _openBannerPage(context),
@@ -472,7 +444,7 @@ class _HomeScreenState extends State<HomeScreen> {
           // ── Buy / Rent / Services filter chips ───────────
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 20, 16, 12),
+              padding: const EdgeInsets.fromLTRB(16, 18, 16, 12),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -480,21 +452,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     label:  _tr('buy', loc),
                     active: _activeFilter == _CategoryFilter.buy,
                     color:  const Color(0xFF2E7D32),
-                    onTap:  () => setState(() => _activeFilter = _CategoryFilter.buy),
+                    onTap:  () => setState(
+                        () => _activeFilter = _CategoryFilter.buy),
                   ),
                   const SizedBox(width: 10),
                   _FilterChip(
                     label:  _tr('rent', loc),
                     active: _activeFilter == _CategoryFilter.rent,
                     color:  const Color(0xFFF57C00),
-                    onTap:  () => setState(() => _activeFilter = _CategoryFilter.rent),
+                    onTap:  () => setState(
+                        () => _activeFilter = _CategoryFilter.rent),
                   ),
                   const SizedBox(width: 10),
                   _FilterChip(
                     label:  _tr('services', loc),
                     active: _activeFilter == _CategoryFilter.services,
                     color:  const Color(0xFF0277BD),
-                    onTap:  () => setState(() => _activeFilter = _CategoryFilter.services),
+                    onTap:  () => setState(
+                        () => _activeFilter = _CategoryFilter.services),
                   ),
                 ],
               ),
@@ -553,7 +528,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               borderRadius: BorderRadius.circular(20),
                               boxShadow: [
                                 BoxShadow(
-                                  color:      const Color(0xFFF57C00).withOpacity(0.28),
+                                  color:      const Color(0xFFF57C00)
+                                      .withOpacity(0.28),
                                   blurRadius: 6,
                                   offset:     const Offset(0, 2),
                                 ),
@@ -576,12 +552,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
           ),
 
-          // ── Nearby section ────────────────────────────────
-          // NearbySection(
-          //   nearby:       _nearbyItems,
-          //   l10n:         l10n,
-          //   userLocation: widget.userLocation,
-          // ),
+          // ── Location filter hint ─────────────────────────
+          SliverToBoxAdapter(
+            child: _LocationScopeBanner(location: widget.userLocation),
+          ),
 
           // ── All products feed ────────────────────────────
           AllProductsSection(
@@ -597,144 +571,235 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// PINNED GREEN TOP BAR — with wishlist + notification icons
+// TWO-ROW PINNED HEADER
+//
+//  ┌──────────────────────────────────────────────────┐  ← green
+//  │ ☰   📍 Aurangabad, MH  ▾                         │  Row 1
+//  ├──────────────────────────────────────────────────┤  1px divider
+//  │ 🔍 Search anything…       ♡   🔔                 │  Row 2
+//  └──────────────────────────────────────────────────┘  ← green
 // ═══════════════════════════════════════════════════════════════
-class _GreenTopBarDelegate extends SliverPersistentHeaderDelegate {
-  _GreenTopBarDelegate({
+class _TwoRowHeaderDelegate extends SliverPersistentHeaderDelegate {
+  _TwoRowHeaderDelegate({
     required this.statusBarHeight,
-    required this.contentHeight,
-    required this.dividerHeight,
     required this.locationName,
     required this.onMenuTap,
-    this.onLocationTap,
+    required this.onSearchTap,
     required this.onNotificationTap,
     required this.onWishlistTap,
+    required this.l10n,
+    this.onLocationTap,
   });
 
-  final double       statusBarHeight;
-  final double       contentHeight;
-  final double       dividerHeight;
-  final String       locationName;
-  final VoidCallback onMenuTap;
+  final double                   statusBarHeight;
+  final String                   locationName;
+  final VoidCallback             onMenuTap;
+  final VoidCallback             onSearchTap;
+  final VoidCallback             onNotificationTap;
+  final VoidCallback             onWishlistTap;
+  final AppLocalizations         l10n;
   final Future<void> Function()? onLocationTap;
-  final VoidCallback onNotificationTap;
-  final VoidCallback onWishlistTap;
 
-  double get _totalHeight => statusBarHeight + contentHeight + dividerHeight;
+  double get _extent =>
+      statusBarHeight + _kRow1Height + _kDividerHeight + _kRow2Height + 8;
 
-  @override double get minExtent => _totalHeight;
-  @override double get maxExtent => _totalHeight;
+  @override double get minExtent => _extent;
+  @override double get maxExtent => _extent;
 
   @override
-  bool shouldRebuild(covariant _GreenTopBarDelegate old) =>
+  bool shouldRebuild(covariant _TwoRowHeaderDelegate old) =>
       old.locationName    != locationName ||
       old.statusBarHeight != statusBarHeight;
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          color: AppColors.primaryGreen,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(height: statusBarHeight),
-              SizedBox(
-                height: contentHeight,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      color: AppColors.primaryGreen,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(height: statusBarHeight),
 
-                    // ── Menu ─────────────────────────────────
-                    Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap:        onMenuTap,
-                        borderRadius: BorderRadius.circular(12),
-                        child: const SizedBox(
-                          width: 52, height: 52,
-                          child: Icon(Icons.menu, size: 28, color: Colors.white),
-                        ),
-                      ),
+          // ── ROW 1: Menu  ·  Location + Dropdown ──────────
+          SizedBox(
+            height: _kRow1Height,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+
+                // Hamburger menu
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap:        onMenuTap,
+                    borderRadius: BorderRadius.circular(10),
+                    child: const SizedBox(
+                      width: 50, height: 50,
+                      child: Icon(Icons.menu_rounded,
+                          size: 26, color: Colors.white),
                     ),
+                  ),
+                ),
 
-                    // ── Location (tap to refresh) ─────────────
-                    Expanded(
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: onLocationTap,
-                          borderRadius: BorderRadius.circular(12),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(Icons.location_on,
-                                  color: Colors.white, size: 20),
-                              const SizedBox(width: 4),
-                              Flexible(
-                                child: Text(
-                                  locationName,
-                                  textAlign: TextAlign.center,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white,
-                                  ),
+                // Location pill (tappable to refresh)
+                Expanded(
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap:        onLocationTap,
+                      borderRadius: BorderRadius.circular(10),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 4, vertical: 6),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize:      MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.location_on_rounded,
+                                color: Colors.white, size: 17),
+                            const SizedBox(width: 4),
+                            Flexible(
+                              child: Text(
+                                locationName,
+                                maxLines:  1,
+                                overflow:  TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize:   15,
+                                  fontWeight: FontWeight.w700,
+                                  color:      Colors.white,
                                 ),
                               ),
-                              if (onLocationTap != null) ...[
-                                const SizedBox(width: 2),
-                                // Icon(
-                                //   Icons.my_location_rounded,
-                                //   color: Colors.white.withOpacity(0.85),
-                                //   size: 16,
-                                // ),
-                              ],
-                            ],
-                          ),
+                            ),
+                            const SizedBox(width: 3),
+                            // Dropdown arrow
+                            Icon(Icons.keyboard_arrow_down_rounded,
+                                color: Colors.white.withOpacity(0.85),
+                                size: 20),
+                          ],
                         ),
                       ),
                     ),
-
-                    // ── Wishlist ──────────────────────────────
-                    Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap:        onWishlistTap,
-                        borderRadius: BorderRadius.circular(12),
-                        child: const SizedBox(
-                          width: 48, height: 52,
-                          child: Icon(Icons.favorite_border_rounded,
-                              size: 26, color: Colors.white),
-                        ),
-                      ),
-                    ),
-
-                    // ── Notification ──────────────────────────
-                    Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap:        onNotificationTap,
-                        borderRadius: BorderRadius.circular(12),
-                        child: const SizedBox(
-                          width: 48, height: 52,
-                          child: Icon(Icons.notifications_none,
-                              size: 28, color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
+
+                // Spacer to balance the left menu icon width
+                const SizedBox(width: 50),
+              ],
+            ),
+          ),
+
+          // ── thin divider ─────────────────────────────────
+          Container(
+            height: _kDividerHeight,
+            color:  Colors.white.withOpacity(0.18),
+          ),
+
+          // ── ROW 2: Search  ·  Wishlist  ·  Notification ──
+          SizedBox(
+            height: _kRow2Height,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 12, vertical: 7),
+              child: Row(
+                children: [
+
+                  // Search bar (tappable, navigates to BrowseScreen)
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: onSearchTap,
+                      child: Container(
+                        height:  38,
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        decoration: BoxDecoration(
+                          color:        Colors.white.withOpacity(0.18),
+                          borderRadius: BorderRadius.circular(22),
+                          border: Border.all(
+                              color: Colors.white.withOpacity(0.30),
+                              width: 1),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(Icons.search_rounded,
+                                color: Colors.white.withOpacity(0.85),
+                                size: 18),
+                            const SizedBox(width: 8),
+                            Text(
+                              l10n.searchPlaceholder,
+                              style: TextStyle(
+                                color:    Colors.white.withOpacity(0.70),
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(width: 6),
+
+                  // Wishlist icon
+                  _HeaderIcon(
+                    icon:  Icons.favorite_border_rounded,
+                    onTap: onWishlistTap,
+                  ),
+
+                  const SizedBox(width: 2),
+
+                  // Notification icon
+                  _HeaderIcon(
+                    icon:  Icons.notifications_none_rounded,
+                    onTap: onNotificationTap,
+                  ),
+                ],
               ),
+            ),
+          ),
+
+          const SizedBox(height: 8),
+        ],
+      ),
+    );
+  }
+}
+
+// Small icon button used in row 2
+class _HeaderIcon extends StatelessWidget {
+  const _HeaderIcon({required this.icon, required this.onTap, this.badge});
+  final IconData     icon;
+  final VoidCallback onTap;
+  final String?      badge;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap:        onTap,
+        borderRadius: BorderRadius.circular(20),
+        child: SizedBox(
+          width: 40, height: 40,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Icon(icon, color: Colors.white, size: 24),
+              if (badge != null)
+                Positioned(
+                  top: 5, right: 5,
+                  child: Container(
+                    width: 8, height: 8,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFFF5252),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
-        Container(height: dividerHeight, color: AppColors.primaryGreen),
-      ],
+      ),
     );
   }
 }
@@ -756,19 +821,22 @@ class _ComingSoonCard extends StatelessWidget {
         decoration: BoxDecoration(
           color:        const Color(0xFFF0F9F0),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppColors.primaryGreen.withOpacity(0.18)),
+          border: Border.all(
+              color: AppColors.primaryGreen.withOpacity(0.18)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.construction_rounded,
-                size: 52, color: AppColors.primaryGreen.withOpacity(0.6)),
+                size: 52,
+                color: AppColors.primaryGreen.withOpacity(0.6)),
             const SizedBox(height: 14),
             Text(
               _tr('services_coming_soon', locale),
               style: const TextStyle(
-                fontSize: 17, fontWeight: FontWeight.w800,
-                color: AppColors.primaryGreen,
+                fontSize:   17,
+                fontWeight: FontWeight.w800,
+                color:      AppColors.primaryGreen,
               ),
             ),
             const SizedBox(height: 8),
@@ -776,7 +844,9 @@ class _ComingSoonCard extends StatelessWidget {
               _tr('services_coming_soon_subtitle', locale),
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 13, color: Colors.grey.shade600, height: 1.5),
+                  fontSize: 13,
+                  color:    Colors.grey.shade600,
+                  height:   1.5),
             ),
           ],
         ),
@@ -809,7 +879,7 @@ class _FilterChip extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 180),
         curve:    Curves.easeOut,
-        padding:  const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
         decoration: BoxDecoration(
           color:        active ? _activeColor : Colors.white,
           borderRadius: BorderRadius.circular(20),
@@ -820,12 +890,12 @@ class _FilterChip extends StatelessWidget {
           boxShadow: active
               ? [BoxShadow(
                   color:      _activeColor.withOpacity(0.28),
-                  blurRadius: 8, offset: const Offset(0, 3),
-                )]
+                  blurRadius: 8,
+                  offset:     const Offset(0, 3))]
               : [BoxShadow(
                   color:      Colors.black.withOpacity(0.04),
-                  blurRadius: 3, offset: const Offset(0, 1),
-                )],
+                  blurRadius: 3,
+                  offset:     const Offset(0, 1))],
         ),
         child: Text(
           label,
@@ -870,35 +940,33 @@ class _HomeBanner extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(l10n.bannerTractorTitle,
-                    style: const TextStyle(
-                      color: Colors.white, fontSize: AppTextSize.title,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
+                      style: const TextStyle(
+                        color:      Colors.white,
+                        fontSize:   AppTextSize.title,
+                        fontWeight: FontWeight.w800,
+                      )),
                   const SizedBox(height: 6),
                   Text(l10n.bannerTractorSubtitle,
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.9),
-                      fontSize: AppTextSize.body,
-                    ),
-                  ),
+                      style: TextStyle(
+                        color:    Colors.white.withOpacity(0.9),
+                        fontSize: AppTextSize.body,
+                      )),
                   const Spacer(),
                   Material(
-                    color: Colors.white,
+                    color:        Colors.white,
                     borderRadius: BorderRadius.circular(24),
                     child: InkWell(
-                      onTap: onBannerTap,
+                      onTap:        onBannerTap,
                       borderRadius: BorderRadius.circular(24),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 11),
                         child: Text(l10n.searchNow,
-                          style: const TextStyle(
-                            color:      AppColors.bannerGreen,
-                            fontWeight: FontWeight.w700,
-                            fontSize:   AppTextSize.body,
-                          ),
-                        ),
+                            style: const TextStyle(
+                              color:      AppColors.bannerGreen,
+                              fontWeight: FontWeight.w700,
+                              fontSize:   AppTextSize.body,
+                            )),
                       ),
                     ),
                   ),
@@ -934,15 +1002,15 @@ class _BannerDetailPage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.agriculture, size: 80, color: AppColors.primaryGreen),
+            const Icon(Icons.agriculture,
+                size: 80, color: AppColors.primaryGreen),
             const SizedBox(height: 16),
             Text(l10n.comingSoon,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 18, fontWeight: FontWeight.w600,
-                color: AppColors.primaryGreen,
-              ),
-            ),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                    fontSize:   18,
+                    fontWeight: FontWeight.w600,
+                    color:      AppColors.primaryGreen)),
           ],
         ),
       ),
@@ -989,7 +1057,8 @@ class _CategoryTile extends StatelessWidget {
                 filterQuality: FilterQuality.medium,
                 errorBuilder: (_, __, ___) => Icon(
                   Icons.image_not_supported_outlined,
-                  color: color, size: imgSize * 0.4,
+                  color: color,
+                  size:  imgSize * 0.4,
                 ),
               ),
             ),
@@ -1036,7 +1105,7 @@ class _SheetCategoryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap:        onTap,
       borderRadius: BorderRadius.circular(12),
       child: Column(
         mainAxisSize:       MainAxisSize.min,
@@ -1058,7 +1127,8 @@ class _SheetCategoryTile extends StatelessWidget {
                   filterQuality: FilterQuality.medium,
                   errorBuilder: (_, __, ___) => Icon(
                     Icons.image_not_supported_outlined,
-                    color: color, size: 24,
+                    color: color,
+                    size:  24,
                   ),
                 ),
               ),
@@ -1071,11 +1141,62 @@ class _SheetCategoryTile extends StatelessWidget {
             maxLines:  2,
             overflow:  TextOverflow.ellipsis,
             style: const TextStyle(
-              fontSize: 10, fontWeight: FontWeight.w700,
-              height: 1.3, color: AppColors.textPrimary,
+              fontSize:   10,
+              fontWeight: FontWeight.w700,
+              height:     1.3,
+              color:      AppColors.textPrimary,
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _LocationScopeBanner extends StatelessWidget {
+  const _LocationScopeBanner({required this.location});
+
+  final UserLocation location;
+
+  String get _scopeLabel {
+    switch (location.scope) {
+      case LocationScope.village:
+        return 'Village';
+      case LocationScope.city:
+        return 'City & nearby villages';
+      case LocationScope.state:
+        return 'Whole state';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        decoration: BoxDecoration(
+          color: AppColors.primaryGreen.withOpacity(0.08),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: AppColors.primaryGreen.withOpacity(0.2)),
+        ),
+        child: Row(
+          children: [
+            Icon(Icons.filter_alt_outlined,
+                size: 18, color: AppColors.primaryGreen.withOpacity(0.85)),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                'Showing $_scopeLabel listings in ${location.filterLabel}',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey.shade700,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

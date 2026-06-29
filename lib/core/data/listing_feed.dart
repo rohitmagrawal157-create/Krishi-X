@@ -36,8 +36,10 @@ abstract final class ListingFeed {
       if (listingType != null && listing.type != listingType) return false;
       if (minPrice != null && listing.price < minPrice) return false;
       if (maxPrice != null && listing.price > maxPrice) return false;
-      if (nearbyOnly) {
-        if ((listing.distanceKm ?? double.infinity) > 25) return false;
+      if (nearbyOnly && userLocation != null) {
+        if (!LocationService.isNearby(listing.location, userLocation)) {
+          return false;
+        }
       }
       if (detailTerms.isNotEmpty) {
         final haystack =
@@ -54,6 +56,19 @@ abstract final class ListingFeed {
       }
       return true;
     }).toList();
+
+    if (userLocation != null && !nearbyOnly) {
+      filtered = _applyLocationScope(filtered, userLocation);
+    }
+
+    if (userLocation != null &&
+        priceSort == ListingPriceSort.newest &&
+        !nearbyOnly) {
+      filtered.sort(
+        (a, b) => (a.distanceKm ?? double.infinity)
+            .compareTo(b.distanceKm ?? double.infinity),
+      );
+    }
 
     switch (priceSort) {
       case ListingPriceSort.newest:
@@ -77,12 +92,43 @@ abstract final class ListingFeed {
     return filtered.skip(start).take(pageSize).toList();
   }
 
+  /// Village → city → state hierarchy; if nothing matches, show all sorted by distance.
+  static List<Listing> _applyLocationScope(
+    List<Listing> listings,
+    UserLocation user,
+  ) {
+    var scope = user.scope;
+    while (true) {
+      final matched = listings
+          .where(
+            (l) => LocationService.listingMatchesAtScope(
+              l.location,
+              user,
+              scope,
+            ),
+          )
+          .toList();
+      if (matched.isNotEmpty) return matched;
+      if (scope == LocationScope.state) return listings;
+      scope = LocationService.broadenScope(scope);
+    }
+  }
+
   static List<Listing> nearbyPreview(UserLocation userLocation,
       {int count = 6}) {
-    final nearby = fetchPage(0, userLocation: userLocation, nearbyOnly: true);
+    final pool = List<Listing>.generate(180, (i) => _fromTemplate(i));
+    final locatedPool = LocationService.withDistances(pool, userLocation);
+
+    final nearby = locatedPool
+        .where((l) => LocationService.isNearby(l.location, userLocation))
+        .toList()
+      ..sort(
+        (a, b) => (a.distanceKm ?? double.infinity)
+            .compareTo(b.distanceKm ?? double.infinity),
+      );
+
     if (nearby.length >= count) return nearby.take(count).toList();
-    final all = fetchPage(0, userLocation: userLocation);
-    return all.take(count).toList();
+    return locatedPool.take(count).toList();
   }
 
   static Listing _fromTemplate(int index) {
@@ -376,6 +422,14 @@ abstract final class ListingFeed {
       'Gangapur, Chhatrapati Sambhajinagar, Maharashtra',
       'Sillod, Chhatrapati Sambhajinagar, Maharashtra',
       'Kannad, Chhatrapati Sambhajinagar, Maharashtra',
+      'Phulambri, Chhatrapati Sambhajinagar, Maharashtra',
+      'Aurangabad, Chhatrapati Sambhajinagar, Maharashtra',
+      'Pune, Pune, Maharashtra',
+      'Baramati, Pune, Maharashtra',
+      'Mumbai, Mumbai, Maharashtra',
+      'Nagpur, Nagpur, Maharashtra',
+      'Nashik, Nashik, Maharashtra',
+      'Kolhapur, Kolhapur, Maharashtra',
     ];
     return locations[index % locations.length];
   }

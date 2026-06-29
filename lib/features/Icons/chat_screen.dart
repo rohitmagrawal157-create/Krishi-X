@@ -7,7 +7,6 @@ import 'package:url_launcher/url_launcher.dart';
 const Color _kGreen  = AppColors.primaryGreen;
 const Color _kOrange = Color(0xFFF57C00);
 
-// Orange gradient — badges, active elements
 const LinearGradient _kOrangeGrad = LinearGradient(
   colors: [Color(0xFFFF9800), Color(0xFFF44336)],
   begin:  Alignment.topLeft,
@@ -16,7 +15,7 @@ const LinearGradient _kOrangeGrad = LinearGradient(
 
 // ── Mock data models ─────────────────────────────────────────
 
-enum _ChatTab { buying, selling }
+enum _ChatTab { inbox, buying, selling }
 
 enum _ChatFilter { all, unread, important }
 
@@ -28,6 +27,7 @@ class _MockChat {
     required this.lastMessage,
     required this.timeAgo,
     required this.adImageAsset,
+    required this.isBuying,
     this.unreadCount   = 0,
     this.isAdInactive  = false,
     this.isImportant   = false,
@@ -39,6 +39,7 @@ class _MockChat {
   final String  lastMessage;
   final String  timeAgo;
   final String  adImageAsset;
+  final bool    isBuying;
   final int     unreadCount;
   final bool    isAdInactive;
   final bool    isImportant;
@@ -53,6 +54,7 @@ const _buyingChats = <_MockChat>[
     lastMessage:  'Hello, is this still available?',
     timeAgo:      '2 hrs ago',
     adImageAsset: 'assets/images/tractor1.webp',
+    isBuying:     true,
     unreadCount:  2,
     sellerPhone:  '9876543210',
   ),
@@ -63,6 +65,7 @@ const _buyingChats = <_MockChat>[
     lastMessage:  'Mobile number : 9422380…',
     timeAgo:      '3 days ago',
     adImageAsset: 'assets/images/tractor2.webp',
+    isBuying:     true,
     unreadCount:  1,
     sellerPhone:  '9422380000',
   ),
@@ -73,6 +76,7 @@ const _buyingChats = <_MockChat>[
     lastMessage:  'Messaged 3 days ago, reply?',
     timeAgo:      '5 days ago',
     adImageAsset: 'assets/images/land1.jpeg',
+    isBuying:     true,
     isAdInactive: true,
   ),
   _MockChat(
@@ -82,6 +86,7 @@ const _buyingChats = <_MockChat>[
     lastMessage:  'What is the price per dozen?',
     timeAgo:      '1 week ago',
     adImageAsset: 'assets/images/mango.jpeg',
+    isBuying:     true,
     isImportant:  true,
   ),
 ];
@@ -94,6 +99,7 @@ const _sellingChats = <_MockChat>[
     lastMessage:  'Can I rent for 3 days?',
     timeAgo:      '1 hr ago',
     adImageAsset: 'assets/images/jcb1.jpeg',
+    isBuying:     false,
     unreadCount:  3,
     sellerPhone:  '9988776655',
   ),
@@ -104,6 +110,7 @@ const _sellingChats = <_MockChat>[
     lastMessage:  'Is she vaccinated?',
     timeAgo:      '2 days ago',
     adImageAsset: 'assets/images/cow1.jpeg',
+    isBuying:     false,
   ),
 ];
 
@@ -120,13 +127,12 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen>
     with SingleTickerProviderStateMixin {
   late final TabController _tabCtrl;
-  _ChatFilter _filter  = _ChatFilter.all;
-  bool        _showTip = true;
+  _ChatFilter _filter = _ChatFilter.all;
 
   @override
   void initState() {
     super.initState();
-    _tabCtrl = TabController(length: 2, vsync: this);
+    _tabCtrl = TabController(length: 3, vsync: this);
     _tabCtrl.addListener(() => setState(() {}));
   }
 
@@ -136,46 +142,53 @@ class _ChatScreenState extends State<ChatScreen>
     super.dispose();
   }
 
-  int _unreadFor(_ChatTab tab) {
-    final list = tab == _ChatTab.buying ? _buyingChats : _sellingChats;
+  int get _totalUnread =>
+      [..._buyingChats, ..._sellingChats]
+          .fold(0, (s, c) => s + c.unreadCount);
+
+  int _unreadFor(bool isBuying) {
+    final list = isBuying ? _buyingChats : _sellingChats;
     return list.fold(0, (s, c) => s + c.unreadCount);
   }
 
-  List<_MockChat> _filteredChats(_ChatTab tab) {
-    final all = tab == _ChatTab.buying ? _buyingChats : _sellingChats;
+  List<_MockChat> get _currentChats {
+    List<_MockChat> base;
+    switch (_tabCtrl.index) {
+      case 0:  base = [..._buyingChats, ..._sellingChats]; break;
+      case 1:  base = _buyingChats; break;
+      default: base = _sellingChats; break;
+    }
     switch (_filter) {
-      case _ChatFilter.all:       return all;
-      case _ChatFilter.unread:    return all.where((c) => c.unreadCount > 0).toList();
-      case _ChatFilter.important: return all.where((c) => c.isImportant).toList();
+      case _ChatFilter.all:       return base;
+      case _ChatFilter.unread:    return base.where((c) => c.unreadCount > 0).toList();
+      case _ChatFilter.important: return base.where((c) => c.isImportant).toList();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final currentTab = _tabCtrl.index == 0 ? _ChatTab.buying : _ChatTab.selling;
-    final chats      = _filteredChats(currentTab);
-
     return Scaffold(
       backgroundColor: const Color(0xFFF5F7F5),
-      appBar: _buildAppBar(),
+      appBar:          _buildAppBar(),
       body: Column(
         children: [
           _buildTabBar(),
           _buildQuickFilters(),
-          if (_showTip)
-            _TipBanner(onDismiss: () => setState(() => _showTip = false)),
           Expanded(
-            child: chats.isEmpty
+            child: _currentChats.isEmpty
                 ? _buildEmptyState()
                 : ListView.separated(
-                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 32),
-                    itemCount:        chats.length,
+                    padding:          const EdgeInsets.fromLTRB(0, 8, 0, 32),
+                    itemCount:        _currentChats.length,
                     separatorBuilder: (_, __) => Divider(
                       height: 1,
                       indent: 86,
                       color:  Colors.grey.shade200,
                     ),
-                    itemBuilder: (ctx, i) => _ChatTile(chat: chats[i]),
+                    itemBuilder: (ctx, i) => _ChatTile(
+                      chat:       _currentChats[i],
+                      showChip:   _tabCtrl.index == 0,
+                    ),
                   ),
           ),
         ],
@@ -183,10 +196,8 @@ class _ChatScreenState extends State<ChatScreen>
     );
   }
 
-  // ── App bar (title + unread badge only) ──────────────────
+  // ── App bar ──────────────────────────────────────────────
   PreferredSizeWidget _buildAppBar() {
-    final totalUnread =
-        _unreadFor(_ChatTab.buying) + _unreadFor(_ChatTab.selling);
     return AppBar(
       backgroundColor:           _kGreen,
       foregroundColor:           Colors.white,
@@ -197,14 +208,14 @@ class _ChatScreenState extends State<ChatScreen>
         mainAxisSize: MainAxisSize.min,
         children: [
           const Text(
-            'Inbox',
+            'Chats',
             style: TextStyle(
               fontSize:   20,
               fontWeight: FontWeight.w800,
               color:      Colors.white,
             ),
           ),
-          if (totalUnread > 0) ...[
+          if (_totalUnread > 0) ...[
             const SizedBox(width: 8),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
@@ -213,7 +224,7 @@ class _ChatScreenState extends State<ChatScreen>
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
-                '$totalUnread',
+                '$_totalUnread',
                 style: const TextStyle(
                   fontSize:   11,
                   fontWeight: FontWeight.w800,
@@ -227,7 +238,7 @@ class _ChatScreenState extends State<ChatScreen>
     );
   }
 
-  // ── Tab bar ──────────────────────────────────────────────
+  // ── 3-tab bar ────────────────────────────────────────────
   Widget _buildTabBar() {
     return Container(
       color: _kGreen,
@@ -237,29 +248,47 @@ class _ChatScreenState extends State<ChatScreen>
         indicatorWeight:      3,
         labelColor:           Colors.white,
         unselectedLabelColor: Colors.white.withOpacity(0.60),
-        labelStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
-        unselectedLabelStyle:
-            const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+        labelStyle: const TextStyle(
+            fontSize: 14, fontWeight: FontWeight.w700),
+        unselectedLabelStyle: const TextStyle(
+            fontSize: 14, fontWeight: FontWeight.w500),
         tabs: [
+          // ── Inbox ───────────────────────────────────────
+          Tab(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text('Inbox'),
+                if (_totalUnread > 0) ...[
+                  const SizedBox(width: 6),
+                  _UnreadBadge(count: _totalUnread),
+                ],
+              ],
+            ),
+          ),
+          // ── Buying ──────────────────────────────────────
           Tab(
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Text('Buying'),
-                const SizedBox(width: 6),
-                if (_unreadFor(_ChatTab.buying) > 0)
-                  _UnreadBadge(count: _unreadFor(_ChatTab.buying)),
+                if (_unreadFor(true) > 0) ...[
+                  const SizedBox(width: 6),
+                  _UnreadBadge(count: _unreadFor(true)),
+                ],
               ],
             ),
           ),
+          // ── Selling ─────────────────────────────────────
           Tab(
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Text('Selling'),
-                const SizedBox(width: 6),
-                if (_unreadFor(_ChatTab.selling) > 0)
-                  _UnreadBadge(count: _unreadFor(_ChatTab.selling)),
+                if (_unreadFor(false) > 0) ...[
+                  const SizedBox(width: 6),
+                  _UnreadBadge(count: _unreadFor(false)),
+                ],
               ],
             ),
           ),
@@ -274,7 +303,7 @@ class _ChatScreenState extends State<ChatScreen>
       decoration: BoxDecoration(
         color:  Colors.white,
         border: Border(
-            bottom: BorderSide(color: Colors.grey.shade200, width: 1)),
+            bottom: BorderSide(color: Colors.grey.shade200)),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Row(
@@ -319,7 +348,8 @@ class _ChatScreenState extends State<ChatScreen>
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width:  120, height: 120,
+              width:  120,
+              height: 120,
               decoration: BoxDecoration(
                 color:  _kGreen.withOpacity(0.08),
                 shape:  BoxShape.circle,
@@ -359,101 +389,39 @@ class _ChatScreenState extends State<ChatScreen>
 }
 
 // ─────────────────────────────────────────────────────────────
-// TIP BANNER
-// ─────────────────────────────────────────────────────────────
-class _TipBanner extends StatelessWidget {
-  const _TipBanner({required this.onDismiss});
-  final VoidCallback onDismiss;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin:  const EdgeInsets.fromLTRB(16, 8, 16, 0),
-      padding: const EdgeInsets.fromLTRB(14, 12, 10, 12),
-      decoration: BoxDecoration(
-        color:        _kGreen.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(12),
-        border:       Border.all(color: _kGreen.withOpacity(0.25)),
-      ),
-      child: Row(
-        children: [
-          Icon(Icons.auto_awesome_rounded, size: 20, color: _kGreen),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Enable Quick Replies',
-                  style: TextStyle(
-                    fontSize:   13,
-                    fontWeight: FontWeight.w800,
-                    color:      AppColors.textPrimary,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  'Auto-respond to buyer queries and never miss a lead.',
-                  style: TextStyle(
-                    fontSize: 11,
-                    color:    Colors.grey.shade600,
-                    height:   1.4,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                GestureDetector(
-                  onTap: () {},
-                  child: Text(
-                    'Turn it on →',
-                    style: TextStyle(
-                      fontSize:   12,
-                      fontWeight: FontWeight.w800,
-                      color:      _kGreen,
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          GestureDetector(
-            onTap:  onDismiss,
-            child:  Icon(Icons.close_rounded,
-                size: 18, color: Colors.grey.shade400),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// ─────────────────────────────────────────────────────────────
 // CHAT TILE
 // ─────────────────────────────────────────────────────────────
 class _ChatTile extends StatelessWidget {
-  const _ChatTile({required this.chat});
+  const _ChatTile({required this.chat, this.showChip = false});
   final _MockChat chat;
+  final bool      showChip;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => _openChatDetail(context),
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (_) => _ChatDetailScreen(chat: chat),
+        ),
+      ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            // ── Ad thumbnail only (no avatar, no online dot) ─
+            // ── Ad thumbnail ─────────────────────────────
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Image.asset(
                 chat.adImageAsset,
-                width:         58, height: 58,
+                width:         58,
+                height:        58,
                 fit:           BoxFit.cover,
                 filterQuality: FilterQuality.medium,
                 errorBuilder:  (_, __, ___) => Container(
-                  width: 58, height: 58,
+                  width:  58,
+                  height: 58,
                   decoration: BoxDecoration(
                     color:        Colors.grey.shade200,
                     borderRadius: BorderRadius.circular(10),
@@ -466,43 +434,78 @@ class _ChatTile extends StatelessWidget {
 
             const SizedBox(width: 12),
 
-            // ── Info column ─────────────────────────────────
+            // ── Info column ──────────────────────────────
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
 
-                  // Name + time + three-dot menu
+                  // Name + time + menu
                   Row(
                     children: [
                       Expanded(
-                        child: Text(
-                          chat.buyerName,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize:   15,
-                            fontWeight: chat.unreadCount > 0
-                                ? FontWeight.w800
-                                : FontWeight.w600,
-                            color: AppColors.textPrimary,
-                          ),
+                        child: Row(
+                          children: [
+                            Flexible(
+                              child: Text(
+                                chat.buyerName,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize:   15,
+                                  fontWeight: chat.unreadCount > 0
+                                      ? FontWeight.w800
+                                      : FontWeight.w600,
+                                  color: AppColors.textPrimary,
+                                ),
+                              ),
+                            ),
+                            // ── Buying / Selling chip (Inbox only) ──
+                            if (showChip) ...[
+                              const SizedBox(width: 6),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 7, vertical: 2),
+                                decoration: BoxDecoration(
+                                  color: chat.isBuying
+                                      ? _kGreen.withOpacity(0.12)
+                                      : _kOrange.withOpacity(0.12),
+                                  borderRadius: BorderRadius.circular(6),
+                                  border: Border.all(
+                                    color: chat.isBuying
+                                        ? _kGreen.withOpacity(0.35)
+                                        : _kOrange.withOpacity(0.35),
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Text(
+                                  chat.isBuying ? 'Buying' : 'Selling',
+                                  style: TextStyle(
+                                    fontSize:   10,
+                                    fontWeight: FontWeight.w700,
+                                    color:      chat.isBuying
+                                        ? _kGreen
+                                        : _kOrange,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ],
                         ),
                       ),
                       Text(
                         chat.timeAgo,
                         style: TextStyle(
                           fontSize: 11,
-                          color:    Colors.grey.shade900,
+                          color:    Colors.grey.shade500,
                         ),
                       ),
                       const SizedBox(width: 4),
-                      // ── Three-dot menu ────────────────────
                       GestureDetector(
-                        onTapDown: (details) =>
-                            _showTileMenu(context, details.globalPosition),
+                        onTapDown: (d) =>
+                            _showTileMenu(context, d.globalPosition),
                         child: Icon(Icons.more_vert_rounded,
-                            size: 18, color: Colors.grey.shade900),
+                            size: 18, color: Colors.grey.shade500),
                       ),
                     ],
                   ),
@@ -587,8 +590,7 @@ class _ChatTile extends StatelessWidget {
                     const SizedBox(height: 6),
                     Row(
                       children: [
-                        Icon(Icons.star_rounded,
-                            size: 13, color: _kOrange),
+                        Icon(Icons.star_rounded, size: 13, color: _kOrange),
                         const SizedBox(width: 4),
                         Text(
                           'Marked important',
@@ -610,31 +612,28 @@ class _ChatTile extends StatelessWidget {
     );
   }
 
-  // ── Open chat detail ─────────────────────────────────────
-  void _openChatDetail(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => _ChatDetailScreen(chat: chat),
-      ),
-    );
-  }
-
-  // ── Three-dot context menu ───────────────────────────────
   void _showTileMenu(BuildContext context, Offset position) async {
     final selected = await showMenu<String>(
       context:  context,
       position: RelativeRect.fromLTRB(
           position.dx, position.dy, position.dx, position.dy),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape:     RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12)),
       elevation: 4,
+      color:     Colors.white,
       items: [
         _menuItem('mark_important',
-            chat.isImportant ? 'Remove from important' : 'Mark as important',
-            chat.isImportant ? Icons.star_border_rounded : Icons.star_rounded),
+            chat.isImportant
+                ? 'Remove from important'
+                : 'Mark as important',
+            chat.isImportant
+                ? Icons.star_border_rounded
+                : Icons.star_rounded),
         _menuItem('mark_unread', 'Mark as unread',
             Icons.mark_chat_unread_outlined),
         _menuItem('block', 'Block user', Icons.block_rounded),
-        _menuItem('delete', 'Delete chat', Icons.delete_outline_rounded,
+        _menuItem('delete', 'Delete chat',
+            Icons.delete_outline_rounded,
             isDestructive: true),
       ],
     );
@@ -653,7 +652,8 @@ class _ChatTile extends StatelessWidget {
     IconData icon, {
     bool isDestructive = false,
   }) {
-    final color = isDestructive ? Colors.red.shade600 : AppColors.textPrimary;
+    final color =
+        isDestructive ? Colors.red.shade600 : AppColors.textPrimary;
     return PopupMenuItem<String>(
       value: value,
       child: Row(
@@ -662,7 +662,9 @@ class _ChatTile extends StatelessWidget {
           const SizedBox(width: 12),
           Text(label,
               style: TextStyle(
-                  fontSize: 14, fontWeight: FontWeight.w600, color: color)),
+                  fontSize:   14,
+                  fontWeight: FontWeight.w600,
+                  color:      color)),
         ],
       ),
     );
@@ -670,7 +672,7 @@ class _ChatTile extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────
-// CHAT DETAIL SCREEN  (OLX-style)
+// CHAT DETAIL SCREEN
 // ─────────────────────────────────────────────────────────────
 class _ChatDetailScreen extends StatefulWidget {
   const _ChatDetailScreen({required this.chat});
@@ -681,18 +683,16 @@ class _ChatDetailScreen extends StatefulWidget {
 }
 
 class _ChatDetailScreenState extends State<_ChatDetailScreen> {
-  final _msgCtrl  = TextEditingController();
+  final _msgCtrl    = TextEditingController();
   final _scrollCtrl = ScrollController();
+
   final List<_Msg> _messages = [
-    _Msg(text: 'Hello, is this still available?', isMe: false,
-        time: '10:32 AM'),
-    _Msg(text: 'Yes, it is. Are you interested?', isMe: true,
-        time: '10:35 AM'),
-    _Msg(text: 'What is the final price?', isMe: false, time: '10:36 AM'),
+    _Msg(text: 'Hello, is this still available?',  isMe: false, time: '10:32 AM'),
+    _Msg(text: 'Yes, it is. Are you interested?',  isMe: true,  time: '10:35 AM'),
+    _Msg(text: 'What is the final price?',          isMe: false, time: '10:36 AM'),
     _Msg(text: 'Price is fixed as listed. No negotiation.',
         isMe: true, time: '10:38 AM'),
-    _Msg(text: 'Can I come see it tomorrow?', isMe: false,
-        time: '10:40 AM'),
+    _Msg(text: 'Can I come see it tomorrow?',       isMe: false, time: '10:40 AM'),
   ];
 
   @override
@@ -721,9 +721,9 @@ class _ChatDetailScreenState extends State<_ChatDetailScreen> {
   }
 
   String _nowTime() {
-    final now = DateTime.now();
-    final h   = now.hour % 12 == 0 ? 12 : now.hour % 12;
-    final m   = now.minute.toString().padLeft(2, '0');
+    final now  = DateTime.now();
+    final h    = now.hour % 12 == 0 ? 12 : now.hour % 12;
+    final m    = now.minute.toString().padLeft(2, '0');
     final ampm = now.hour < 12 ? 'AM' : 'PM';
     return '$h:$m $ampm';
   }
@@ -745,12 +745,10 @@ class _ChatDetailScreenState extends State<_ChatDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF0F2F0),
-      appBar: _buildAppBar(context),
+      appBar:          _buildAppBar(context),
       body: Column(
         children: [
-          // Ad context card
-          _AdCard(chat: widget.chat),
-          // Messages
+          _AdContextCard(chat: widget.chat),
           Expanded(
             child: ListView.builder(
               controller:  _scrollCtrl,
@@ -759,11 +757,7 @@ class _ChatDetailScreenState extends State<_ChatDetailScreen> {
               itemBuilder: (_, i) => _MessageBubble(msg: _messages[i]),
             ),
           ),
-          // Input bar
-          _InputBar(
-            controller: _msgCtrl,
-            onSend:     _sendMessage,
-          ),
+          _InputBar(controller: _msgCtrl, onSend: _sendMessage),
         ],
       ),
     );
@@ -774,25 +768,22 @@ class _ChatDetailScreenState extends State<_ChatDetailScreen> {
       backgroundColor: _kGreen,
       foregroundColor: Colors.white,
       elevation:       0,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            size: 22,
-            color: Colors.white,
-            weight: 900.0,
-          ),
-          onPressed: () => Navigator.of(context).pop(),
-          splashRadius: 20,
-          padding: const EdgeInsets.all(6),
-          constraints: const BoxConstraints(
-            minWidth: 40,
-            minHeight: 40,
-          ),
-          style: IconButton.styleFrom(
-            shape: const CircleBorder(),
-            backgroundColor: Colors.white.withOpacity(0.12),
-          ),
+      leading: IconButton(
+        icon: const Icon(
+          Icons.arrow_back_ios_new_rounded,
+          size:   22,
+          color:  Colors.white,
+          weight: 900.0,
         ),
+        onPressed:   () => Navigator.of(context).pop(),
+        splashRadius: 20,
+        padding:      const EdgeInsets.all(6),
+        constraints:  const BoxConstraints(minWidth: 40, minHeight: 40),
+        style: IconButton.styleFrom(
+          shape:           const CircleBorder(),
+          backgroundColor: Colors.white.withOpacity(0.12),
+        ),
+      ),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -816,13 +807,13 @@ class _ChatDetailScreenState extends State<_ChatDetailScreen> {
         ],
       ),
       actions: [
-        // Call button in app bar
         if (widget.chat.sellerPhone != null)
           IconButton(
-            tooltip:  'Call',
+            tooltip:   'Call',
             onPressed: _call,
             icon: Container(
-              width:  36, height: 36,
+              width:  36,
+              height: 36,
               decoration: BoxDecoration(
                 color:        Colors.white.withOpacity(0.18),
                 borderRadius: BorderRadius.circular(18),
@@ -831,9 +822,9 @@ class _ChatDetailScreenState extends State<_ChatDetailScreen> {
                   color: Colors.white, size: 18),
             ),
           ),
-        // Three-dot menu
         PopupMenuButton<String>(
-          icon: const Icon(Icons.more_vert_rounded, color: Colors.white),
+          icon:  const Icon(Icons.more_vert_rounded, color: Colors.white),
+          color: Colors.white,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12)),
           onSelected: (v) {
@@ -845,10 +836,10 @@ class _ChatDetailScreenState extends State<_ChatDetailScreen> {
             ));
           },
           itemBuilder: (_) => [
-            _popItem('view_ad',     'View Ad',          Icons.open_in_new_rounded),
-            _popItem('block',       'Block user',        Icons.block_rounded),
-            _popItem('report',      'Report',            Icons.flag_outlined),
-            _popItem('clear_chat',  'Clear chat',        Icons.delete_sweep_outlined,
+            _popItem('view_ad',    'View Ad',     Icons.open_in_new_rounded),
+            _popItem('block',      'Block user',  Icons.block_rounded),
+            _popItem('report',     'Report',      Icons.flag_outlined),
+            _popItem('clear_chat', 'Clear chat',  Icons.delete_sweep_outlined,
                 isDestructive: true),
           ],
         ),
@@ -863,7 +854,8 @@ class _ChatDetailScreenState extends State<_ChatDetailScreen> {
     IconData icon, {
     bool isDestructive = false,
   }) {
-    final color = isDestructive ? Colors.red.shade600 : AppColors.textPrimary;
+    final color =
+        isDestructive ? Colors.red.shade600 : AppColors.textPrimary;
     return PopupMenuItem<String>(
       value: value,
       child: Row(
@@ -872,7 +864,9 @@ class _ChatDetailScreenState extends State<_ChatDetailScreen> {
           const SizedBox(width: 12),
           Text(label,
               style: TextStyle(
-                  fontSize: 14, fontWeight: FontWeight.w600, color: color)),
+                  fontSize:   14,
+                  fontWeight: FontWeight.w600,
+                  color:      color)),
         ],
       ),
     );
@@ -880,16 +874,16 @@ class _ChatDetailScreenState extends State<_ChatDetailScreen> {
 }
 
 // ─────────────────────────────────────────────────────────────
-// AD CONTEXT CARD  (inside chat detail)
+// AD CONTEXT CARD
 // ─────────────────────────────────────────────────────────────
-class _AdCard extends StatelessWidget {
-  const _AdCard({required this.chat});
+class _AdContextCard extends StatelessWidget {
+  const _AdContextCard({required this.chat});
   final _MockChat chat;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color:   Colors.white,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Row(
         children: [
@@ -897,8 +891,9 @@ class _AdCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             child: Image.asset(
               chat.adImageAsset,
-              width: 48, height: 48,
-              fit:   BoxFit.cover,
+              width:  48,
+              height: 48,
+              fit:    BoxFit.cover,
               errorBuilder: (_, __, ___) => Container(
                 width: 48, height: 48,
                 color: Colors.grey.shade200,
@@ -964,13 +959,14 @@ class _MessageBubble extends StatelessWidget {
       alignment: msg.isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         margin: EdgeInsets.only(
-          top:    4, bottom: 4,
+          top:    4,
+          bottom: 4,
           left:   msg.isMe ? 60 : 0,
           right:  msg.isMe ? 0 : 60,
         ),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         decoration: BoxDecoration(
-          color:        msg.isMe ? _kGreen : Colors.white,
+          color: msg.isMe ? _kGreen : Colors.white,
           borderRadius: BorderRadius.only(
             topLeft:     const Radius.circular(16),
             topRight:    const Radius.circular(16),
@@ -986,8 +982,9 @@ class _MessageBubble extends StatelessWidget {
           ],
         ),
         child: Column(
-          crossAxisAlignment:
-              msg.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          crossAxisAlignment: msg.isMe
+              ? CrossAxisAlignment.end
+              : CrossAxisAlignment.start,
           children: [
             Text(
               msg.text,
@@ -1056,18 +1053,18 @@ class _InputBar extends StatelessWidget {
               decoration: BoxDecoration(
                 color:        const Color(0xFFF5F7F5),
                 borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: Colors.grey.shade300),
+                border:       Border.all(color: Colors.grey.shade300),
               ),
               child: TextField(
-                controller:    controller,
+                controller:      controller,
                 textInputAction: TextInputAction.send,
-                onSubmitted:   (_) => onSend(),
+                onSubmitted:     (_) => onSend(),
                 style: const TextStyle(fontSize: 14),
                 decoration: InputDecoration(
-                  hintText:        'Type a message…',
-                  hintStyle:       TextStyle(color: Colors.grey.shade500),
-                  border:          InputBorder.none,
-                  contentPadding:  const EdgeInsets.symmetric(
+                  hintText:       'Type a message…',
+                  hintStyle:      TextStyle(color: Colors.grey.shade500),
+                  border:         InputBorder.none,
+                  contentPadding: const EdgeInsets.symmetric(
                       horizontal: 16, vertical: 10),
                 ),
               ),
@@ -1077,7 +1074,8 @@ class _InputBar extends StatelessWidget {
           GestureDetector(
             onTap: onSend,
             child: Container(
-              width:  46, height: 46,
+              width:  46,
+              height: 46,
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [Color(0xFF43A047), Color(0xFF1B5E20)],

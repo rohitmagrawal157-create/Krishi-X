@@ -4,13 +4,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:krishix/core/constants/app_colors.dart';
+import 'package:krishix/core/data/app_locations.dart';
 import 'package:krishix/core/models/user_location.dart';
 import 'package:krishix/core/services/location_service.dart';
 import 'package:krishix/core/widgets/app_drawer.dart';
+import 'package:krishix/core/widgets/location_picker.dart';
 import 'package:krishix/features/home/home_screen.dart';
 import 'package:krishix/features/icons/my_ads_screen.dart';
 import 'package:krishix/features/icons/dealer_screen.dart';
-import 'package:krishix/features/post/post_listing_screen.dart';
+import 'package:krishix/features/post/sell_or_rent_screen.dart';   // ← new
 import 'package:krishix/features/icons/chat_screen.dart';
 import 'package:krishix/l10n/app_localizations.dart';
 
@@ -21,14 +23,9 @@ import 'package:krishix/l10n/app_localizations.dart';
 //   2 → (FAB center slot — no screen)
 //   3 → Chats
 //   4 → Dealers
-//
-// IndexedStack uses a compacted list [Home, MyAds, Chats, Dealers]
-// mapped via _stackIndex(tabIndex).
 // ─────────────────────────────────────────────────────────────
 
 int _stackIndex(int tabIndex) {
-  // tab 2 is the FAB slot — never called
-  // tab 0→0, 1→1, 3→2, 4→3
   if (tabIndex <= 1) return tabIndex;
   if (tabIndex == 3) return 2;
   if (tabIndex == 4) return 3;
@@ -56,7 +53,7 @@ class MainShell extends StatefulWidget {
 }
 
 class _MainShellState extends State<MainShell> with WidgetsBindingObserver {
-  var _selectedIndex = 0;
+  var _selectedIndex    = 0;
   UserLocation _userLocation = UserLocation.defaultLocation;
   StreamSubscription<UserLocation>? _locationSub;
   var _isFetchingLocation = false;
@@ -100,7 +97,7 @@ class _MainShellState extends State<MainShell> with WidgetsBindingObserver {
     final l10n = AppLocalizations.of(context)!;
     setState(() {
       _userLocation = UserLocation(
-        displayName: l10n.loading,
+        displayName:       l10n.loading,
         permissionGranted: false,
       );
     });
@@ -111,7 +108,7 @@ class _MainShellState extends State<MainShell> with WidgetsBindingObserver {
     if (permission == LocationPermission.denied ||
         permission == LocationPermission.deniedForever) {
       setState(() {
-        _userLocation = UserLocation.defaultLocation;
+        _userLocation       = UserLocation.defaultLocation;
         _isFetchingLocation = false;
       });
       return;
@@ -121,61 +118,107 @@ class _MainShellState extends State<MainShell> with WidgetsBindingObserver {
     if (!mounted) return;
 
     setState(() {
-      _userLocation = location;
+      _userLocation       = location;
       _isFetchingLocation = false;
     });
 
     if (!location.permissionGranted) {
-      final permission = await LocationService.checkPermission();
-      final serviceEnabled = await LocationService.isServiceEnabled();
+      final perm    = await LocationService.checkPermission();
+      final enabled = await LocationService.isServiceEnabled();
       if (!mounted) return;
 
-      if (permission == LocationPermission.deniedForever) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.locationPermissionDenied),
-            behavior: SnackBarBehavior.floating,
-            action: SnackBarAction(
+      if (perm == LocationPermission.deniedForever) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(l10n.locationPermissionDenied),
+          behavior: SnackBarBehavior.floating,
+          action: SnackBarAction(
               label: 'Settings',
-              onPressed: LocationService.openAppSettings,
-            ),
-          ),
-        );
-      } else if (permission == LocationPermission.denied) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.locationPermissionDenied),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-      } else if (!serviceEnabled) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Turn on location services to use your location.'),
-            behavior: SnackBarBehavior.floating,
-            action: SnackBarAction(
+              onPressed: LocationService.openAppSettings),
+        ));
+      } else if (perm == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content:  Text(l10n.locationPermissionDenied),
+          behavior: SnackBarBehavior.floating,
+        ));
+      } else if (!enabled) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: const Text(
+              'Turn on location services to use your location.'),
+          behavior: SnackBarBehavior.floating,
+          action: SnackBarAction(
               label: 'Settings',
-              onPressed: LocationService.openLocationSettings,
-            ),
-          ),
-        );
+              onPressed: LocationService.openLocationSettings),
+        ));
       }
       return;
     }
 
-    if (startStream) {
+    if (startStream && !_userLocation.isManual) {
       _locationSub?.cancel();
       _locationSub = LocationService.watchPosition().listen((updated) {
-        if (!mounted) return;
+        if (!mounted || _userLocation.isManual) return;
         setState(() => _userLocation = updated);
       });
     }
   }
 
+  Future<void> _openLocationPicker() async {
+    final current = AppLocationCatalog.findByFull(_userLocation.displayName) ??
+        (_userLocation.city != null
+            ? AppLocation(
+                name: _userLocation.city!,
+                district: _userLocation.district ?? _userLocation.city!,
+                state: _userLocation.state ?? 'Maharashtra',
+                latitude: _userLocation.latitude,
+                longitude: _userLocation.longitude,
+              )
+            : null);
+
+    final selected = await openLocationPicker(
+      context,
+      current: current,
+      onUseMyLocation: _detectGpsLocation,
+    );
+
+    if (selected != null && mounted) {
+      _locationSub?.cancel();
+      _locationSub = null;
+      setState(() => _userLocation = selected);
+    }
+  }
+
+  Future<UserLocation?> _detectGpsLocation() async {
+    final permission = await LocationService.ensurePermission();
+    if (!mounted) return null;
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
+      return null;
+    }
+    final location = await LocationService.fetchCurrentLocation();
+    if (!mounted || !location.permissionGranted) return null;
+    return location;
+  }
+
   void _onTabSelected(int index) {
-    // Tab 2 is the FAB notch — ignore
-    if (index == 2) return;
+    if (index == 2) return; // FAB notch slot
     setState(() => _selectedIndex = index);
+  }
+
+  // ── Open Sell-or-Rent chooser ───────────────────────────
+  void _onSellFabPressed() {
+    Navigator.of(context).push(
+      PageRouteBuilder<void>(
+        opaque:             false,
+        barrierDismissible: true,
+        barrierColor:       Colors.transparent,
+        transitionDuration: const Duration(milliseconds: 400),
+        pageBuilder: (_, animation, __) => FadeTransition(
+          opacity: CurvedAnimation(
+              parent: animation, curve: Curves.easeOut),
+          child: const SellOrRentScreen(),
+        ),
+      ),
+    );
   }
 
   @override
@@ -196,21 +239,17 @@ class _MainShellState extends State<MainShell> with WidgetsBindingObserver {
       ),
       body: Builder(
         builder: (scaffoldContext) {
-          final openDrawer = () => Scaffold.of(scaffoldContext).openDrawer();
+          final openDrawer =
+              () => Scaffold.of(scaffoldContext).openDrawer();
 
-          // ── Compacted screen list: indices 0–3 ──────────────
           final screens = [
-            // 0 → Home
             HomeScreen(
               onMenuTap:     openDrawer,
               userLocation:  _userLocation,
-              onLocationTap: _refreshLocation,
+              onLocationTap: _openLocationPicker,
             ),
-            // 1 → My Ads
             MyAdsScreen(userLocation: _userLocation),
-            // 2 → Chats
-            ChatScreen(),
-            // 3 → Dealers
+            const ChatScreen(),
             DealerScreen(userLocation: _userLocation),
           ];
 
@@ -221,21 +260,15 @@ class _MainShellState extends State<MainShell> with WidgetsBindingObserver {
         },
       ),
 
-      // ── FAB ────────────────────────────────────────────────
+      // ── FAB ─────────────────────────────────────────────
       floatingActionButton: _SellFab(
         label:     l10n.sell,
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute<void>(
-              builder: (_) => const PostListingScreen(),
-            ),
-          );
-        },
+        onPressed: _onSellFabPressed,   // ← opens chooser
       ),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.centerDocked,
 
-      // ── Bottom nav ─────────────────────────────────────────
+      // ── Bottom nav ──────────────────────────────────────
       bottomNavigationBar: _KrishixNavBar(
         selectedIndex: _selectedIndex,
         onTabSelected: _onTabSelected,
@@ -246,7 +279,7 @@ class _MainShellState extends State<MainShell> with WidgetsBindingObserver {
 }
 
 // ─────────────────────────────────────────────────────────────
-// Sell FAB — circular with orange gradient + glow
+// Sell FAB
 // ─────────────────────────────────────────────────────────────
 class _SellFab extends StatelessWidget {
   const _SellFab({required this.label, required this.onPressed});
@@ -264,11 +297,8 @@ class _SellFab extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-
-            // ── Circular FAB ──
             Container(
-              width:  60,
-              height: 60,
+              width:  60, height: 60,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: const LinearGradient(
@@ -294,10 +324,7 @@ class _SellFab extends StatelessWidget {
                 child: Icon(Icons.add_rounded, color: Colors.white, size: 32),
               ),
             ),
-
             const SizedBox(height: 5),
-
-            // ── Label pill ──
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
               decoration: BoxDecoration(
@@ -357,45 +384,32 @@ class _KrishixNavBar extends StatelessWidget {
       padding:     EdgeInsets.zero,
       child: Row(
         children: [
-          // Tab 0 — Home
-          Expanded(
-            child: _NavItem(
-              icon:     Icons.home_rounded,
-              label:    l10n.home,
-              selected: selectedIndex == 0,
-              onTap:    () => onTabSelected(0),
-            ),
-          ),
-          // Tab 1 — My Ads
-          Expanded(
-            child: _NavItem(
-              icon:     Icons.list_alt_outlined,
-              label:    l10n.myAds,
-              selected: selectedIndex == 1,
-              onTap:    () => onTabSelected(1),
-            ),
-          ),
-          // Tab 2 — FAB gap (no tap target)
-          const SizedBox(width: 72),
-          // Tab 3 — Chats
-          Expanded(
-            child: _NavItem(
-              icon:     Icons.chat_bubble_outline_rounded,
-              label:    l10n.chats,
-              selected: selectedIndex == 3,
-              badge:    '99+',
-              onTap:    () => onTabSelected(3),
-            ),
-          ),
-          // Tab 4 — Dealers
-          Expanded(
-            child: _NavItem(
-              icon:     Icons.storefront_outlined,
-              label:    l10n.dealers,
-              selected: selectedIndex == 4,
-              onTap:    () => onTabSelected(4),
-            ),
-          ),
+          Expanded(child: _NavItem(
+            icon:     Icons.home_rounded,
+            label:    l10n.home,
+            selected: selectedIndex == 0,
+            onTap:    () => onTabSelected(0),
+          )),
+          Expanded(child: _NavItem(
+            icon:     Icons.list_alt_outlined,
+            label:    l10n.myAds,
+            selected: selectedIndex == 1,
+            onTap:    () => onTabSelected(1),
+          )),
+          const SizedBox(width: 72), // FAB gap
+          Expanded(child: _NavItem(
+            icon:     Icons.chat_bubble_outline_rounded,
+            label:    l10n.chats,
+            selected: selectedIndex == 3,
+            badge:    '99+',
+            onTap:    () => onTabSelected(3),
+          )),
+          Expanded(child: _NavItem(
+            icon:     Icons.storefront_outlined,
+            label:    l10n.dealers,
+            selected: selectedIndex == 4,
+            onTap:    () => onTabSelected(4),
+          )),
         ],
       ),
     );
@@ -440,8 +454,7 @@ class _NavItem extends StatelessWidget {
                 Icon(icon, color: color, size: 24),
                 if (badge != null)
                   Positioned(
-                    right: -10,
-                    top:   -5,
+                    right: -10, top: -5,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 4, vertical: 1),
@@ -469,7 +482,9 @@ class _NavItem extends StatelessWidget {
                 style: TextStyle(
                   fontSize:   10,
                   color:      color,
-                  fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                  fontWeight: selected
+                      ? FontWeight.w700
+                      : FontWeight.w500,
                 ),
                 maxLines:  1,
                 overflow:  TextOverflow.ellipsis,

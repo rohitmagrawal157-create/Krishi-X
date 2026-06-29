@@ -153,7 +153,7 @@ class _MyAdsScreenState extends State<MyAdsScreen> {
             _emptyBody()
           else if (_expanded)
             for (var i = 0; i < _ads.length; i++) ...[
-              const SizedBox(height: 1),
+              const SizedBox(height: 10),
               _AdCard(
                 listing:      _ads[i],
                 status:       _stFor(i),
@@ -406,19 +406,15 @@ class _AdCard extends StatelessWidget {
     final views    = listing.viewCount ?? 0;
     final likes    = listing.likeCount ?? 0;
 
-    return GestureDetector(
-      onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(
-        builder: (_) => ListingDetailScreen(listing: listing, userLocation: loc),
-      )),
-      child: Container(
-        margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-        decoration: BoxDecoration(
+    return Container(
+        margin:      const EdgeInsets.fromLTRB(10, 0, 10, 0),
+        decoration:  BoxDecoration(
           color:        Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          border:       Border.all(color: Colors.grey.shade200),
+          borderRadius: BorderRadius.circular(8),
+          border:        Border.all(color: Colors.grey.shade200, width: 0.8),
           boxShadow: [
             BoxShadow(
-              color:      Colors.black.withOpacity(0.04),
+              color:      Colors.black.withOpacity(0.05),
               blurRadius: 6, offset: const Offset(0, 2),
             ),
           ],
@@ -428,252 +424,255 @@ class _AdCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            // ── FROM row ────────────────────────────────
+            // ── ROW 1: Posted On · ··· · ACTIVE badge ───────
             Container(
-              color:   const Color(0xFFF8FBF8),
-              padding: const EdgeInsets.fromLTRB(12, 8, 4, 8),
+              color:   Colors.white,
+              padding: const EdgeInsets.fromLTRB(12, 10, 8, 10),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text('Posted On:  ',
+                  Text('Posted On: ',
                       style: TextStyle(
                           fontSize: 12, fontWeight: FontWeight.w500,
                           color: Colors.grey.shade500)),
                   Text(_fmtDate(postedOn),
                       style: const TextStyle(
                           fontSize:      12,
-                          fontWeight:    FontWeight.w900,
+                          fontWeight:    FontWeight.w800,
                           color:         AppColors.textPrimary,
-                          letterSpacing: 0.3)),
+                          letterSpacing: 0.2)),
                   const Spacer(),
-                  PopupMenuButton<String>(
-                    icon: Icon(Icons.more_horiz_rounded,
-                        color: Colors.grey.shade500, size: 22),
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
-                    onSelected: (v) {
-                      if (v == 'edit')   onEdit();
-                      if (v == 'delete') onDelete();
-                    },
-                    itemBuilder: (_) => const [
-                      PopupMenuItem(
-                        value: 'edit',
-                        child: Row(children: [
-                          Icon(Icons.edit_outlined, size: 16,
-                              color: AppColors.textPrimary),
-                          SizedBox(width: 10),
-                          Text('Edit Ad'),
-                        ]),
-                      ),
-                      PopupMenuItem(
-                        value: 'delete',
-                        child: Row(children: [
-                          Icon(Icons.delete_outline_rounded, size: 16,
-                              color: Colors.red),
-                          SizedBox(width: 10),
-                          Text('Delete',
-                              style: TextStyle(color: Colors.red)),
-                        ]),
-                      ),
-                    ],
+
+                   // Status badge — rightmost
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      color:        status.color,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Text(
+                      status.label,
+                      style: const TextStyle(
+                          fontSize:      11,
+                          fontWeight:    FontWeight.w800,
+                          color:         Colors.white,
+                          letterSpacing: 0.5),
+                    ),
                   ),
+                  // ··· popup menu
+                  SizedBox(
+                    width: 30, height: 30,
+                    child: PopupMenuButton<String>(
+                      padding: EdgeInsets.zero,
+                      icon: Icon(Icons.more_horiz_rounded,
+                          color: Colors.grey.shade500, size: 20),
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      onSelected: (v) {
+                        if (v == 'edit')   onEdit();
+                        if (v == 'delete') onDelete();
+                      },
+                      itemBuilder: (_) => const [
+                        PopupMenuItem(
+                          value: 'edit',
+                          child: Row(children: [
+                            Icon(Icons.edit_outlined, size: 16,
+                                color: AppColors.textPrimary),
+                            SizedBox(width: 10),
+                            Text('Edit Ad'),
+                          ]),
+                        ),
+                        PopupMenuItem(
+                          value: 'delete',
+                          child: Row(children: [
+                            Icon(Icons.delete_outline_rounded,
+                                size: 16, color: Colors.red),
+                            SizedBox(width: 10),
+                            Text('Delete',
+                                style: TextStyle(color: Colors.red)),
+                          ]),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                 
                 ],
               ),
             ),
 
-            Divider(height: 1, color: Colors.grey.shade200),
+            Divider(height: 1, thickness: 1, color: Colors.grey.shade200),
 
-            // ── Image + info row ────────────────────────
-            Container(
-              color: const Color(0xFFF3F7F0),
+            // ── ROW 2: Thumbnail + Title / Price / Views — ONLY this opens detail
+            GestureDetector(
+              onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(
+                builder: (_) => ListingDetailScreen(
+                    listing: listing, userLocation: loc),
+              )),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   // Thumbnail
-                  SizedBox(
-                    width: 110, height: 100,
-                    child: Image.asset(
-                      img,
-                      fit:           BoxFit.cover,
-                      filterQuality: FilterQuality.medium,
-                      errorBuilder:  (_, __, ___) => Container(
-                        color: const Color(0xFFE8F5E9),
-                        child: Center(child: Text(listing.imageEmoji,
-                            style: const TextStyle(fontSize: 34))),
-                      ),
+                Container(
+  width: 95, height: 90,
+  margin: const EdgeInsets.all(10),
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(8),
+    border: Border.all(color: Colors.grey.shade200, width: 0.8),
+  ),
+  clipBehavior: Clip.antiAlias,
+  child: Image.asset(
+    img,
+    fit:           BoxFit.cover,
+    filterQuality: FilterQuality.medium,
+    errorBuilder: (_, __, ___) => Container(
+      color: const Color(0xFFE8F5E9),
+      child: Center(child: Text(listing.imageEmoji,
+          style: const TextStyle(fontSize: 30))),
+    ),
+  ),
+),
+                // Info
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Title
+                        Text(
+                          listing.localizedTitle(locale),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                              fontSize:   15,
+                              fontWeight: FontWeight.w800,
+                              color:      AppColors.textPrimary,
+                              height:     1.3),
+                        ),
+                        const SizedBox(height: 5),
+                        // Price
+                        Row(
+                          children: [
+                            Text(
+                              _formatPrice(listing.price),
+                              style: TextStyle(
+                                  fontSize:   14,
+                                  fontWeight: FontWeight.w700,
+                                  color:      Colors.grey.shade800),
+                            ),
+                            if (listing.type == ListingType.rent &&
+                                listing.rentalDuration != null) ...[
+                              const SizedBox(width: 3),
+                              Text('/ ${listing.rentalDuration!.toLowerCase()}',
+                                  style: TextStyle(
+                                      fontSize: 10,
+                                      color: Colors.grey.shade500)),
+                            ],
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        // Views | Likes
+                        Row(
+                          children: [
+                            Icon(Icons.remove_red_eye_outlined,
+                                size: 14, color: Colors.grey.shade500),
+                            const SizedBox(width: 4),
+                            Text(
+                              'Views: ${views > 0 ? views : '-'}',
+                              style: TextStyle(
+                                  fontSize:   12,
+                                  fontWeight: FontWeight.w500,
+                                  color:      Colors.grey.shade600),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8),
+                              child: Container(
+                                  width: 1, height: 12,
+                                  color: Colors.grey.shade400),
+                            ),
+                            Icon(Icons.favorite_rounded,
+                                size:  14,
+                                color: likes > 0
+                                    ? Colors.red
+                                    : Colors.grey.shade400),
+                            const SizedBox(width: 4),
+                            Text(
+                              'Likes: ${likes > 0 ? likes : '-'}',
+                              style: TextStyle(
+                                  fontSize:   12,
+                                  fontWeight: FontWeight.w500,
+                                  color:      Colors.grey.shade600),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
+                ),
+              ],
+              ),   // end Row
+            ),   // end GestureDetector
 
-                  // Info
+            Divider(height: 1, thickness: 1, color: Colors.grey.shade200),
+
+            // ── ROW 3: Left-bar msg (left) + Sell faster now (right) ──
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Left accent bar + status message
                   Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    child: IntrinsicHeight(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-
-                          // Title
-                          Text(
-                            listing.localizedTitle(locale),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                                fontSize:   15,
-                                fontWeight: FontWeight.w800,
-                                color:      AppColors.textPrimary,
-                                height:     1.3),
+                          Container(
+                            width: 3,
+                            decoration: BoxDecoration(
+                              color:        status.color,
+                              borderRadius: BorderRadius.circular(2),
+                            ),
                           ),
-
-                          const SizedBox(height: 5),
-
-                          // Price
-                          Row(
-                            children: [
-                              Text(
-                                _formatPrice(listing.price),
-                                style: const TextStyle(
-                                    fontSize:   14,
-                                    fontWeight: FontWeight.w700,
-                                    color:      AppColors.textPrimary),
-                              ),
-                              if (listing.type == ListingType.rent &&
-                                  listing.rentalDuration != null) ...[
-                                const SizedBox(width: 3),
-                                Text('/ ${listing.rentalDuration!.toLowerCase()}',
-                                    style: TextStyle(
-                                        fontSize: 10,
-                                        color: Colors.grey.shade500)),
-                              ],
-                            ],
-                          ),
-
-                          const SizedBox(height: 8),
-
-                          // Views | Likes
-                          Row(
-                            children: [
-                              Icon(Icons.remove_red_eye_outlined,
-                                  size: 14, color: Colors.grey.shade600),
-                              const SizedBox(width: 4),
-                              Text(
-                                'Views: ${views > 0 ? views : '-'}',
-                                style: TextStyle(
-                                    fontSize:   12,
-                                    fontWeight: FontWeight.w600,
-                                    color:      Colors.grey.shade600),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10),
-                                child: Container(
-                                    width: 1, height: 12,
-                                    color: Colors.grey.shade400),
-                              ),
-                              Icon(Icons.favorite_rounded,
-                                  size:  14,
-                                  color: likes > 0
-                                      ? Colors.red
-                                      : Colors.grey.shade500),
-                              const SizedBox(width: 4),
-                              Text(
-                                'Likes: ${likes > 0 ? likes : '-'}',
-                                style: TextStyle(
-                                    fontSize:   12,
-                                    fontWeight: FontWeight.w600,
-                                    color:      Colors.grey.shade600),
-                              ),
-                            ],
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              status.msg,
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color:    Colors.grey.shade600,
+                                  height:   1.4),
+                            ),
                           ),
                         ],
                       ),
                     ),
                   ),
-                ],
-              ),
-            ),
-
-            Divider(height: 1, color: Colors.grey.shade200),
-
-            // ── Status badge + message + CTA ─────────────
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-
-                  // ── Badge + CTA on same row ─────────────────
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      // Badge pill
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(
-                          color:        status.color,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Text(
-                          status.label,
-                          style: const TextStyle(
-                              fontSize:      11,
-                              fontWeight:    FontWeight.w800,
-                              color:         Colors.white,
-                              letterSpacing: 0.6),
-                        ),
-                      ),
-                      const Spacer(),
-                      // "Sell faster now" CTA
-                      OutlinedButton(
-                        onPressed: onSellFaster,
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: AppColors.textPrimary,
-                          side:  BorderSide(
-                              color: Colors.grey.shade400, width: 1.5),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8)),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 7),
-                          minimumSize:  Size.zero,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        ),
-                        child: const Text(
-                          'Sell faster now',
-                          style: TextStyle(
-                              fontSize:   13,
-                              fontWeight: FontWeight.w800,
-                              color:      AppColors.textPrimary),
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 8),
-
-                  // Left-bar message
-                  IntrinsicHeight(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Container(
-                          width: 3,
-                          decoration: BoxDecoration(
-                            color:        status.color,
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            status.msg,
-                            style: TextStyle(
-                                fontSize:   12,
-                                color:      Colors.grey.shade600,
-                                height:     1.4),
-                          ),
-                        ),
-                      ],
+                  const SizedBox(width: 12),
+                  // Sell faster now button
+                  OutlinedButton(
+                    onPressed: onSellFaster,
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: AppColors.textPrimary,
+                      side:  BorderSide(
+                          color: Colors.grey.shade400, width: 1.5),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 8),
+                      minimumSize:   Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    child: const Text(
+                      'Sell faster now',
+                      style: TextStyle(
+                          fontSize:   13,
+                          fontWeight: FontWeight.w800,
+                          color:      AppColors.textPrimary),
                     ),
                   ),
                 ],
@@ -681,7 +680,6 @@ class _AdCard extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }
