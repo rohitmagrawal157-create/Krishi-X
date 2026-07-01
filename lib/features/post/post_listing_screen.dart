@@ -8,8 +8,10 @@ import 'package:krishix/core/models/listing.dart';
 import 'package:krishix/core/services/location_service.dart';
 import 'package:krishix/core/widgets/location_picker.dart';
 import 'package:krishix/features/post/forms/post_form_config.dart';
+import 'package:krishix/features/post/post_form_l10n.dart';
 import 'package:krishix/features/post/widgets/post_form_fields.dart';
 import 'package:krishix/features/post/widgets/post_photo_picker.dart';
+import 'package:krishix/l10n/app_localizations.dart';
 
 const Color _kGreen  = AppColors.primaryGreen;
 const Color _kOrange = Color(0xFFFF6B00);
@@ -33,37 +35,6 @@ enum _PostCat {
 }
 
 extension _PostCatX on _PostCat {
-  String titleFieldLabel(String? sectionId) {
-    if (sectionId == CategorySectionId.farmMachinery) return 'Farm Machinery Name *';
-    if (sectionId == CategorySectionId.tractorsParts) return 'Tractor Part Name *';
-    if (sectionId == CategorySectionId.farmMachineryRent) return 'Machinery Name *';
-    if (sectionId == CategorySectionId.jcbRental) return 'JCB / Excavator Name *';
-    if (sectionId == CategorySectionId.tractorRental) return 'Tractor Name *';
-    switch (this) {
-      case _PostCat.cropsGrains: return 'Crop or Grain Name *';
-      case _PostCat.seedsPlants: return 'Seed or Plant Name *';
-      case _PostCat.fruitsVeg:   return 'Fruit or Vegetable Name *';
-      case _PostCat.livestock:   return 'Livestock Name *';
-      case _PostCat.tractors:    return 'Tractor Name *';
-      case _PostCat.landBuy:     return 'Farm Land Name *';
-      case _PostCat.landRent:    return 'Farm Land Name *';
-      case _PostCat.rental:      return 'Equipment Name *';
-    }
-  }
-
-  String get label {
-    switch (this) {
-      case _PostCat.cropsGrains: return 'Crops & Grains';
-      case _PostCat.seedsPlants: return 'Seeds & Plants';
-      case _PostCat.fruitsVeg:   return 'Fruits & Vegetables';
-      case _PostCat.livestock:   return 'Livestock';
-      case _PostCat.tractors:    return 'Tractors & Machinery';
-      case _PostCat.landBuy:     return 'Farm Land – Buy/Sell';
-      case _PostCat.landRent:    return 'Farm Land – Lease/Rent';
-      case _PostCat.rental:      return 'Rental Equipment';
-    }
-  }
-
   IconData get icon {
     switch (this) {
       case _PostCat.cropsGrains: return Icons.grass_rounded;
@@ -199,20 +170,19 @@ _PostCat _defaultPostCat(ListingCategory? cat, ListingType? type) {
 // ── Per-category extra fields ─────────────────────────────────
 class _ExtraField {
   const _ExtraField({
-    required this.label,
-    required this.hint,
+    required this.id,
     required this.icon,
     this.keyboardType = TextInputType.text,
-    this.suffixText,
+    this.suffixKey,
     this.formatters,
     this.unitOptions,
     this.defaultUnit,
   });
-  final String                    label;
-  final String                    hint;
+  final String                    id;
   final IconData                  icon;
   final TextInputType             keyboardType;
-  final String?                   suffixText;
+  /// Suffix resolved via [PostFormL10n.fieldSuffix] when set.
+  final String?                   suffixKey;
   final List<TextInputFormatter>? formatters;
   final List<String>?             unitOptions;
   final String?                   defaultUnit;
@@ -221,236 +191,194 @@ class _ExtraField {
       unitOptions != null && unitOptions!.isNotEmpty;
 }
 
-const Map<_PostCat, String> _titleHints = {
-  _PostCat.cropsGrains: 'e.g. Wheat – 20 Quintal, A-Grade',
-  _PostCat.seedsPlants: 'e.g. Hybrid Tomato Seeds – 500g Pack',
-  _PostCat.fruitsVeg:   'e.g. Fresh Alphonso Mangoes – 10 Dozen',
-  _PostCat.livestock:   'e.g. Murrah Buffalo – High Milk Yield',
-  _PostCat.tractors:    'e.g. Mahindra 575 DI – 2019 Model',
-  _PostCat.landBuy:     'e.g. 5 Acre Irrigated Farm Land for Sale',
-  _PostCat.landRent:    'e.g. 3 Acre Farm Land Available for Lease',
-  _PostCat.rental:      'e.g. JCB 3DX Backhoe – Available Daily',
+const Map<_PostCat, String> _titleHintKeys = {
+  _PostCat.cropsGrains: 'cropsGrains',
+  _PostCat.seedsPlants: 'seedsPlants',
+  _PostCat.fruitsVeg:   'fruitsVeg',
+  _PostCat.livestock:   'livestock',
+  _PostCat.tractors:    'tractors',
+  _PostCat.landBuy:     'landBuy',
+  _PostCat.landRent:    'landRent',
+  _PostCat.rental:      'rental',
 };
 
 final Map<_PostCat, List<_ExtraField>> _extraFields = {
   _PostCat.cropsGrains: [
     _ExtraField(
-      label:       'Quantity',
-      hint:        'e.g. 20',
-      icon:        Icons.scale_rounded,
+      id:           'quantity',
+      icon:         Icons.scale_rounded,
       keyboardType: TextInputType.number,
-      unitOptions: PostUnits.cropsGrains,
-      defaultUnit: 'Quintal',
-      formatters:  [FilteringTextInputFormatter.digitsOnly],
+      unitOptions:  PostUnits.cropsGrains,
+      defaultUnit:  'Quintal',
+      formatters:   [FilteringTextInputFormatter.digitsOnly],
     ),
     _ExtraField(
-      label: 'Grade / Quality',
-      hint:  'e.g. A-Grade, Premium, Mixed',
-      icon:  Icons.workspace_premium_rounded,
+      id:   'gradeQuality',
+      icon: Icons.workspace_premium_rounded,
     ),
-    _ExtraField(
-      label: 'Harvest Date',
-      hint:  'e.g. June 2026',
-      icon:  Icons.calendar_today_rounded,
-    ),
+    // _ExtraField(
+    //   id:   'harvestDate',
+    //   icon: Icons.calendar_today_rounded,
+    // ),
   ],
   _PostCat.seedsPlants: [
+    // _ExtraField(
+    //   id:   'cropPlantType',
+    //   icon: Icons.yard_rounded,
+    // ),
     _ExtraField(
-      label: 'Crop / Plant Type',
-      hint:  'e.g. Tomato, Brinjal, Onion, Mango sapling',
-      icon:  Icons.yard_rounded,
-    ),
-    _ExtraField(
-      label:       'Quantity / Pack Size',
-      hint:        'e.g. 500',
-      icon:        Icons.scale_rounded,
+      id:           'quantityPackSize',
+      icon:         Icons.scale_rounded,
       keyboardType: TextInputType.number,
-      unitOptions: PostUnits.seedsPlants,
-      defaultUnit: 'grams',
-      formatters:  [FilteringTextInputFormatter.digitsOnly],
+      unitOptions:  PostUnits.seedsPlants,
+      defaultUnit:  'grams',
+      formatters:   [FilteringTextInputFormatter.digitsOnly],
     ),
     _ExtraField(
-      label: 'Seed / Plant Brand',
-      hint:  'e.g. Mahyco, Syngenta, Local variety',
-      icon:  Icons.branding_watermark_rounded,
+      id:   'seedBrand',
+      icon: Icons.branding_watermark_rounded,
     ),
-    _ExtraField(
-      label: 'Sowing Season',
-      hint:  'e.g. Kharif, Rabi, Any season',
-      icon:  Icons.wb_sunny_rounded,
-    ),
+    // _ExtraField(
+    //   id:   'sowingSeason',
+    //   icon: Icons.wb_sunny_rounded,
+    // ),
   ],
   _PostCat.fruitsVeg: [
     _ExtraField(
-      label: 'Variety',
-      hint:  'e.g. Alphonso, Devgad, Cherry Tomato',
-      icon:  Icons.eco_rounded,
+      id:   'variety',
+      icon: Icons.eco_rounded,
     ),
     _ExtraField(
-      label:       'Quantity Available',
-      hint:        'e.g. 50',
-      icon:        Icons.scale_rounded,
+      id:           'quantityAvailable',
+      icon:         Icons.scale_rounded,
       keyboardType: TextInputType.number,
-      unitOptions: PostUnits.fruitsVeg,
-      defaultUnit: 'Kg',
-      formatters:  [FilteringTextInputFormatter.digitsOnly],
+      unitOptions:  PostUnits.fruitsVeg,
+      defaultUnit:  'Kg',
+      formatters:   [FilteringTextInputFormatter.digitsOnly],
     ),
-    _ExtraField(
-      label: 'Grade / Quality',
-      hint:  'e.g. Premium, Export, Mixed',
-      icon:  Icons.workspace_premium_rounded,
-    ),
-    _ExtraField(
-      label: 'Harvest / Available From',
-      hint:  'e.g. Ready now, July 2026',
-      icon:  Icons.calendar_today_rounded,
-    ),
+    // _ExtraField(
+    //   id:   'gradeQuality',
+    //   icon: Icons.workspace_premium_rounded,
+    // ),
+    // _ExtraField(
+    //   id:   'harvestAvailable',
+    //   icon: Icons.calendar_today_rounded,
+    // ),
   ],
   _PostCat.livestock: [
     _ExtraField(
-      label: 'Breed',
-      hint:  'e.g. Murrah, HF, Gir, Sahiwal',
-      icon:  Icons.pets_rounded,
+      id:   'breed',
+      icon: Icons.pets_rounded,
     ),
     _ExtraField(
-      label: 'Age',
-      hint:  'e.g. 3 years, 18 months',
-      icon:  Icons.cake_rounded,
+      id:   'age',
+      icon: Icons.cake_rounded,
     ),
     _ExtraField(
-      label:       'Milk Yield (if applicable)',
-      hint:        'e.g. 14',
-      icon:        Icons.water_drop_rounded,
+      id:           'milkYield',
+      icon:         Icons.water_drop_rounded,
       keyboardType: TextInputType.number,
-      suffixText:  'L/day',
-      formatters:  [FilteringTextInputFormatter.allow(RegExp(r'[\d.]'))],
+      suffixKey:    'milkYield',
+      formatters:   [FilteringTextInputFormatter.allow(RegExp(r'[\d.]'))],
     ),
   ],
   _PostCat.tractors: [
     _ExtraField(
-      label: 'Brand',
-      hint:  'e.g. Mahindra, Swaraj, John Deere',
-      icon:  Icons.branding_watermark_rounded,
+      id:   'brand',
+      icon: Icons.branding_watermark_rounded,
     ),
     _ExtraField(
-      label:       'Year of Manufacture',
-      hint:        'e.g. 2019',
-      icon:        Icons.calendar_month_rounded,
+      id:           'yearManufacture',
+      icon:         Icons.calendar_month_rounded,
       keyboardType: TextInputType.number,
-      formatters:  [FilteringTextInputFormatter.digitsOnly],
+      formatters:   [FilteringTextInputFormatter.digitsOnly],
     ),
     _ExtraField(
-      label:       'Horse Power (HP)',
-      hint:        'e.g. 45',
-      icon:        Icons.speed_rounded,
+      id:           'horsePower',
+      icon:         Icons.speed_rounded,
       keyboardType: TextInputType.number,
-      suffixText:  'HP',
-      formatters:  [FilteringTextInputFormatter.digitsOnly],
+      suffixKey:    'horsePower',
+      formatters:   [FilteringTextInputFormatter.digitsOnly],
     ),
-    _ExtraField(
-      label: 'Condition',
-      hint:  'e.g. Good, Excellent, Needs Repair',
-      icon:  Icons.star_outline_rounded,
-    ),
+    // _ExtraField(
+    //   id:   'condition',
+    //   icon: Icons.star_outline_rounded,
+    // ),
   ],
   _PostCat.landBuy: [
     _ExtraField(
-      label:       'Total Area',
-      hint:        'e.g. 5',
-      icon:        Icons.straighten_rounded,
+      id:           'totalArea',
+      icon:         Icons.straighten_rounded,
       keyboardType: TextInputType.number,
-      suffixText:  'Acres',
-      formatters:  [FilteringTextInputFormatter.allow(RegExp(r'[\d.]'))],
+      unitOptions:  PostUnits.landArea,
+      defaultUnit:  'Acre',
+      formatters:   [FilteringTextInputFormatter.allow(RegExp(r'[\d.]'))],
     ),
     _ExtraField(
-      label: 'Survey Number',
-      hint:  'e.g. 142/3 (optional)',
-      icon:  Icons.pin_outlined,
+      id:   'surveyNumber',
+      icon: Icons.pin_outlined,
     ),
     _ExtraField(
-      label: 'Soil Type',
-      hint:  'e.g. Black, Red, Alluvial',
-      icon:  Icons.layers_rounded,
+      id:   'soilType',
+      icon: Icons.layers_rounded,
     ),
     _ExtraField(
-      label: 'Water Source',
-      hint:  'e.g. Borewell, Canal, Rain-fed',
-      icon:  Icons.water_rounded,
+      id:   'waterSource',
+      icon: Icons.water_rounded,
     ),
     _ExtraField(
-      label: 'Road Access',
-      hint:  'e.g. Yes – 10ft road, No',
-      icon:  Icons.add_road_rounded,
+      id:   'roadAccess',
+      icon: Icons.add_road_rounded,
     ),
-    _ExtraField(
-      label: 'Legal Status',
-      hint:  'e.g. Clear title, NA converted',
-      icon:  Icons.gavel_rounded,
-    ),
+    // _ExtraField(
+    //   id:   'legalStatus',
+    //   icon: Icons.gavel_rounded,
+    // ),
   ],
   _PostCat.landRent: [
     _ExtraField(
-      label:       'Total Area Available',
-      hint:        'e.g. 3',
-      icon:        Icons.straighten_rounded,
+      id:           'totalAreaAvailable',
+      icon:         Icons.straighten_rounded,
       keyboardType: TextInputType.number,
-      suffixText:  'Acres',
-      formatters:  [FilteringTextInputFormatter.allow(RegExp(r'[\d.]'))],
+      unitOptions:  PostUnits.landArea,
+      defaultUnit:  'Acre',
+      formatters:   [FilteringTextInputFormatter.allow(RegExp(r'[\d.]'))],
     ),
     _ExtraField(
-      label: 'Lease Duration',
-      hint:  'e.g. 1 year, Season-wise, 3 years',
-      icon:  Icons.access_time_rounded,
+      id:   'leaseDuration',
+      icon: Icons.access_time_rounded,
     ),
     _ExtraField(
-      label: 'Soil Type',
-      hint:  'e.g. Black, Red, Alluvial',
-      icon:  Icons.layers_rounded,
+      id:   'soilType',
+      icon: Icons.layers_rounded,
     ),
     _ExtraField(
-      label: 'Water Source',
-      hint:  'e.g. Borewell, Canal, Rain-fed',
-      icon:  Icons.water_rounded,
+      id:   'waterSource',
+      icon: Icons.water_rounded,
     ),
     _ExtraField(
-      label: 'Existing Crop (if any)',
-      hint:  'e.g. Sugarcane, Cotton, Fallow',
-      icon:  Icons.grass_rounded,
+      id:   'existingCrop',
+      icon: Icons.grass_rounded,
     ),
     _ExtraField(
-      label: 'Lease Terms',
-      hint:  'e.g. Negotiable, Fixed rent ₹8000/acre/yr',
-      icon:  Icons.handshake_outlined,
+      id:   'leaseTerms',
+      icon: Icons.handshake_outlined,
     ),
   ],
   _PostCat.rental: [
     _ExtraField(
-      label: 'Equipment Type',
-      hint:  'e.g. Rotavator, JCB, Sprayer, Harvester',
-      icon:  Icons.construction_rounded,
+      id:   'equipmentType',
+      icon: Icons.construction_rounded,
     ),
     _ExtraField(
-      label: 'Rental Duration',
-      hint:  'e.g. Per Hour, Per Day, Weekly',
-      icon:  Icons.access_time_rounded,
+      id:   'rentalDuration',
+      icon: Icons.access_time_rounded,
     ),
     _ExtraField(
-      label: 'Delivery Available?',
-      hint:  'e.g. Yes – within 20 km, No – self pickup',
-      icon:  Icons.local_shipping_rounded,
+      id:   'deliveryAvailable',
+      icon: Icons.local_shipping_rounded,
     ),
   ],
-};
-
-const Map<_PostCat, String> _descHints = {
-  _PostCat.cropsGrains: 'Describe crop quality, packaging, storage, any certifications…',
-  _PostCat.seedsPlants: 'Describe germination rate, source, any certifications, storage advice…',
-  _PostCat.fruitsVeg:   'Describe freshness, packaging, delivery options, minimum order…',
-  _PostCat.livestock:   'Describe health condition, vaccination history, feeding habits…',
-  _PostCat.tractors:    'Describe service history, attachments included, any repairs done…',
-  _PostCat.landBuy:     'Describe road access, irrigation, nearby facilities, legal status…',
-  _PostCat.landRent:    'Describe current land condition, who bears water/electricity cost, access road…',
-  _PostCat.rental:      'Describe availability, included operator, service area, terms…',
 };
 
 // ═══════════════════════════════════════════════════════════════
@@ -463,11 +391,13 @@ class PostListingScreen extends StatefulWidget {
     this.initialCategory,
     this.initialType,
     this.categoryLabel,
+    this.subcategoryLabel,
   });
   final String?          sectionId;
   final ListingCategory? initialCategory;
   final ListingType?     initialType;
   final String?          categoryLabel;
+  final String?          subcategoryLabel;
 
   @override
   State<PostListingScreen> createState() => _PostListingScreenState();
@@ -502,7 +432,37 @@ class _PostListingScreenState extends State<PostListingScreen> {
   bool  _photosError = false;
   final _photoPickerKey = GlobalKey<PostPhotoPickerState>();
 
-  List<_ExtraField> get _fields => _extraFields[_cat] ?? [];
+  List<_ExtraField> get _fields {
+    // Farm machinery name is the locked title field (from subcategory).
+    if (widget.sectionId == CategorySectionId.farmMachinery) {
+      return const [];
+    }
+    return _extraFields[_cat] ?? [];
+  }
+
+  /// Name/title comes from subcategory selection — keep the first field fixed.
+  bool get _lockTitleField {
+    final id = widget.sectionId;
+    if (id != null) {
+      const locked = {
+        CategorySectionId.cropsAndGrains,
+        CategorySectionId.fruitsVeg,
+        CategorySectionId.seedsAndPlants,
+        CategorySectionId.livestock,
+        CategorySectionId.tractorsBuy,
+        CategorySectionId.farmMachinery,
+        CategorySectionId.agricultureLandSale,
+        CategorySectionId.agricultureLandLease,
+      };
+      return locked.contains(id);
+    }
+    return _cat == _PostCat.cropsGrains ||
+        _cat == _PostCat.fruitsVeg ||
+        _cat == _PostCat.seedsPlants ||
+        _cat == _PostCat.livestock ||
+        _cat == _PostCat.landBuy ||
+        _cat == _PostCat.landRent;
+  }
 
   /// Sell → green top · Rent → orange top.
   Color get _headerColor =>
@@ -522,6 +482,10 @@ class _PostListingScreenState extends State<PostListingScreen> {
     );
     _type = widget.initialType ?? _cat.forcedType ?? ListingType.sell;
     _initExtraControllers();
+    final sub = widget.subcategoryLabel?.trim();
+    if (sub != null && sub.isNotEmpty) {
+      _titleCtr.text = sub;
+    }
   }
 
   void _initExtraControllers() {
@@ -529,9 +493,9 @@ class _PostListingScreenState extends State<PostListingScreen> {
     _extraCtrs.clear();
     _unitSelections.clear();
     for (final f in _fields) {
-      _extraCtrs[f.label] = TextEditingController();
+      _extraCtrs[f.id] = TextEditingController();
       if (f.hasUnitPicker) {
-        _unitSelections[f.label] =
+        _unitSelections[f.id] =
             f.defaultUnit ?? f.unitOptions!.first;
       }
     }
@@ -563,12 +527,13 @@ class _PostListingScreenState extends State<PostListingScreen> {
   }
 
   void _nextPage() {
+    final l10n = AppLocalizations.of(context)!;
     if (!_formKey1.currentState!.validate()) return;
     if (_photoCount < 1) {
       setState(() => _photosError = true);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Please add at least 1 photo before continuing'),
+          content: Text(l10n.postPhotoRequiredContinue),
           backgroundColor: _accentColor,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
@@ -593,6 +558,7 @@ class _PostListingScreenState extends State<PostListingScreen> {
   }
 
   Future<void> _submit() async {
+    final l10n = AppLocalizations.of(context)!;
     if (!_formKey2.currentState!.validate()) return;
     if (_photoCount < 1) {
       setState(() {
@@ -602,7 +568,7 @@ class _PostListingScreenState extends State<PostListingScreen> {
       _pageCtrl.jumpToPage(0);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Please add at least 1 photo before submitting'),
+          content: Text(l10n.postPhotoRequiredSubmit),
           backgroundColor: _accentColor,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
@@ -617,10 +583,10 @@ class _PostListingScreenState extends State<PostListingScreen> {
     if (!mounted) return;
     setState(() => _isSubmitting = false);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Row(children: [
-        Icon(Icons.check_circle_rounded, color: Colors.white, size: 18),
-        SizedBox(width: 10),
-        Text('Ad submitted! It will go live after review.'),
+      content: Row(children: [
+        const Icon(Icons.check_circle_rounded, color: Colors.white, size: 18),
+        const SizedBox(width: 10),
+        Text(l10n.postAdSubmitted),
       ]),
       backgroundColor: _kGreen,
       behavior:        SnackBarBehavior.floating,
@@ -631,16 +597,17 @@ class _PostListingScreenState extends State<PostListingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: _cat.bgColor,
-      appBar:          _buildAppBar(),
+      appBar:          _buildAppBar(l10n),
       body: Column(
         children: [
           Expanded(
             child: PageView(
               controller: _pageCtrl,
               physics:    const NeverScrollableScrollPhysics(),
-              children: [_buildPage1(), _buildPage2()],
+              children: [_buildPage1(l10n), _buildPage2(l10n)],
             ),
           ),
         ],
@@ -649,21 +616,37 @@ class _PostListingScreenState extends State<PostListingScreen> {
   }
 
   // ── AppBar ───────────────────────────────────────────────
-  PreferredSizeWidget _buildAppBar() {
+  PreferredSizeWidget _buildAppBar(AppLocalizations l10n) {
     return AppBar(
       backgroundColor: _headerColor,
       foregroundColor: Colors.white,
       elevation:       0,
       centerTitle:     true,
       title: Text(
-        _page == 0 ? 'Post Ad – Listing Details' : 'Post Ad – Seller Details',
+        _page == 0 ? l10n.postAdListingDetails : l10n.postAdSellerDetails,
         style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
       ),
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
+        icon: const Icon(
+          Icons.arrow_back_ios_new_rounded,
+          size:   22,
+          color:  Colors.white,
+          weight: 900.0,
+        ),
         onPressed: () {
-          if (_page == 1) _prevPage(); else Navigator.of(context).pop();
+          if (_page == 1) {
+            _prevPage();
+          } else {
+            Navigator.of(context).pop();
+          }
         },
+        splashRadius: 20,
+        padding:      const EdgeInsets.all(6),
+        constraints:  const BoxConstraints(minWidth: 40, minHeight: 40),
+        style: IconButton.styleFrom(
+          shape:           const CircleBorder(),
+          backgroundColor: Colors.white.withOpacity(0.12),
+        ),
       ),
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(30),
@@ -673,7 +656,7 @@ class _PostListingScreenState extends State<PostListingScreen> {
             children: [
               _CompactStep(
                 number:    1,
-                label:     'Listing',
+                label:     l10n.postStepListing,
                 active:    _page == 0,
                 done:      _page > 0,
                 tintColor: _headerColor,
@@ -694,7 +677,7 @@ class _PostListingScreenState extends State<PostListingScreen> {
               ),
               _CompactStep(
                 number:    2,
-                label:     'Seller',
+                label:     l10n.postStepSeller,
                 active:    _page == 1,
                 done:      false,
                 tintColor: _headerColor,
@@ -707,9 +690,10 @@ class _PostListingScreenState extends State<PostListingScreen> {
   }
 
   // ═══════════ PAGE 1 ══════════════════════════════════════
-  Widget _buildPage1() {
-    final titleHint = _titleHints[_cat] ?? 'Enter listing title';
-    final fields    = _extraFields[_cat] ?? [];
+  Widget _buildPage1(AppLocalizations l10n) {
+    final pf     = PostFormL10n(l10n);
+    final catKey = _titleHintKeys[_cat] ?? 'cropsGrains';
+    final fields = _fields;
 
     return KeyedSubtree(
       key: _page1Key,
@@ -720,89 +704,87 @@ class _PostListingScreenState extends State<PostListingScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-              // Category banner
-              _CategoryBanner(
-                cat:          _cat,
-                type:         _type,
-                sectionId:    widget.sectionId,
-                accentColor:  _accentColor,
-              ),
-
-              const SizedBox(height: 24),
-
-              // Title
               _FieldLabel(
-                label: _cat.titleFieldLabel(widget.sectionId),
-                icon: Icons.title_rounded,
+                label: pf.titleFieldLabel(catKey, sectionId: widget.sectionId),
+                icon:  Icons.title_rounded,
               ),
               const SizedBox(height: 8),
               _Field(
                 controller:     _titleCtr,
-                hint:           titleHint,
+                hint:           pf.titleHint(catKey),
                 capitalization: TextCapitalization.words,
+                readOnly:       _lockTitleField,
                 validator: (v) => (v == null || v.trim().isEmpty)
-                    ? 'Title is required' : null,
+                    ? l10n.postTitleRequired
+                    : null,
               ),
-
               const SizedBox(height: 18),
-
-              // Dynamic extra fields
               for (final field in fields) ...[
-                _FieldLabel(label: field.label, icon: field.icon),
+                _FieldLabel(
+                  label: pf.fieldLabel(field.id),
+                  icon:  field.icon,
+                ),
                 const SizedBox(height: 8),
                 if (field.hasUnitPicker)
                   PostQuantityField(
-                    controller:   _extraCtrs[field.label]!,
-                    hint:         field.hint,
-                    units:        field.unitOptions!,
-                    selectedUnit: _unitSelections[field.label]!,
-                    formatters:   field.formatters,
-                    accentColor:  _accentColor,
-                    onUnitChanged: (unit) {
-                      setState(() => _unitSelections[field.label] = unit);
+                    controller:    _extraCtrs[field.id]!,
+                    hint:          pf.fieldHint(field.id),
+                    units:         field.unitOptions!,
+                    selectedUnit:  _unitSelections[field.id]!,
+                    displayUnit:   pf.unitLabel(_unitSelections[field.id]!),
+                    unitLabelBuilder: pf.unitLabel,
+                    selectUnitTitle: l10n.postSelectUnit,
+                    formatters:    field.formatters,
+                    accentColor:   _accentColor,
+                    onUnitChanged: (picked) {
+                      setState(() {
+                        _unitSelections[field.id] = pf.unitFromPicker(
+                          field.unitOptions!,
+                          picked,
+                        );
+                      });
                     },
                   )
                 else
                   _Field(
-                    controller:   _extraCtrs[field.label]!,
-                    hint:         field.hint,
+                    controller:   _extraCtrs[field.id]!,
+                    hint:         pf.fieldHint(field.id),
                     keyboardType: field.keyboardType,
-                    suffixText:   field.suffixText,
+                    suffixText:   field.suffixKey != null
+                        ? pf.fieldSuffix(field.suffixKey!)
+                        : null,
                     formatters:   field.formatters,
                   ),
                 const SizedBox(height: 18),
               ],
-
-              // Price
               _FieldLabel(
                 label: _type == ListingType.rent
-                    ? 'Rental Price *' : 'Expected Price *',
+                    ? l10n.postRentalPrice
+                    : l10n.postExpectedPrice,
                 icon: Icons.currency_rupee_rounded,
               ),
               const SizedBox(height: 8),
               _Field(
                 controller:   _priceCtr,
                 hint:         _type == ListingType.rent
-                    ? 'e.g. 4500  (per day)' : 'e.g. 18000',
+                    ? l10n.postPriceHintRent
+                    : l10n.postPriceHintSell,
                 prefixText:   '₹ ',
                 keyboardType: TextInputType.number,
                 formatters:   [FilteringTextInputFormatter.digitsOnly],
                 validator: (v) => (v == null || v.trim().isEmpty)
-                    ? 'Price is required' : null,
+                    ? l10n.postPriceRequired
+                    : null,
               ),
-
               const SizedBox(height: 18),
-
-              // ── Photo upload (required) ───────────────
-              const _FieldLabel(
-                  label: 'Photos *',
-                  icon:  Icons.photo_library_outlined),
+              _FieldLabel(
+                label: l10n.postPhotosLabel,
+                icon:  Icons.photo_library_outlined,
+              ),
               const SizedBox(height: 4),
               Text(
-                'Minimum 1 photo required · up to 5 photos',
-                style: TextStyle(
-                    fontSize: 11, color: Colors.grey.shade500),
+                l10n.postPhotosHint,
+                style: TextStyle(fontSize: 11, color: Colors.grey.shade500),
               ),
               const SizedBox(height: 10),
               PostPhotoPicker(
@@ -816,18 +798,15 @@ class _PostListingScreenState extends State<PostListingScreen> {
                   });
                 },
               ),
-
               const SizedBox(height: 18),
-
-              // Description
               _FieldLabel(
-                  label: 'Description *',
-                  icon:  Icons.description_outlined),
+                label: l10n.postDescLabel,
+                icon:  Icons.description_outlined,
+              ),
               const SizedBox(height: 4),
               Text(
-                _descHints[_cat] ?? '',
-                style: TextStyle(
-                    fontSize: 11, color: Colors.grey.shade500),
+                pf.descHint(catKey),
+                style: TextStyle(fontSize: 11, color: Colors.grey.shade500),
               ),
               const SizedBox(height: 8),
               TextFormField(
@@ -835,16 +814,15 @@ class _PostListingScreenState extends State<PostListingScreen> {
                 minLines:     4,
                 maxLines:     6,
                 keyboardType: TextInputType.multiline,
-                decoration:   _inputDecoration(
-                    hint: 'Write a detailed description…'),
+                decoration: _inputDecoration(hint: l10n.postDescInputHint),
                 validator: (v) => (v == null || v.trim().isEmpty)
-                    ? 'Description is required' : null,
+                    ? l10n.postDescRequired
+                    : null,
               ),
-
               const SizedBox(height: 32),
-
               SizedBox(
-                width: double.infinity, height: 52,
+                width: double.infinity,
+                height: 52,
                 child: ElevatedButton(
                   onPressed: _nextPage,
                   style: ElevatedButton.styleFrom(
@@ -852,17 +830,21 @@ class _PostListingScreenState extends State<PostListingScreen> {
                     foregroundColor: Colors.white,
                     elevation:       0,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14)),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Next',
-                          style: TextStyle(
-                              fontSize:   16,
-                              fontWeight: FontWeight.w800)),
-                      SizedBox(width: 10),
-                      Icon(Icons.arrow_forward_rounded, size: 22),
+                      Text(
+                        l10n.postNext,
+                        style: const TextStyle(
+                          fontSize:   16,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      const Icon(Icons.arrow_forward_rounded, size: 22),
                     ],
                   ),
                 ),
@@ -875,7 +857,10 @@ class _PostListingScreenState extends State<PostListingScreen> {
   }
 
   // ═══════════ PAGE 2 ══════════════════════════════════════
-  Widget _buildPage2() {
+  Widget _buildPage2(AppLocalizations l10n) {
+    final pf     = PostFormL10n(l10n);
+    final catKey = _titleHintKeys[_cat] ?? 'cropsGrains';
+
     return Form(
       key: _formKey2,
       child: SingleChildScrollView(
@@ -883,9 +868,8 @@ class _PostListingScreenState extends State<PostListingScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             Container(
-              padding:    const EdgeInsets.all(14),
+              padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
                 color:        _kGreen.withOpacity(0.07),
                 borderRadius: BorderRadius.circular(12),
@@ -897,8 +881,7 @@ class _PostListingScreenState extends State<PostListingScreen> {
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(
-                      'These details will be shown to buyers. '
-                      'Phone number is fetched from your account.',
+                      l10n.postSellerInfoNote,
                       style: TextStyle(
                         fontSize: 12,
                         color:    _kGreen.withOpacity(0.85),
@@ -909,29 +892,28 @@ class _PostListingScreenState extends State<PostListingScreen> {
                 ],
               ),
             ),
-
             const SizedBox(height: 24),
-
-            const _FieldLabel(
-                label: 'Your Name *',
-                icon:  Icons.person_outline_rounded),
+            _FieldLabel(
+              label: l10n.postYourName,
+              icon:  Icons.person_outline_rounded,
+            ),
             const SizedBox(height: 8),
             _Field(
               controller:     _nameCtr,
-              hint:           'Full name',
+              hint:           l10n.postFullNameHint,
               capitalization: TextCapitalization.words,
               validator: (v) => (v == null || v.trim().isEmpty)
-                  ? 'Name is required' : null,
+                  ? l10n.postNameRequired
+                  : null,
             ),
-
             const SizedBox(height: 18),
-
-            const _FieldLabel(
-                label: 'Location *',
-                icon:  Icons.location_on_outlined),
+            _FieldLabel(
+              label: l10n.postLocation,
+              icon:  Icons.location_on_outlined,
+            ),
             const SizedBox(height: 4),
             Text(
-              'Village / Taluka / District where the item is located',
+              l10n.postLocationHint,
               style: TextStyle(fontSize: 11, color: Colors.grey.shade500),
             ),
             const SizedBox(height: 8),
@@ -946,17 +928,17 @@ class _PostListingScreenState extends State<PostListingScreen> {
                 return loc.permissionGranted ? loc : null;
               },
               validator: (v) => (v == null || v.trim().isEmpty)
-                  ? 'Location is required' : null,
+                  ? l10n.postLocationRequired
+                  : null,
             ),
-
             const SizedBox(height: 18),
-
-            const _FieldLabel(
-                label: 'Contact Number',
-                icon:  Icons.phone_outlined),
+            _FieldLabel(
+              label: l10n.postContactNumber,
+              icon:  Icons.phone_outlined,
+            ),
             const SizedBox(height: 4),
             Text(
-              'Fetched from your account — cannot be changed here',
+              l10n.postPhoneNote,
               style: TextStyle(fontSize: 11, color: Colors.grey.shade500),
             ),
             const SizedBox(height: 8),
@@ -965,30 +947,32 @@ class _PostListingScreenState extends State<PostListingScreen> {
               enabled:     false,
               keyboardType: TextInputType.phone,
               style: TextStyle(
-                  color: Colors.grey.shade500,
-                  fontWeight: FontWeight.w600),
+                color: Colors.grey.shade500,
+                fontWeight: FontWeight.w600,
+              ),
               decoration: _inputDecoration(
                 hint:       '+91 XXXXX XXXXX',
                 filled:     true,
                 fillColor:  Colors.grey.shade100,
-                prefixIcon: Icon(Icons.lock_outline_rounded,
-                    size: 18, color: Colors.grey.shade400),
+                prefixIcon: Icon(
+                  Icons.lock_outline_rounded,
+                  size: 18,
+                  color: Colors.grey.shade400,
+                ),
               ),
             ),
-
             const SizedBox(height: 32),
-
             _ListingSummary(
-              category: _cat.label,
-              type:     _type == ListingType.sell ? 'Sell' : 'Rent',
+              category: pf.categoryLabel(catKey),
+              type:     _type == ListingType.sell ? l10n.sell : l10n.rent,
               title:    _titleCtr.text,
               price:    _priceCtr.text,
+              l10n:     l10n,
             ),
-
             const SizedBox(height: 32),
-
             SizedBox(
-              width: double.infinity, height: 52,
+              width: double.infinity,
+              height: 52,
               child: ElevatedButton(
                 onPressed: _isSubmitting ? null : _submit,
                 style: ElevatedButton.styleFrom(
@@ -997,33 +981,39 @@ class _PostListingScreenState extends State<PostListingScreen> {
                   disabledBackgroundColor: _accentColor.withOpacity(0.50),
                   elevation:               0,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14)),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
                 ),
                 child: _isSubmitting
                     ? const SizedBox(
-                        width: 24, height: 24,
+                        width: 24,
+                        height: 24,
                         child: CircularProgressIndicator(
-                            color: Colors.white, strokeWidth: 2.5))
-                    : const Row(
+                          color: Colors.white,
+                          strokeWidth: 2.5,
+                        ),
+                      )
+                    : Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.upload_rounded, size: 20),
-                          SizedBox(width: 10),
-                          Text('Submit Listing',
-                              style: TextStyle(
-                                  fontSize:   16,
-                                  fontWeight: FontWeight.w800)),
+                          const Icon(Icons.upload_rounded, size: 20),
+                          const SizedBox(width: 10),
+                          Text(
+                            l10n.postSubmitListing,
+                            style: const TextStyle(
+                              fontSize:   16,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
                         ],
                       ),
               ),
             ),
-
             const SizedBox(height: 12),
             Center(
               child: Text(
-                'Your listing will be reviewed before going live.',
-                style: TextStyle(
-                    fontSize: 12, color: Colors.grey.shade500),
+                l10n.postReviewNote,
+                style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
               ),
             ),
           ],
@@ -1034,6 +1024,8 @@ class _PostListingScreenState extends State<PostListingScreen> {
 
   // ── Category sheet ───────────────────────────────────────
   void _showCategorySheet() {
+    final l10n = AppLocalizations.of(context)!;
+    final pf   = PostFormL10n(l10n);
     showModalBottomSheet<void>(
       context:    context,
       shape: const RoundedRectangleBorder(
@@ -1055,12 +1047,12 @@ class _PostListingScreenState extends State<PostListingScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text('Select Category',
-                    style: TextStyle(
+                child: Text(l10n.postSelectCategory,
+                    style: const TextStyle(
                         fontSize: 17, fontWeight: FontWeight.w800)),
               ),
             ),
@@ -1101,7 +1093,7 @@ class _PostListingScreenState extends State<PostListingScreen> {
                           const SizedBox(width: 14),
                           Expanded(
                             child: Text(
-                              cat.label,
+                              pf.categoryLabel(_titleHintKeys[cat]!),
                               style: TextStyle(
                                 fontSize:   14,
                                 fontWeight: FontWeight.w700,
@@ -1127,6 +1119,7 @@ class _PostListingScreenState extends State<PostListingScreen> {
 
   // ── Type sheet ───────────────────────────────────────────
   void _showTypeSheet() {
+    final l10n = AppLocalizations.of(context)!;
     showModalBottomSheet<void>(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -1137,13 +1130,13 @@ class _PostListingScreenState extends State<PostListingScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Sell or Rent?',
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
+            Text(l10n.postSellOrRent,
+                style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
             const SizedBox(height: 16),
             Row(
               children: [
                 _TypeTile(
-                  label:    'Sell',
+                  label:    l10n.sell,
                   icon:     Icons.sell_outlined,
                   selected: _type == ListingType.sell,
                   onTap: () {
@@ -1153,7 +1146,7 @@ class _PostListingScreenState extends State<PostListingScreen> {
                 ),
                 const SizedBox(width: 12),
                 _TypeTile(
-                  label:    'Rent',
+                  label:    l10n.rent,
                   icon:     Icons.handshake_outlined,
                   selected: _type == ListingType.rent,
                   onTap: () {
@@ -1178,16 +1171,19 @@ class _CategoryBanner extends StatelessWidget {
     required this.cat,
     required this.type,
     required this.accentColor,
+    required this.categoryLabel,
     this.sectionId,
   });
   final _PostCat     cat;
   final ListingType  type;
   final Color        accentColor;
+  final String       categoryLabel;
   final String?      sectionId;
 
   @override
   Widget build(BuildContext context) {
-    final isRent = type == ListingType.rent;
+    final l10n    = AppLocalizations.of(context)!;
+    final isRent  = type == ListingType.rent;
     final imagePath = cat.imagePath(sectionId);
     final gradientStart = Color.lerp(accentColor, Colors.black, 0.18)!;
     return Container(
@@ -1225,7 +1221,7 @@ class _CategoryBanner extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  cat.label,
+                  categoryLabel,
                   style: const TextStyle(
                     color:      Colors.white,
                     fontSize:   15,
@@ -1234,7 +1230,7 @@ class _CategoryBanner extends StatelessWidget {
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  isRent ? 'Rental listing' : 'For sale listing',
+                  isRent ? l10n.postRentalListing : l10n.postForSaleListing,
                   style: TextStyle(
                     color:    Colors.white.withOpacity(0.80),
                     fontSize: 12,
@@ -1257,6 +1253,7 @@ class _ListingTypeChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
@@ -1265,7 +1262,7 @@ class _ListingTypeChip extends StatelessWidget {
         border: Border.all(color: Colors.white.withOpacity(0.45)),
       ),
       child: Text(
-        isRent ? 'Rent' : 'Sell',
+        isRent ? l10n.rent : l10n.sell,
         style: const TextStyle(
           color:      Colors.white,
           fontSize:   11,
@@ -1285,11 +1282,13 @@ class _ListingSummary extends StatelessWidget {
     required this.type,
     required this.title,
     required this.price,
+    required this.l10n,
   });
   final String category;
   final String type;
   final String title;
   final String price;
+  final AppLocalizations l10n;
 
   @override
   Widget build(BuildContext context) {
@@ -1307,8 +1306,8 @@ class _ListingSummary extends StatelessWidget {
             children: [
               Icon(Icons.receipt_long_rounded, size: 16, color: _kGreen),
               const SizedBox(width: 6),
-              const Text('Listing Summary',
-                  style: TextStyle(
+              Text(l10n.postListingSummary,
+                  style: const TextStyle(
                     fontSize:   13,
                     fontWeight: FontWeight.w800,
                     color:      AppColors.textPrimary,
@@ -1316,12 +1315,12 @@ class _ListingSummary extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          _SummaryRow(label: 'Category', value: category),
-          _SummaryRow(label: 'Type',     value: type),
+          _SummaryRow(label: l10n.postSummaryCategory, value: category),
+          _SummaryRow(label: l10n.postSummaryType,     value: type),
           if (title.isNotEmpty)
-            _SummaryRow(label: 'Title', value: title),
+            _SummaryRow(label: l10n.postSummaryTitle, value: title),
           if (price.isNotEmpty)
-            _SummaryRow(label: 'Price', value: '₹$price'),
+            _SummaryRow(label: l10n.postSummaryPrice, value: '₹$price'),
         ],
       ),
     );
@@ -1521,6 +1520,7 @@ class _Field extends StatelessWidget {
     this.capitalization = TextCapitalization.none,
     this.formatters,
     this.validator,
+    this.readOnly = false,
   });
   final TextEditingController      controller;
   final String                     hint;
@@ -1530,6 +1530,7 @@ class _Field extends StatelessWidget {
   final TextCapitalization         capitalization;
   final List<TextInputFormatter>?  formatters;
   final String? Function(String?)? validator;
+  final bool                       readOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -1538,8 +1539,17 @@ class _Field extends StatelessWidget {
       keyboardType:       keyboardType,
       textCapitalization: capitalization,
       inputFormatters:    formatters,
+      readOnly:           readOnly,
+      enabled:            !readOnly,
+      style: readOnly
+          ? TextStyle(color: Colors.grey.shade700, fontWeight: FontWeight.w600)
+          : null,
       decoration: _inputDecoration(
-          hint: hint, prefixText: prefixText, suffixText: suffixText),
+        hint:      hint,
+        prefixText: prefixText,
+        suffixText: suffixText,
+        fillColor: readOnly ? Colors.grey.shade100 : null,
+      ),
       validator: validator,
     );
   }

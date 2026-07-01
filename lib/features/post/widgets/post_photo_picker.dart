@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:krishix/core/constants/app_colors.dart';
+import 'package:krishix/l10n/app_localizations.dart';
 
 const Color _kGreen  = AppColors.primaryGreen;
 const Color _kOrange = Color(0xFFFF6B00);
@@ -46,6 +47,7 @@ class PostPhotoPickerState extends State<PostPhotoPicker> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n  = AppLocalizations.of(context)!;
     final accent = widget.accentColor;
     final borderColor = widget.showError && _photos.isEmpty
         ? Colors.red.shade400
@@ -79,7 +81,7 @@ class PostPhotoPickerState extends State<PostPhotoPicker> {
                   Icon(Icons.photo_camera_rounded, size: 16, color: accent),
                   const SizedBox(width: 6),
                   Text(
-                    '${_photos.length} / 5 photos added',
+                    l10n.postPhotosAdded(_photos.length),
                     style: TextStyle(
                       fontSize:   12,
                       fontWeight: FontWeight.w700,
@@ -91,7 +93,7 @@ class PostPhotoPickerState extends State<PostPhotoPicker> {
                     GestureDetector(
                       onTap: _clearAll,
                       child: Text(
-                        'Clear all',
+                        l10n.postClearAllPhotos,
                         style: TextStyle(
                           fontSize:   11,
                           color:      Colors.red.shade400,
@@ -132,7 +134,7 @@ class PostPhotoPickerState extends State<PostPhotoPicker> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                'Add Photo *',
+                                l10n.postAddPhoto,
                                 style: TextStyle(
                                   fontSize:   10,
                                   color:      accent,
@@ -168,8 +170,8 @@ class PostPhotoPickerState extends State<PostPhotoPicker> {
                     Expanded(
                       child: Text(
                         widget.showError
-                            ? 'At least 1 photo is required to post your ad'
-                            : 'Add at least 1 photo (required) — listings with photos get 5× more responses',
+                            ? l10n.postPhotoRequiredError
+                            : l10n.postPhotoPromo,
                         style: TextStyle(
                           fontSize:   11,
                           color:      widget.showError
@@ -203,6 +205,7 @@ class _PhotoThumb extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final colors = [
       const Color(0xFFE8F5E9),
       const Color(0xFFFFF3E0),
@@ -239,7 +242,7 @@ class _PhotoThumb extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                'Photo ${index + 1}',
+                l10n.postPhotoNumber(index + 1),
                 style: TextStyle(
                   fontSize:   9,
                   color:      Colors.grey.shade500,
@@ -279,9 +282,9 @@ class _PhotoThumb extends StatelessWidget {
                   bottomLeft: Radius.circular(12),
                 ),
               ),
-              child: const Text(
-                'Cover',
-                style: TextStyle(
+              child: Text(
+                l10n.postPhotoCover,
+                style: const TextStyle(
                   color:      Colors.white,
                   fontSize:   9,
                   fontWeight: FontWeight.w800,

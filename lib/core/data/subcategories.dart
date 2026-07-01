@@ -421,7 +421,7 @@ const Map<String, CategoryDetail> kCategoryDetails = {
           SubcategoryItem(labelKey: 'john_deere',      imagePath: 'assets/sub_ctg/KrishiX_App-20.jpg'),
           SubcategoryItem(labelKey: 'massey_ferguson', imagePath: 'assets/sub_ctg/KrishiX_App-18.jpg'),
           SubcategoryItem(labelKey: 'powertrac',       imagePath: 'assets/sub_ctg/KrishiX_App-18.jpg'),
-          SubcategoryItem(labelKey: 'Other',           imagePath: 'assets/sub_ctg/KrishiX_App-20.jpg'),
+          SubcategoryItem(labelKey: 'others',          imagePath: 'assets/sub_ctg/KrishiX_App-20.jpg'),
         ],
       ),
     ],

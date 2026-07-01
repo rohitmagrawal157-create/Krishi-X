@@ -1676,4 +1676,706 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get listingChat => 'Chat';
+
+  @override
+  String get locationScopeVillage => 'गाँव';
+
+  @override
+  String get locationScopeCityNearby => 'शहर और पास के गाँव';
+
+  @override
+  String get locationScopeState => 'पूरा राज्य';
+
+  @override
+  String showingListingsIn(String scope, String location) {
+    return '$location में $scope सूची दिख रही है';
+  }
+
+  @override
+  String dealerResultsIn(int count, String location) {
+    return '$location में $count परिणाम';
+  }
+
+  @override
+  String get noDealersFound => 'कोई डीलर नहीं मिला';
+
+  @override
+  String get agriDealers => 'कृषि डीलर';
+
+  @override
+  String dealerCategoryTitle(String category) {
+    return '$category डीलर';
+  }
+
+  @override
+  String get sortBy => 'क्रमबद्ध करें';
+
+  @override
+  String sortByOption(String option) {
+    return 'क्रमबद्ध · $option';
+  }
+
+  @override
+  String get dealerSortTopRated => 'टॉप रेटेड';
+
+  @override
+  String get dealerSortNearest => 'सबसे नजदीक';
+
+  @override
+  String get dealerSortNameAz => 'अ–ज';
+
+  @override
+  String get filterCategory => 'श्रेणी';
+
+  @override
+  String get dealerCatFertilizer => 'उर्वरक';
+
+  @override
+  String get dealerCatSeeds => 'बीज';
+
+  @override
+  String get dealerCatMachinery => 'मशीनरी';
+
+  @override
+  String get dealerCatPesticides => 'कीटनाशक';
+
+  @override
+  String get productsAndServices => 'उत्पाद और सेवाएं';
+
+  @override
+  String get productsLabel => 'उत्पाद';
+
+  @override
+  String get servicesLabel => 'सेवाएं';
+
+  @override
+  String get overviewTab => 'अवलोकन';
+
+  @override
+  String get photosTab => 'फोटो';
+
+  @override
+  String get sendEnquiry => 'पूछताछ भेजें';
+
+  @override
+  String get bestPrice => 'सर्वोत्तम कीमत';
+
+  @override
+  String get getBestPrice => 'सर्वोत्तम कीमत पाएं';
+
+  @override
+  String lookingForDealers(String title) {
+    return '$title खोज रहे हैं?';
+  }
+
+  @override
+  String get searchDealersHint => 'डीलर खोजें…';
+
+  @override
+  String get veryResponsive => 'बहुत जल्दी जवाब';
+
+  @override
+  String yearsInBusiness(int years) {
+    return 'व्यवसाय में $years वर्ष';
+  }
+
+  @override
+  String ratingsCount(int count) {
+    return '$count रेटिंग';
+  }
+
+  @override
+  String alsoServesAreas(String city, String areas) {
+    return '$city • $areas में भी सेवा';
+  }
+
+  @override
+  String openNowUntil(String time) {
+    return 'अभी खुला: $time तक';
+  }
+
+  @override
+  String get primaryLabel => 'मुख्य';
+
+  @override
+  String get mapViewComingSoon => 'नक्शा जल्द आ रहा है';
+
+  @override
+  String photosCount(int count) {
+    return 'फोटो ($count)';
+  }
+
+  @override
+  String get aboutSection => 'जानकारी';
+
+  @override
+  String get locationSection => 'स्थान';
+
+  @override
+  String nearLocation(String location) {
+    return '$location के पास';
+  }
+
+  @override
+  String enquirySentTo(String name) {
+    return 'पूछताछ $name को भेजी गई';
+  }
+
+  @override
+  String priceRequestSentTo(String name) {
+    return 'कीमत अनुरोध $name को भेजा गया';
+  }
+
+  @override
+  String get foundOnKrishiXDealers => 'KrishiX डीलर पर मिला';
+
+  @override
+  String get shareProductLabel => 'उत्पाद';
+
+  @override
+  String get shareLocationLabel => 'स्थान';
+
+  @override
+  String get shareQuantityLabel => 'मात्रा';
+
+  @override
+  String get shareAppDownload => 'KrishiX डाउनलोड करें';
+
+  @override
+  String get directionLabel => 'दिशा';
+
+  @override
+  String get enquiryLabel => 'पूछताछ';
+
+  @override
+  String get enquiryFastBadge => 'FAST ⚡';
+
+  @override
+  String get topSearchBadge => 'टॉप सर्च';
+
+  @override
+  String get topRatedBadge => 'टॉप रेटेड';
+
+  @override
+  String get askForPrice => 'कीमत पूछें';
+
+  @override
+  String get productsAvailable => 'उत्पाद उपलब्ध';
+
+  @override
+  String get dealerLabel => 'डीलर';
+
+  @override
+  String get verifiedListingBadge => 'सत्यापित';
+
+  @override
+  String get listYourItem => 'अपनी वस्तु सूचीबद्ध करें';
+
+  @override
+  String get listYourItemSubtitle => 'KrishiX पर अपनी वस्तु कैसे सूचीबद्ध करनी है, चुनें';
+
+  @override
+  String get sellListingSubtitle => 'एक बार की बिक्री के लिए वस्तुएं सूचीबद्ध करें';
+
+  @override
+  String get rentListingSubtitle => 'किराए या भाड़े के लिए वस्तुएं सूचीबद्ध करें';
+
+  @override
+  String get getStarted => 'शुरू करें';
+
+  @override
+  String get postAdListingDetails => 'विज्ञापन – सूची विवरण';
+
+  @override
+  String get postAdSellerDetails => 'विज्ञापन – विक्रेता विवरण';
+
+  @override
+  String get postStepListing => 'सूची';
+
+  @override
+  String get postStepSeller => 'विक्रेता';
+
+  @override
+  String get postTitleRequired => 'शीर्षक आवश्यक है';
+
+  @override
+  String get postPriceRequired => 'कीमत आवश्यक है';
+
+  @override
+  String get postDescRequired => 'विवरण आवश्यक है';
+
+  @override
+  String get postPhotosLabel => 'फ़ोटो *';
+
+  @override
+  String get postPhotosHint => 'कम से कम 1 फ़ोटो · अधिकतम 5 फ़ोटो';
+
+  @override
+  String get postDescLabel => 'विवरण *';
+
+  @override
+  String get postDescInputHint => 'विस्तृत विवरण लिखें…';
+
+  @override
+  String get postNext => 'आगे';
+
+  @override
+  String get postSubmitListing => 'सूची जमा करें';
+
+  @override
+  String get postReviewNote => 'आपकी सूची लाइव होने से पहले समीक्षा होगी।';
+
+  @override
+  String get postExpectedPrice => 'अपेक्षित कीमत *';
+
+  @override
+  String get postRentalPrice => 'किराया कीमत *';
+
+  @override
+  String get postPriceHintSell => 'उदा. 18000';
+
+  @override
+  String get postPriceHintRent => 'उदा. 4500  (प्रति दिन)';
+
+  @override
+  String get postSelectCategory => 'श्रेणी चुनें';
+
+  @override
+  String get postSellOrRent => 'बेचें या किराए पर?';
+
+  @override
+  String get postPhotoRequiredContinue => 'आगे बढ़ने से पहले कम से कम 1 फ़ोटो जोड़ें';
+
+  @override
+  String get postPhotoRequiredSubmit => 'जमा करने से पहले कम से कम 1 फ़ोटो जोड़ें';
+
+  @override
+  String get postAdSubmitted => 'विज्ञापन जमा! समीक्षा के बाद लाइव होगा।';
+
+  @override
+  String get postSellerInfoNote => 'ये विवरण खरीदारों को दिखेंगे। फ़ोन नंबर आपके खाते से लिया गया है।';
+
+  @override
+  String get postYourName => 'आपका नाम *';
+
+  @override
+  String get postFullNameHint => 'पूरा नाम';
+
+  @override
+  String get postNameRequired => 'नाम आवश्यक है';
+
+  @override
+  String get postLocation => 'स्थान *';
+
+  @override
+  String get postLocationHint => 'गाँव / तालुका / जिला जहाँ वस्तु है';
+
+  @override
+  String get postLocationRequired => 'स्थान आवश्यक है';
+
+  @override
+  String get postContactNumber => 'संपर्क नंबर';
+
+  @override
+  String get postPhoneNote => 'आपके खाते से लिया गया — यहाँ बदला नहीं जा सकता';
+
+  @override
+  String get postListingSummary => 'सूची सारांश';
+
+  @override
+  String get postSummaryCategory => 'श्रेणी';
+
+  @override
+  String get postSummaryType => 'प्रकार';
+
+  @override
+  String get postSummaryTitle => 'शीर्षक';
+
+  @override
+  String get postSummaryPrice => 'कीमत';
+
+  @override
+  String get postSelectOption => 'विकल्प चुनें';
+
+  @override
+  String get postSelectUnit => 'इकाई चुनें';
+
+  @override
+  String postPhotosAdded(int count) {
+    return '$count / 5 फ़ोटो जोड़े';
+  }
+
+  @override
+  String get postClearAllPhotos => 'सब हटाएँ';
+
+  @override
+  String get postAddPhoto => 'फ़ोटो जोड़ें *';
+
+  @override
+  String get postPhotoRequiredError => 'कम से कम 1 फ़ोटो आवश्यक है';
+
+  @override
+  String get postPhotoPromo => 'कम से कम 1 फ़ोटो जोड़ें (आवश्यक) — फ़ोटो वाली सूचियों को 5× अधिक प्रतिक्रिया मिलती है';
+
+  @override
+  String get postPhotoCover => 'कवर';
+
+  @override
+  String postPhotoNumber(int number) {
+    return 'फ़ोटो $number';
+  }
+
+  @override
+  String get postTitleGeneric => 'सूची शीर्षक *';
+
+  @override
+  String get postTitleCropGrain => 'फसल या अनाज का नाम *';
+
+  @override
+  String get postTitleSeedPlant => 'बीज या पौधे का नाम *';
+
+  @override
+  String get postTitleFruitVeg => 'फल या सब्जी का नाम *';
+
+  @override
+  String get postTitleLivestock => 'पशु का नाम *';
+
+  @override
+  String get postTitleTractor => 'ट्रैक्टर का नाम *';
+
+  @override
+  String get postTitleFarmLand => 'खेत की जमीन का नाम *';
+
+  @override
+  String get postTitleEquipment => 'उपकरण का नाम *';
+
+  @override
+  String get postTitleFarmMachinery => 'कृषि मशीनरी का नाम *';
+
+  @override
+  String get postTitleTractorPart => 'ट्रैक्टर पार्ट का नाम *';
+
+  @override
+  String get postTitleMachineryName => 'मशीनरी का नाम *';
+
+  @override
+  String get postTitleJcb => 'JCB / एक्सकेवेटर का नाम *';
+
+  @override
+  String get postTitleTractorRental => 'ट्रैक्टर का नाम *';
+
+  @override
+  String get postCatTractorsMachinery => 'ट्रैक्टर और मशीनरी';
+
+  @override
+  String get postCatLandBuySell => 'खेत की जमीन – खरीद/बिक्री';
+
+  @override
+  String get postCatLandLease => 'खेत की जमीन – पट्टा/किराया';
+
+  @override
+  String get postCatRentalEquipment => 'किराए का उपकरण';
+
+  @override
+  String get postTitleHintGeneric => 'सूची शीर्षक दर्ज करें';
+
+  @override
+  String get postTitleHintCropsGrains => 'उदा. गेहूँ – 20 क्विंटल, A-ग्रेड';
+
+  @override
+  String get postTitleHintSeedsPlants => 'उदा. हाइब्रिड टमाटर बीज – 500g पैक';
+
+  @override
+  String get postTitleHintFruitsVeg => 'उदा. ताज़े अल्फonso आम – 10 दर्जन';
+
+  @override
+  String get postTitleHintLivestock => 'उदा. मुर्रा भैंस – अधिक दूध';
+
+  @override
+  String get postTitleHintTractors => 'उदा. महिंद्रा 575 DI – 2019 मॉडल';
+
+  @override
+  String get postTitleHintLandBuy => 'उदा. 5 एकड़ सिंचित खेत बिक्री के लिए';
+
+  @override
+  String get postTitleHintLandRent => 'उदा. 3 एकड़ खेत पट्टे के लिए';
+
+  @override
+  String get postTitleHintRental => 'उदा. JCB 3DX – दैनिक उपलब्ध';
+
+  @override
+  String get postDescHintGeneric => 'अपनी सूची का विस्तृत विवरण लिखें…';
+
+  @override
+  String get postDescHintCropsGrains => 'फसल की गुणवत्ता, पैकेजिंग, भंडारण, प्रमाणन…';
+
+  @override
+  String get postDescHintSeedsPlants => 'अंकुरण दर, स्रोत, प्रमाणन, भंडारण सलाह…';
+
+  @override
+  String get postDescHintFruitsVeg => 'ताजगी, पैकेजिंग, डिलीवरी, न्यूनतम ऑर्डर…';
+
+  @override
+  String get postDescHintLivestock => 'स्वास्थ्य, टीकाकरण, खुराक की जानकारी…';
+
+  @override
+  String get postDescHintTractors => 'सर्विस इतिहास, अटैचमेंट, मरम्मत…';
+
+  @override
+  String get postDescHintLandBuy => 'सड़क, सिंचाई, नज़दीकी सुविधाएँ, कानूनी स्थिति…';
+
+  @override
+  String get postDescHintLandRent => 'जमीन की स्थिति, पani/बijli खर्च, सड़क…';
+
+  @override
+  String get postDescHintRental => 'उपलब्धता, ऑपरेटर, सेवा क्षेत्र, शर्तें…';
+
+  @override
+  String get postFldQuantity => 'मात्रा';
+
+  @override
+  String get postFldGradeQuality => 'ग्रेड / गुणवत्ता';
+
+  @override
+  String get postFldHarvestDate => 'कटाई की तारीख';
+
+  @override
+  String get postFldCropPlantType => 'फसल / पौधे का प्रकार';
+
+  @override
+  String get postFldQuantityPackSize => 'मात्रा / पैक साइज';
+
+  @override
+  String get postFldSeedBrand => 'बीज / पौधे का ब्रांड';
+
+  @override
+  String get postFldSowingSeason => 'बुवाई का मौसम';
+
+  @override
+  String get postFldVariety => 'किस्म';
+
+  @override
+  String get postFldQuantityAvailable => 'उपलब्ध मात्रा';
+
+  @override
+  String get postFldHarvestAvailable => 'कटाई / उपलब्धता';
+
+  @override
+  String get postFldBreed => 'नस्ल';
+
+  @override
+  String get postFldAge => 'उम्र';
+
+  @override
+  String get postFldMilkYield => 'दूध उत्पाद (यदि लागू)';
+
+  @override
+  String get postFldBrand => 'ब्रांड';
+
+  @override
+  String get postFldYearManufacture => 'निर्माण वर्ष';
+
+  @override
+  String get postFldHorsePower => 'हॉर्स पावर (HP)';
+
+  @override
+  String get postFldCondition => 'स्थिति';
+
+  @override
+  String get postFldTotalArea => 'कुल क्षेत्र';
+
+  @override
+  String get postFldSurveyNumber => 'सर्वे नंबर';
+
+  @override
+  String get postFldSoilType => 'मिट्टी का प्रकार';
+
+  @override
+  String get postFldWaterSource => 'पानी का स्रोत';
+
+  @override
+  String get postFldRoadAccess => 'सड़क पहुँच';
+
+  @override
+  String get postFldLegalStatus => 'कानूनी स्थिति';
+
+  @override
+  String get postFldTotalAreaAvailable => 'उपलब्ध कुल क्षेत्र';
+
+  @override
+  String get postFldLeaseDuration => 'पट्टा अवधि';
+
+  @override
+  String get postFldExistingCrop => 'मौजूदा फसल (यदि कोई)';
+
+  @override
+  String get postFldLeaseTerms => 'पट्टा शर्तें';
+
+  @override
+  String get postFldEquipmentType => 'उपकरण प्रकार';
+
+  @override
+  String get postFldRentalDuration => 'किराए की अवधि';
+
+  @override
+  String get postFldDeliveryAvailable => 'डिलीवरी उपलब्ध?';
+
+  @override
+  String get postFldMachineType => 'मशीन प्रकार';
+
+  @override
+  String get postFldOperatorIncluded => 'ऑपरेटर शामिल?';
+
+  @override
+  String get postHintQuantity => 'उदा. 20';
+
+  @override
+  String get postHintGradeQuality => 'उदा. A-ग्रेड, प्रीमियम, मिश्रित';
+
+  @override
+  String get postHintHarvestDate => 'उदा. जून 2026';
+
+  @override
+  String get postHintCropPlantType => 'उदा. टमाटर, बैंगन, प्याज, आम का पौधा';
+
+  @override
+  String get postHintQuantityPackSize => 'उदा. 500';
+
+  @override
+  String get postHintSeedBrand => 'उदा. महाइको, सिंजेंटा, स्थानीय';
+
+  @override
+  String get postHintSowingSeason => 'उदा. खरीफ, रबी, किसी भी मौसम';
+
+  @override
+  String get postHintVariety => 'उदा. अल्फonso, देवगad, चेरी टमाटर';
+
+  @override
+  String get postHintQuantityAvailable => 'उदा. 50';
+
+  @override
+  String get postHintHarvestAvailable => 'उदा. अभी तैयार, जुलाई 2026';
+
+  @override
+  String get postHintBreed => 'उदा. मुर्रा, HF, गिर, साहीवाल';
+
+  @override
+  String get postHintAge => 'उदा. 3 वर्ष, 18 महीने';
+
+  @override
+  String get postHintMilkYield => 'उदा. 14';
+
+  @override
+  String get postHintBrand => 'उदा. महिंद्रा, स्वराज, जॉन डियर';
+
+  @override
+  String get postHintYearManufacture => 'उदा. 2019';
+
+  @override
+  String get postHintHorsePower => 'उदा. 45';
+
+  @override
+  String get postHintCondition => 'उदा. अच्छी, उत्तम, मरम्मत जरूरी';
+
+  @override
+  String get postHintTotalArea => 'उदा. 5';
+
+  @override
+  String get postHintSurveyNumber => 'उदा. 142/3 (वैकल्पिक)';
+
+  @override
+  String get postHintSoilType => 'उदा. काली, लाल, जलोढ़';
+
+  @override
+  String get postHintWaterSource => 'उदा. बोरवेल, नहर, वर्षा';
+
+  @override
+  String get postHintRoadAccess => 'उदा. हाँ – 10ft सड़क, नहीं';
+
+  @override
+  String get postHintLegalStatus => 'उदा. स्पष्ट टाइटल, NA';
+
+  @override
+  String get postHintTotalAreaAvailable => 'उदा. 3';
+
+  @override
+  String get postHintLeaseDuration => 'उदा. 1 वर्ष, मौसमी, 3 वर्ष';
+
+  @override
+  String get postHintExistingCrop => 'उदा. गanna, कपास, खाली';
+
+  @override
+  String get postHintLeaseTerms => 'उदा. बातचीत, ₹8000/एकड़/वर्ष';
+
+  @override
+  String get postHintEquipmentType => 'उदा. रोटavator, JCB, स्प्रेयर';
+
+  @override
+  String get postHintRentalDuration => 'उदा. प्रति घंटा, दैनिक, साप्ताहिक';
+
+  @override
+  String get postHintDeliveryAvailable => 'उदा. हाँ – 20 km, नहीं – self pickup';
+
+  @override
+  String get postHintMachineType => 'उदा. JCB 3DX, Excavator, Loader';
+
+  @override
+  String get postHintOperatorIncluded => 'उदा. हाँ – ऑपरेटर सहित, नहीं';
+
+  @override
+  String get postSuffixLitersPerDay => 'ली/दिन';
+
+  @override
+  String get postSuffixAcres => 'एकड़';
+
+  @override
+  String get postSuffixHp => 'HP';
+
+  @override
+  String get unitQuintal => 'क्विंटल';
+
+  @override
+  String get unitKg => 'किलो';
+
+  @override
+  String get unitTon => 'टन';
+
+  @override
+  String get unitMan => 'मण';
+
+  @override
+  String get unitBag => 'बोरी';
+
+  @override
+  String get unitDozen => 'दर्जन';
+
+  @override
+  String get unitCrate => 'क्रेट';
+
+  @override
+  String get unitBox => 'बॉक्स';
+
+  @override
+  String get unitGrams => 'ग्राम';
+
+  @override
+  String get unitPacket => 'पैकेट';
+
+  @override
+  String get unitPiece => 'नग';
+
+  @override
+  String get unitAcre => 'एकड़';
+
+  @override
+  String get unitHectare => 'हेक्टेयर';
+
+  @override
+  String get unitGuntha => 'गुंठा';
+
+  @override
+  String get postForSaleListing => 'बिक्री के लिए सूची';
+
+  @override
+  String get postRentalListing => 'किराए की सूची';
 }

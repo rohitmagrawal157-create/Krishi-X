@@ -1,6 +1,8 @@
 // lib/core/models/listing.dart
 
 import 'package:flutter/material.dart';
+import 'package:krishix/l10n/app_localizations.dart';
+import 'package:krishix/l10n/l10n_lookup.dart';
 
 // ─────────────────────────────────────────────────────────────
 // ENUMS
@@ -54,6 +56,7 @@ class Listing {
     this.titleGu,
     this.descriptionMr,
     this.descriptionGu,
+    this.titleKey,
     this.distanceKm,
     // ── Seller identity ───────────────────────────────────
     this.sellerId,
@@ -107,6 +110,8 @@ class Listing {
   final String          descriptionHi;
   final String?         descriptionMr;
   final String?         descriptionGu;
+  /// When set, title is resolved from [l10nLookup] (subcategory listings).
+  final String?         titleKey;
   final double?         distanceKm;
 
   // ── Seller identity ───────────────────────────────────────
@@ -180,6 +185,24 @@ class Listing {
   }
 
   // ── Localized helpers ─────────────────────────────────────
+  /// Village or city name only — e.g. "Paithan" not the full district string.
+  String get shortLocation {
+    final parts = location
+        .split(',')
+        .map((p) => p.trim())
+        .where((p) => p.isNotEmpty)
+        .toList();
+    return parts.isNotEmpty ? parts.first : location;
+  }
+
+  String displayTitle(AppLocalizations l10n) {
+    if (titleKey != null && titleKey!.isNotEmpty) {
+      final key = titleKey!.toLowerCase() == 'other' ? 'others' : titleKey!;
+      return l10nLookup(l10n, key);
+    }
+    return localizedTitle(Locale(l10n.localeName));
+  }
+
   String localizedTitle(Locale locale) {
     switch (locale.languageCode) {
       case 'hi': return titleHi;
@@ -201,7 +224,7 @@ class Listing {
   // ── copyWith ──────────────────────────────────────────────
   Listing copyWith({double? distanceKm}) => Listing(
     id: id, title: title, titleHi: titleHi, titleMr: titleMr,
-    titleGu: titleGu, price: price, location: location,
+    titleGu: titleGu, titleKey: titleKey, price: price, location: location,
     category: category, type: type, isVerified: isVerified,
     sellerName: sellerName, imageEmoji: imageEmoji,
     description: description, descriptionHi: descriptionHi,

@@ -1636,7 +1636,7 @@ class _ProductCardState extends State<_ProductCard> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      widget.listing.localizedTitle(locale),
+                      widget.listing.displayTitle(l10n),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
@@ -1655,9 +1655,9 @@ class _ProductCardState extends State<_ProductCard> {
                       Expanded(
                         child: Text(
                           widget.listing.distanceKm != null
-                              ? '${widget.listing.location} • '
+                              ? '${widget.listing.shortLocation} • '
                                 '${l10n.kmAway(widget.listing.distanceKm!.toStringAsFixed(1))}'
-                              : widget.listing.location,
+                              : widget.listing.shortLocation,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -1926,7 +1926,7 @@ class _BrowseNearbyCardState extends State<_BrowseNearbyCard> {
                   ),
                   const SizedBox(height: 3),
                   Text(
-                    widget.listing.localizedTitle(locale),
+                    widget.listing.displayTitle(widget.l10n),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -1944,7 +1944,7 @@ class _BrowseNearbyCardState extends State<_BrowseNearbyCard> {
                     const SizedBox(width: 3),
                     Expanded(
                       child: Text(
-                        widget.listing.location,
+                        widget.listing.shortLocation,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(

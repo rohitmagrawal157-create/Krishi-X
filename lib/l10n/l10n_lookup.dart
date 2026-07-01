@@ -175,13 +175,60 @@ String l10nLookup(AppLocalizations l10n, String key) {
     case 'plantation_labour': return l10n.plantation_labour;
     case 'irrigation_labour': return l10n.irrigation_labour;
 
+    case 'cereal_crops':           return l10n.cereal_crops;
+    case 'pulse_crops':            return l10n.pulse_crops;
+    case 'cash_crops':             return l10n.cash_crops;
+    case 'spice_crops':            return l10n.spice_crops;
+    case 'fruit_crops':            return l10n.fruit_crops;
+    case 'fodder_crops':           return l10n.fodder_crops;
+    case 'plants_and_saplings':    return l10n.plants_and_saplings;
+    case 'rice_paddy':             return l10n.rice_paddy;
+    case 'sorghum_jowar':          return l10n.sorghum_jowar;
+    case 'pearl_millet_bajra':     return l10n.pearl_millet_bajra;
+    case 'maize_corn':             return l10n.maize_corn;
+    case 'barnyard_millet_bhagar': return l10n.barnyard_millet_bhagar;
+    case 'pigeon_pea_tur':         return l10n.pigeon_pea_tur;
+    case 'chickpea_chana':         return l10n.chickpea_chana;
+    case 'green_gram_moong':       return l10n.green_gram_moong;
+    case 'black_gram_urad':        return l10n.black_gram_urad;
+    case 'lentil_masoor':          return l10n.lentil_masoor;
+    case 'field_pea_vatana':       return l10n.field_pea_vatana;
+    case 'cowpea_chawli':          return l10n.cowpea_chawli;
+    case 'kidney_bean_rajma':      return l10n.kidney_bean_rajma;
+    case 'safflower':              return l10n.safflower;
+    case 'linseed':                return l10n.linseed;
+    case 'castor':                 return l10n.castor;
+    case 'turmeric':               return l10n.turmeric;
+    case 'ginger':                 return l10n.ginger;
+    case 'coriander':              return l10n.coriander;
+    case 'fenugreek':              return l10n.fenugreek;
+    case 'onion_seed':             return l10n.onion_seed;
+    case 'ridge_gourd':            return l10n.ridge_gourd;
+    case 'bitter_gourd':           return l10n.bitter_gourd;
+    case 'bottle_gourd':           return l10n.bottle_gourd;
+    case 'dill':                   return l10n.dill;
+    case 'custard_apple':          return l10n.custard_apple;
+    case 'jamun':                  return l10n.jamun;
+    case 'fodder_maize':           return l10n.fodder_maize;
+    case 'fodder_sorghum':         return l10n.fodder_sorghum;
+    case 'fodder_pearl_millet':    return l10n.fodder_pearl_millet;
+    case 'mango_sapling':          return l10n.mango_sapling;
+    case 'pomegranate_sapling':    return l10n.pomegranate_sapling;
+    case 'sweet_lime_sapling':     return l10n.sweet_lime_sapling;
+    case 'orange_sapling':         return l10n.orange_sapling;
+    case 'cashew_sapling':         return l10n.cashew_sapling;
+    case 'coconut_sapling':        return l10n.coconut_sapling;
+    case 'teak_sapling':           return l10n.teak_sapling;
+    case 'bamboo_sapling':         return l10n.bamboo_sapling;
+
   case 'horse_power_hp':              return 'Horse Power (HP)';
 case 'drone':                       return 'Drone';
 case 'drone_harvester':             return 'Drone Harvester';
 case 'buy':                         return 'Buy';
 case 'rent':                        return 'Rent';
 case 'services':                    return 'Services';
-case 'others':                      return 'Others';
+case 'others':                      return l10n.others;
+case 'Other':                       return l10n.others;
 case 'sale':                        return 'Sale';
 case 'lease':                       return 'Lease';
 case 'krishix':                     return 'KrishiX';
@@ -190,6 +237,14 @@ case 'services_coming_soon_subtitle': return 'We are working on bringing farming
 
 
 
-    default: return key; // fallback — surfaces missing keys visibly in QA
+    default: return _humanizeKey(key);
   }
+}
+
+String _humanizeKey(String key) {
+  return key
+      .split('_')
+      .where((part) => part.isNotEmpty)
+      .map((part) => '${part[0].toUpperCase()}${part.substring(1)}')
+      .join(' ');
 }

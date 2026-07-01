@@ -20,7 +20,8 @@ final landLeaseFormConfig = PostFormConfig(
       hint:         'e.g. 3',
       icon:         Icons.straighten_rounded,
       keyboardType: TextInputType.number,
-      suffixText:   'Acres',
+      unitOptions:  PostUnits.landArea,
+      defaultUnit:  'Acre',
       formatters:   [FilteringTextInputFormatter.allow(RegExp(r'[\d.]'))],
     ),
     PostFormField(

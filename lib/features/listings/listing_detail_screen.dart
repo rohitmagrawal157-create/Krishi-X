@@ -514,7 +514,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                     children: [
                       Expanded(
                         child: Text(
-                          listing.localizedTitle(locale),
+                          listing.displayTitle(l10n),
                           style: const TextStyle(
                             fontSize:   20,
                             fontWeight: FontWeight.w800,

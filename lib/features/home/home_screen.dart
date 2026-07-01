@@ -13,7 +13,6 @@ import 'package:krishix/features/home/nearby.dart';
 import 'package:krishix/l10n/app_localizations.dart';
 import 'package:krishix/core/data/subcategories.dart';
 import 'package:krishix/features/category/category_detail_screen.dart';
-import 'package:krishix/features/category/tractor_picker_screen.dart';
 import 'package:krishix/features/wishlist/wishlist_screen.dart';
 
 // ── Row 1: status + location row height ──────────────────────
@@ -202,57 +201,57 @@ class _HomeScreenState extends State<HomeScreen> {
     final loc = l10n.localeName;
     return [
       _HomeCategory(
-        label: l10n.cropsAndGrains, imagePath: 'assets/sub_ctg/KrishiX_App-31.jpg',
+        label: l10n.cropsAndGrains, imagePath: 'assets/images/seed1.jpeg',
         color: const Color(0xFF689F38), sectionId: CategorySectionId.cropsAndGrains,
         filter: _CategoryFilter.buy,
       ),
       _HomeCategory(
-        label: l10n.fruitsAndVegetables, imagePath: 'assets/sub_ctg/KrishiX_App-47.jpg',
+        label: l10n.fruitsAndVegetables, imagePath: 'assets/images/fruits1.jpeg',
         color: const Color(0xFF7CB342), sectionId: CategorySectionId.fruitsVeg,
         filter: _CategoryFilter.buy,
       ),
       _HomeCategory(
-        label: l10n.categoryLivestock, imagePath: 'assets/sub_ctg/KrishiX_App-54.jpg',
+        label: l10n.categoryLivestock, imagePath: 'assets/images/pets1.jpeg',
         color: const Color(0xFF8D6E63), sectionId: CategorySectionId.livestock,
         filter: _CategoryFilter.buy,
       ),
       _HomeCategory(
-        label: l10n.categoryLand, imagePath: 'assets/sub_ctg/KrishiX_App-65.jpg',
+        label: l10n.categoryLand, imagePath: 'assets/images/land4.jpeg',
         color: const Color(0xFF0277BD), sectionId: CategorySectionId.agricultureLandSale,
         filter: _CategoryFilter.buy,
       ),
       _HomeCategory(
-        label: l10n.seeds, imagePath: 'assets/sub_ctg/KrishiX_App-71.jpg',
+        label: l10n.seeds, imagePath: 'assets/images/food1.jpeg',
         color: AppColors.textPrimary, sectionId: CategorySectionId.seedsAndPlants,
         filter: _CategoryFilter.buy,
       ),
       _HomeCategory(
-        label: l10n.categoryMachinery, imagePath: 'assets/sub_ctg/KrishiX_App-21.jpg',
+        label: l10n.categoryMachinery, imagePath: 'assets/images/machin1.jpeg',
         color: const Color(0xFF6D4C41), sectionId: CategorySectionId.farmMachinery,
         filter: _CategoryFilter.buy,
       ),
       _HomeCategory(
-        label: l10n.tractors, imagePath: 'assets/sub_ctg/KrishiX_App-17.jpg',
-        color: const Color(0xFF558B2F), sectionId: CategorySectionId.tractors,
+        label: l10n.tractors, imagePath: 'assets/images/Tractor1.jpeg',
+        color: const Color(0xFF558B2F), sectionId: CategorySectionId.tractorsBuy,
         filter: _CategoryFilter.buy,
       ),
       _HomeCategory(
-        label: _tr('lease_land', loc), imagePath: 'assets/sub_ctg/KrishiX_App-65.jpg',
+        label: _tr('lease_land', loc), imagePath: 'assets/images/land4.jpeg',
         color: const Color(0xFF0277BD), sectionId: CategorySectionId.agricultureLandLease,
         filter: _CategoryFilter.rent,
       ),
       _HomeCategory(
-        label: _tr('tractor_rental', loc), imagePath: 'assets/sub_ctg/KrishiX_App-17.jpg',
+        label: _tr('tractor_rental', loc), imagePath: 'assets/images/Tractor1.jpeg',
         color: const Color(0xFF558B2F), sectionId: CategorySectionId.tractorRental,
         filter: _CategoryFilter.rent,
       ),
       _HomeCategory(
-        label: _tr('farm_machinery_rent', loc), imagePath: 'assets/sub_ctg/KrishiX_App-21.jpg',
+        label: _tr('farm_machinery_rent', loc), imagePath: 'assets/images/machin1.jpeg',
         color: const Color(0xFF6D4C41), sectionId: CategorySectionId.farmMachineryRent,
         filter: _CategoryFilter.rent,
       ),
       _HomeCategory(
-        label: _tr('jcb_rental', loc), imagePath: 'assets/sub_ctg/KrishiX_App-23.jpg',
+        label: _tr('jcb_rental', loc), imagePath: 'assets/images/services.jpeg',
         color: const Color(0xFFF57C00), sectionId: CategorySectionId.jcbRental,
         filter: _CategoryFilter.rent,
       ),
@@ -269,12 +268,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _openCategoryDetail(BuildContext context, String sectionId) {
-    if (sectionId == CategorySectionId.tractors) {
-      Navigator.of(context).push(MaterialPageRoute<void>(
-        builder: (_) => TractorPickerScreen(userLocation: widget.userLocation),
-      ));
-      return;
-    }
     if (sectionId == CategorySectionId.tractorRental) {
       Navigator.of(context).push(MaterialPageRoute<void>(
         builder: (_) => BrowseScreen(
@@ -552,11 +545,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
           ),
 
-          // ── Location filter hint ─────────────────────────
-          SliverToBoxAdapter(
-            child: _LocationScopeBanner(location: widget.userLocation),
-          ),
-
           // ── All products feed ────────────────────────────
           AllProductsSection(
             items:         _items,
@@ -713,22 +701,19 @@ class _TwoRowHeaderDelegate extends SliverPersistentHeaderDelegate {
                         height:  38,
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         decoration: BoxDecoration(
-                          color:        Colors.white.withOpacity(0.18),
+                          color:        Colors.white,
                           borderRadius: BorderRadius.circular(22),
-                          border: Border.all(
-                              color: Colors.white.withOpacity(0.30),
-                              width: 1),
                         ),
                         child: Row(
                           children: [
                             Icon(Icons.search_rounded,
-                                color: Colors.white.withOpacity(0.85),
+                                color: Colors.grey.shade400,
                                 size: 18),
                             const SizedBox(width: 8),
                             Text(
                               l10n.searchPlaceholder,
                               style: TextStyle(
-                                color:    Colors.white.withOpacity(0.70),
+                                color:    Colors.grey.shade500,
                                 fontSize: 13,
                               ),
                             ),
@@ -916,57 +901,95 @@ class _FilterChip extends StatelessWidget {
 // ═══════════════════════════════════════════════════════════════
 class _HomeBanner extends StatelessWidget {
   const _HomeBanner({required this.l10n, required this.onBannerTap});
+
   final AppLocalizations l10n;
   final VoidCallback     onBannerTap;
+
+  static const _aspectRatio = 1080 / 300;
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: SizedBox(
-        height: 180,
+      borderRadius: BorderRadius.circular(16),
+      child: AspectRatio(
+        aspectRatio: _aspectRatio,
         child: Stack(
           fit: StackFit.expand,
           children: [
             Image.asset(
-              'assets/images/Banner.jpeg',
-              fit: BoxFit.cover, alignment: Alignment.center,
+              'assets/images/Banner2.jpeg',
+              fit:         BoxFit.cover,
+              alignment:   Alignment.centerRight,
               errorBuilder: (_, __, ___) =>
                   Container(color: AppColors.bannerGreen),
             ),
-            Padding(
-              padding: const EdgeInsets.all(20),
+            Positioned.fill(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end:   Alignment.centerRight,
+                    stops: const [0.0, 0.38, 0.58],
+                    colors: [
+                      AppColors.bannerGreen.withOpacity(0.88),
+                      AppColors.bannerGreen.withOpacity(0.45),
+                      Colors.transparent,
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              left:  12,
+              top:   10,
+              right: 100,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(l10n.bannerTractorTitle,
-                      style: const TextStyle(
-                        color:      Colors.white,
-                        fontSize:   AppTextSize.title,
-                        fontWeight: FontWeight.w800,
-                      )),
-                  const SizedBox(height: 6),
-                  Text(l10n.bannerTractorSubtitle,
-                      style: TextStyle(
-                        color:    Colors.white.withOpacity(0.9),
-                        fontSize: AppTextSize.body,
-                      )),
-                  const Spacer(),
+                  Text(
+                    l10n.bannerTractorTitle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color:         Colors.white,
+                      fontSize:      14,
+                      fontWeight:    FontWeight.w800,
+                      height:        1.15,
+                      letterSpacing: -0.2,
+                    ),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    l10n.bannerTractorSubtitle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color:    Colors.white.withOpacity(0.92),
+                      fontSize: 11,
+                      height:   1.15,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
                   Material(
                     color:        Colors.white,
-                    borderRadius: BorderRadius.circular(24),
+                    borderRadius: BorderRadius.circular(16),
+                    elevation:    0,
                     child: InkWell(
                       onTap:        onBannerTap,
-                      borderRadius: BorderRadius.circular(24),
+                      borderRadius: BorderRadius.circular(16),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 11),
-                        child: Text(l10n.searchNow,
-                            style: const TextStyle(
-                              color:      AppColors.bannerGreen,
-                              fontWeight: FontWeight.w700,
-                              fontSize:   AppTextSize.body,
-                            )),
+                            horizontal: 10, vertical: 4),
+                        child: Text(
+                          l10n.searchNow,
+                          style: const TextStyle(
+                            color:      AppColors.bannerGreen,
+                            fontWeight: FontWeight.w700,
+                            fontSize:   11,
+                            height:     1.0,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -1148,55 +1171,6 @@ class _SheetCategoryTile extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _LocationScopeBanner extends StatelessWidget {
-  const _LocationScopeBanner({required this.location});
-
-  final UserLocation location;
-
-  String get _scopeLabel {
-    switch (location.scope) {
-      case LocationScope.village:
-        return 'Village';
-      case LocationScope.city:
-        return 'City & nearby villages';
-      case LocationScope.state:
-        return 'Whole state';
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        decoration: BoxDecoration(
-          color: AppColors.primaryGreen.withOpacity(0.08),
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: AppColors.primaryGreen.withOpacity(0.2)),
-        ),
-        child: Row(
-          children: [
-            Icon(Icons.filter_alt_outlined,
-                size: 18, color: AppColors.primaryGreen.withOpacity(0.85)),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                'Showing $_scopeLabel listings in ${location.filterLabel}',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.grey.shade700,
-                ),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

@@ -5,9 +5,12 @@ import 'package:krishix/core/data/subcategories.dart';
 import 'package:krishix/core/models/listing.dart';
 import 'package:krishix/core/models/user_location.dart';
 import 'package:krishix/core/services/location_service.dart';
+import 'package:krishix/l10n/app_localizations_en.dart';
+import 'package:krishix/l10n/l10n_lookup.dart';
 
 abstract final class ListingFeed {
   static const pageSize = 8;
+  static final _enL10n = AppLocalizationsEn('en');
 
   static List<Listing> fetchPage(
     int page, {
@@ -147,6 +150,7 @@ abstract final class ListingFeed {
       titleGu:       base.titleGu != null
                        ? (variant == 0 ? base.titleGu : '${base.titleGu} (#${variant + 1})')
                        : null,
+      titleKey:      base.titleKey,
       price:         base.price + priceBump,
       location:      base.location,
       category:      base.category,
@@ -210,7 +214,8 @@ abstract final class ListingFeed {
 
       for (final group in detail.groups) {
         for (final item in group.items) {
-          final title  = _titleFromKey(item.labelKey);
+          final titleKey = item.labelKey;
+          final title  = _titleForKey(titleKey);
           final type   = _typeForSection(entry.key, category);
           final price  = _basePriceFor(category, entry.key, index);
           final fields = _fieldsFor(category, entry.key, title, index, type, price);
@@ -220,6 +225,7 @@ abstract final class ListingFeed {
               id:            'subcategory-${entry.key}-${item.labelKey}-$index',
               title:         title,
               titleHi:       title,
+              titleKey:      titleKey,
               price:         price,
               location:      _locationFor(index),
               category:      category,
@@ -407,13 +413,7 @@ abstract final class ListingFeed {
     }
   }
 
-  static String _titleFromKey(String key) {
-    return key
-        .split('_')
-        .where((part) => part.isNotEmpty)
-        .map((part) => '${part[0].toUpperCase()}${part.substring(1)}')
-        .join(' ');
-  }
+  static String _titleForKey(String key) => l10nLookup(_enL10n, key);
 
   static String _locationFor(int index) {
     const locations = [

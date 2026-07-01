@@ -9,7 +9,6 @@ import 'package:krishix/features/post/forms/livestock_form.dart';
 import 'package:krishix/features/post/forms/machinery_rent_form.dart';
 import 'package:krishix/features/post/forms/post_form_config.dart';
 import 'package:krishix/features/post/forms/seeds_plants_form.dart';
-import 'package:krishix/features/post/forms/tractor_parts_form.dart';
 import 'package:krishix/features/post/forms/tractor_rental_form.dart';
 import 'package:krishix/features/post/forms/tractors_form.dart';
 
@@ -20,7 +19,6 @@ final _allFormConfigs = <PostFormConfig>[
   livestockFormConfig,
   tractorsFormConfig,
   farmMachineryFormConfig,
-  tractorPartsFormConfig,
   landSaleFormConfig,
   tractorRentalFormConfig,
   machineryRentFormConfig,

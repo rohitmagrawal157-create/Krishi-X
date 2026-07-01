@@ -3428,6 +3428,1350 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Chat'**
   String get listingChat;
+
+  /// No description provided for @locationScopeVillage.
+  ///
+  /// In en, this message translates to:
+  /// **'Village'**
+  String get locationScopeVillage;
+
+  /// No description provided for @locationScopeCityNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'City & nearby villages'**
+  String get locationScopeCityNearby;
+
+  /// No description provided for @locationScopeState.
+  ///
+  /// In en, this message translates to:
+  /// **'Whole state'**
+  String get locationScopeState;
+
+  /// No description provided for @showingListingsIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Showing {scope} listings in {location}'**
+  String showingListingsIn(String scope, String location);
+
+  /// No description provided for @dealerResultsIn.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} results in {location}'**
+  String dealerResultsIn(int count, String location);
+
+  /// No description provided for @noDealersFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No dealers found'**
+  String get noDealersFound;
+
+  /// No description provided for @agriDealers.
+  ///
+  /// In en, this message translates to:
+  /// **'Agri Dealers'**
+  String get agriDealers;
+
+  /// No description provided for @dealerCategoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{category} Dealers'**
+  String dealerCategoryTitle(String category);
+
+  /// No description provided for @sortBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by'**
+  String get sortBy;
+
+  /// No description provided for @sortByOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by · {option}'**
+  String sortByOption(String option);
+
+  /// No description provided for @dealerSortTopRated.
+  ///
+  /// In en, this message translates to:
+  /// **'Top Rated'**
+  String get dealerSortTopRated;
+
+  /// No description provided for @dealerSortNearest.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearest'**
+  String get dealerSortNearest;
+
+  /// No description provided for @dealerSortNameAz.
+  ///
+  /// In en, this message translates to:
+  /// **'A – Z'**
+  String get dealerSortNameAz;
+
+  /// No description provided for @filterCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get filterCategory;
+
+  /// No description provided for @dealerCatFertilizer.
+  ///
+  /// In en, this message translates to:
+  /// **'Fertilizer'**
+  String get dealerCatFertilizer;
+
+  /// No description provided for @dealerCatSeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Seeds'**
+  String get dealerCatSeeds;
+
+  /// No description provided for @dealerCatMachinery.
+  ///
+  /// In en, this message translates to:
+  /// **'Machinery'**
+  String get dealerCatMachinery;
+
+  /// No description provided for @dealerCatPesticides.
+  ///
+  /// In en, this message translates to:
+  /// **'Pesticides'**
+  String get dealerCatPesticides;
+
+  /// No description provided for @productsAndServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Products & Services'**
+  String get productsAndServices;
+
+  /// No description provided for @productsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Products'**
+  String get productsLabel;
+
+  /// No description provided for @servicesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get servicesLabel;
+
+  /// No description provided for @overviewTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get overviewTab;
+
+  /// No description provided for @photosTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get photosTab;
+
+  /// No description provided for @sendEnquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Enquiry'**
+  String get sendEnquiry;
+
+  /// No description provided for @bestPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Best Price'**
+  String get bestPrice;
+
+  /// No description provided for @getBestPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Best Price'**
+  String get getBestPrice;
+
+  /// No description provided for @lookingForDealers.
+  ///
+  /// In en, this message translates to:
+  /// **'Looking for {title}?'**
+  String lookingForDealers(String title);
+
+  /// No description provided for @searchDealersHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search dealers…'**
+  String get searchDealersHint;
+
+  /// No description provided for @veryResponsive.
+  ///
+  /// In en, this message translates to:
+  /// **'Very Responsive'**
+  String get veryResponsive;
+
+  /// No description provided for @yearsInBusiness.
+  ///
+  /// In en, this message translates to:
+  /// **'{years} Years in Business'**
+  String yearsInBusiness(int years);
+
+  /// No description provided for @ratingsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Ratings'**
+  String ratingsCount(int count);
+
+  /// No description provided for @alsoServesAreas.
+  ///
+  /// In en, this message translates to:
+  /// **'{city} • Also Serves {areas}'**
+  String alsoServesAreas(String city, String areas);
+
+  /// No description provided for @openNowUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Now: until {time}'**
+  String openNowUntil(String time);
+
+  /// No description provided for @primaryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary'**
+  String get primaryLabel;
+
+  /// No description provided for @mapViewComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Map view coming soon'**
+  String get mapViewComingSoon;
+
+  /// No description provided for @photosCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos ({count})'**
+  String photosCount(int count);
+
+  /// No description provided for @aboutSection.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get aboutSection;
+
+  /// No description provided for @locationSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get locationSection;
+
+  /// No description provided for @nearLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Near {location}'**
+  String nearLocation(String location);
+
+  /// No description provided for @enquirySentTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Enquiry sent to {name}'**
+  String enquirySentTo(String name);
+
+  /// No description provided for @priceRequestSentTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Price request sent to {name}'**
+  String priceRequestSentTo(String name);
+
+  /// No description provided for @foundOnKrishiXDealers.
+  ///
+  /// In en, this message translates to:
+  /// **'Found on KrishiX Dealers'**
+  String get foundOnKrishiXDealers;
+
+  /// No description provided for @shareProductLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Product'**
+  String get shareProductLabel;
+
+  /// No description provided for @shareLocationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get shareLocationLabel;
+
+  /// No description provided for @shareQuantityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get shareQuantityLabel;
+
+  /// No description provided for @shareAppDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Download KrishiX'**
+  String get shareAppDownload;
+
+  /// No description provided for @directionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Direction'**
+  String get directionLabel;
+
+  /// No description provided for @enquiryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Enquiry'**
+  String get enquiryLabel;
+
+  /// No description provided for @enquiryFastBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'FAST ⚡'**
+  String get enquiryFastBadge;
+
+  /// No description provided for @topSearchBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Top Search'**
+  String get topSearchBadge;
+
+  /// No description provided for @topRatedBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Top rated'**
+  String get topRatedBadge;
+
+  /// No description provided for @askForPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask for Price'**
+  String get askForPrice;
+
+  /// No description provided for @productsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Products Available'**
+  String get productsAvailable;
+
+  /// No description provided for @dealerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Dealer'**
+  String get dealerLabel;
+
+  /// No description provided for @verifiedListingBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get verifiedListingBadge;
+
+  /// No description provided for @listYourItem.
+  ///
+  /// In en, this message translates to:
+  /// **'List Your Item'**
+  String get listYourItem;
+
+  /// No description provided for @listYourItemSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how you want to list your item on KrishiX'**
+  String get listYourItemSubtitle;
+
+  /// No description provided for @sellListingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'List items for a one-time sale'**
+  String get sellListingSubtitle;
+
+  /// No description provided for @rentListingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'List items for hire or rental'**
+  String get rentListingSubtitle;
+
+  /// No description provided for @getStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get getStarted;
+
+  /// No description provided for @postAdListingDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Post Ad – Listing Details'**
+  String get postAdListingDetails;
+
+  /// No description provided for @postAdSellerDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Post Ad – Seller Details'**
+  String get postAdSellerDetails;
+
+  /// No description provided for @postStepListing.
+  ///
+  /// In en, this message translates to:
+  /// **'Listing'**
+  String get postStepListing;
+
+  /// No description provided for @postStepSeller.
+  ///
+  /// In en, this message translates to:
+  /// **'Seller'**
+  String get postStepSeller;
+
+  /// No description provided for @postTitleRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Title is required'**
+  String get postTitleRequired;
+
+  /// No description provided for @postPriceRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Price is required'**
+  String get postPriceRequired;
+
+  /// No description provided for @postDescRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Description is required'**
+  String get postDescRequired;
+
+  /// No description provided for @postPhotosLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos *'**
+  String get postPhotosLabel;
+
+  /// No description provided for @postPhotosHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum 1 photo required · up to 5 photos'**
+  String get postPhotosHint;
+
+  /// No description provided for @postDescLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Description *'**
+  String get postDescLabel;
+
+  /// No description provided for @postDescInputHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a detailed description…'**
+  String get postDescInputHint;
+
+  /// No description provided for @postNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get postNext;
+
+  /// No description provided for @postSubmitListing.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Listing'**
+  String get postSubmitListing;
+
+  /// No description provided for @postReviewNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your listing will be reviewed before going live.'**
+  String get postReviewNote;
+
+  /// No description provided for @postExpectedPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Expected Price *'**
+  String get postExpectedPrice;
+
+  /// No description provided for @postRentalPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental Price *'**
+  String get postRentalPrice;
+
+  /// No description provided for @postPriceHintSell.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 18000'**
+  String get postPriceHintSell;
+
+  /// No description provided for @postPriceHintRent.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 4500  (per day)'**
+  String get postPriceHintRent;
+
+  /// No description provided for @postSelectCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Category'**
+  String get postSelectCategory;
+
+  /// No description provided for @postSellOrRent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell or Rent?'**
+  String get postSellOrRent;
+
+  /// No description provided for @postPhotoRequiredContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Please add at least 1 photo before continuing'**
+  String get postPhotoRequiredContinue;
+
+  /// No description provided for @postPhotoRequiredSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Please add at least 1 photo before submitting'**
+  String get postPhotoRequiredSubmit;
+
+  /// No description provided for @postAdSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Ad submitted! It will go live after review.'**
+  String get postAdSubmitted;
+
+  /// No description provided for @postSellerInfoNote.
+  ///
+  /// In en, this message translates to:
+  /// **'These details will be shown to buyers. Phone number is fetched from your account.'**
+  String get postSellerInfoNote;
+
+  /// No description provided for @postYourName.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Name *'**
+  String get postYourName;
+
+  /// No description provided for @postFullNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name'**
+  String get postFullNameHint;
+
+  /// No description provided for @postNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Name is required'**
+  String get postNameRequired;
+
+  /// No description provided for @postLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location *'**
+  String get postLocation;
+
+  /// No description provided for @postLocationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Village / Taluka / District where the item is located'**
+  String get postLocationHint;
+
+  /// No description provided for @postLocationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Location is required'**
+  String get postLocationRequired;
+
+  /// No description provided for @postContactNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Number'**
+  String get postContactNumber;
+
+  /// No description provided for @postPhoneNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Fetched from your account — cannot be changed here'**
+  String get postPhoneNote;
+
+  /// No description provided for @postListingSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Listing Summary'**
+  String get postListingSummary;
+
+  /// No description provided for @postSummaryCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get postSummaryCategory;
+
+  /// No description provided for @postSummaryType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get postSummaryType;
+
+  /// No description provided for @postSummaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get postSummaryTitle;
+
+  /// No description provided for @postSummaryPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get postSummaryPrice;
+
+  /// No description provided for @postSelectOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Select option'**
+  String get postSelectOption;
+
+  /// No description provided for @postSelectUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Select unit'**
+  String get postSelectUnit;
+
+  /// No description provided for @postPhotosAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} / 5 photos added'**
+  String postPhotosAdded(int count);
+
+  /// No description provided for @postClearAllPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear all'**
+  String get postClearAllPhotos;
+
+  /// No description provided for @postAddPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Photo *'**
+  String get postAddPhoto;
+
+  /// No description provided for @postPhotoRequiredError.
+  ///
+  /// In en, this message translates to:
+  /// **'At least 1 photo is required'**
+  String get postPhotoRequiredError;
+
+  /// No description provided for @postPhotoPromo.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least 1 photo (required) — listings with photos get 5× more responses'**
+  String get postPhotoPromo;
+
+  /// No description provided for @postPhotoCover.
+  ///
+  /// In en, this message translates to:
+  /// **'Cover'**
+  String get postPhotoCover;
+
+  /// No description provided for @postPhotoNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo {number}'**
+  String postPhotoNumber(int number);
+
+  /// No description provided for @postTitleGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Listing Title *'**
+  String get postTitleGeneric;
+
+  /// No description provided for @postTitleCropGrain.
+  ///
+  /// In en, this message translates to:
+  /// **'Crop or Grain Name *'**
+  String get postTitleCropGrain;
+
+  /// No description provided for @postTitleSeedPlant.
+  ///
+  /// In en, this message translates to:
+  /// **'Seed or Plant Name *'**
+  String get postTitleSeedPlant;
+
+  /// No description provided for @postTitleFruitVeg.
+  ///
+  /// In en, this message translates to:
+  /// **'Fruit or Vegetable Name *'**
+  String get postTitleFruitVeg;
+
+  /// No description provided for @postTitleLivestock.
+  ///
+  /// In en, this message translates to:
+  /// **'Livestock Name *'**
+  String get postTitleLivestock;
+
+  /// No description provided for @postTitleTractor.
+  ///
+  /// In en, this message translates to:
+  /// **'Tractor Name *'**
+  String get postTitleTractor;
+
+  /// No description provided for @postTitleFarmLand.
+  ///
+  /// In en, this message translates to:
+  /// **'Farm Land Name *'**
+  String get postTitleFarmLand;
+
+  /// No description provided for @postTitleEquipment.
+  ///
+  /// In en, this message translates to:
+  /// **'Equipment Name *'**
+  String get postTitleEquipment;
+
+  /// No description provided for @postTitleFarmMachinery.
+  ///
+  /// In en, this message translates to:
+  /// **'Farm Machinery Name *'**
+  String get postTitleFarmMachinery;
+
+  /// No description provided for @postTitleTractorPart.
+  ///
+  /// In en, this message translates to:
+  /// **'Tractor Part Name *'**
+  String get postTitleTractorPart;
+
+  /// No description provided for @postTitleMachineryName.
+  ///
+  /// In en, this message translates to:
+  /// **'Machinery Name *'**
+  String get postTitleMachineryName;
+
+  /// No description provided for @postTitleJcb.
+  ///
+  /// In en, this message translates to:
+  /// **'JCB / Excavator Name *'**
+  String get postTitleJcb;
+
+  /// No description provided for @postTitleTractorRental.
+  ///
+  /// In en, this message translates to:
+  /// **'Tractor Name *'**
+  String get postTitleTractorRental;
+
+  /// No description provided for @postCatTractorsMachinery.
+  ///
+  /// In en, this message translates to:
+  /// **'Tractors & Machinery'**
+  String get postCatTractorsMachinery;
+
+  /// No description provided for @postCatLandBuySell.
+  ///
+  /// In en, this message translates to:
+  /// **'Farm Land – Buy/Sell'**
+  String get postCatLandBuySell;
+
+  /// No description provided for @postCatLandLease.
+  ///
+  /// In en, this message translates to:
+  /// **'Farm Land – Lease/Rent'**
+  String get postCatLandLease;
+
+  /// No description provided for @postCatRentalEquipment.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental Equipment'**
+  String get postCatRentalEquipment;
+
+  /// No description provided for @postTitleHintGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter listing title'**
+  String get postTitleHintGeneric;
+
+  /// No description provided for @postTitleHintCropsGrains.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Wheat – 20 Quintal, A-Grade'**
+  String get postTitleHintCropsGrains;
+
+  /// No description provided for @postTitleHintSeedsPlants.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Hybrid Tomato Seeds – 500g Pack'**
+  String get postTitleHintSeedsPlants;
+
+  /// No description provided for @postTitleHintFruitsVeg.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Fresh Alphonso Mangoes – 10 Dozen'**
+  String get postTitleHintFruitsVeg;
+
+  /// No description provided for @postTitleHintLivestock.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Murrah Buffalo – High Milk Yield'**
+  String get postTitleHintLivestock;
+
+  /// No description provided for @postTitleHintTractors.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Mahindra 575 DI – 2019 Model'**
+  String get postTitleHintTractors;
+
+  /// No description provided for @postTitleHintLandBuy.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 5 Acre Irrigated Farm Land for Sale'**
+  String get postTitleHintLandBuy;
+
+  /// No description provided for @postTitleHintLandRent.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 3 Acre Farm Land Available for Lease'**
+  String get postTitleHintLandRent;
+
+  /// No description provided for @postTitleHintRental.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. JCB 3DX Backhoe – Available Daily'**
+  String get postTitleHintRental;
+
+  /// No description provided for @postDescHintGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe your listing in detail…'**
+  String get postDescHintGeneric;
+
+  /// No description provided for @postDescHintCropsGrains.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe crop quality, packaging, storage, any certifications…'**
+  String get postDescHintCropsGrains;
+
+  /// No description provided for @postDescHintSeedsPlants.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe germination rate, source, any certifications, storage advice…'**
+  String get postDescHintSeedsPlants;
+
+  /// No description provided for @postDescHintFruitsVeg.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe freshness, packaging, delivery options, minimum order…'**
+  String get postDescHintFruitsVeg;
+
+  /// No description provided for @postDescHintLivestock.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe health condition, vaccination history, feeding habits…'**
+  String get postDescHintLivestock;
+
+  /// No description provided for @postDescHintTractors.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe service history, attachments included, any repairs done…'**
+  String get postDescHintTractors;
+
+  /// No description provided for @postDescHintLandBuy.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe road access, irrigation, nearby facilities, legal status…'**
+  String get postDescHintLandBuy;
+
+  /// No description provided for @postDescHintLandRent.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe current land condition, who bears water/electricity cost, access road…'**
+  String get postDescHintLandRent;
+
+  /// No description provided for @postDescHintRental.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe availability, included operator, service area, terms…'**
+  String get postDescHintRental;
+
+  /// No description provided for @postFldQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get postFldQuantity;
+
+  /// No description provided for @postFldGradeQuality.
+  ///
+  /// In en, this message translates to:
+  /// **'Grade / Quality'**
+  String get postFldGradeQuality;
+
+  /// No description provided for @postFldHarvestDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Harvest Date'**
+  String get postFldHarvestDate;
+
+  /// No description provided for @postFldCropPlantType.
+  ///
+  /// In en, this message translates to:
+  /// **'Crop / Plant Type'**
+  String get postFldCropPlantType;
+
+  /// No description provided for @postFldQuantityPackSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity / Pack Size'**
+  String get postFldQuantityPackSize;
+
+  /// No description provided for @postFldSeedBrand.
+  ///
+  /// In en, this message translates to:
+  /// **'Seed / Plant Brand'**
+  String get postFldSeedBrand;
+
+  /// No description provided for @postFldSowingSeason.
+  ///
+  /// In en, this message translates to:
+  /// **'Sowing Season'**
+  String get postFldSowingSeason;
+
+  /// No description provided for @postFldVariety.
+  ///
+  /// In en, this message translates to:
+  /// **'Variety'**
+  String get postFldVariety;
+
+  /// No description provided for @postFldQuantityAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity Available'**
+  String get postFldQuantityAvailable;
+
+  /// No description provided for @postFldHarvestAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Harvest / Available From'**
+  String get postFldHarvestAvailable;
+
+  /// No description provided for @postFldBreed.
+  ///
+  /// In en, this message translates to:
+  /// **'Breed'**
+  String get postFldBreed;
+
+  /// No description provided for @postFldAge.
+  ///
+  /// In en, this message translates to:
+  /// **'Age'**
+  String get postFldAge;
+
+  /// No description provided for @postFldMilkYield.
+  ///
+  /// In en, this message translates to:
+  /// **'Milk Yield (if applicable)'**
+  String get postFldMilkYield;
+
+  /// No description provided for @postFldBrand.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand'**
+  String get postFldBrand;
+
+  /// No description provided for @postFldYearManufacture.
+  ///
+  /// In en, this message translates to:
+  /// **'Year of Manufacture'**
+  String get postFldYearManufacture;
+
+  /// No description provided for @postFldHorsePower.
+  ///
+  /// In en, this message translates to:
+  /// **'Horse Power (HP)'**
+  String get postFldHorsePower;
+
+  /// No description provided for @postFldCondition.
+  ///
+  /// In en, this message translates to:
+  /// **'Condition'**
+  String get postFldCondition;
+
+  /// No description provided for @postFldTotalArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Area'**
+  String get postFldTotalArea;
+
+  /// No description provided for @postFldSurveyNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Survey Number'**
+  String get postFldSurveyNumber;
+
+  /// No description provided for @postFldSoilType.
+  ///
+  /// In en, this message translates to:
+  /// **'Soil Type'**
+  String get postFldSoilType;
+
+  /// No description provided for @postFldWaterSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Water Source'**
+  String get postFldWaterSource;
+
+  /// No description provided for @postFldRoadAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Road Access'**
+  String get postFldRoadAccess;
+
+  /// No description provided for @postFldLegalStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal Status'**
+  String get postFldLegalStatus;
+
+  /// No description provided for @postFldTotalAreaAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Area Available'**
+  String get postFldTotalAreaAvailable;
+
+  /// No description provided for @postFldLeaseDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Lease Duration'**
+  String get postFldLeaseDuration;
+
+  /// No description provided for @postFldExistingCrop.
+  ///
+  /// In en, this message translates to:
+  /// **'Existing Crop (if any)'**
+  String get postFldExistingCrop;
+
+  /// No description provided for @postFldLeaseTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'Lease Terms'**
+  String get postFldLeaseTerms;
+
+  /// No description provided for @postFldEquipmentType.
+  ///
+  /// In en, this message translates to:
+  /// **'Equipment Type'**
+  String get postFldEquipmentType;
+
+  /// No description provided for @postFldRentalDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental Duration'**
+  String get postFldRentalDuration;
+
+  /// No description provided for @postFldDeliveryAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Available?'**
+  String get postFldDeliveryAvailable;
+
+  /// No description provided for @postFldMachineType.
+  ///
+  /// In en, this message translates to:
+  /// **'Machine Type'**
+  String get postFldMachineType;
+
+  /// No description provided for @postFldOperatorIncluded.
+  ///
+  /// In en, this message translates to:
+  /// **'Operator Included?'**
+  String get postFldOperatorIncluded;
+
+  /// No description provided for @postHintQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 20'**
+  String get postHintQuantity;
+
+  /// No description provided for @postHintGradeQuality.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. A-Grade, Premium, Mixed'**
+  String get postHintGradeQuality;
+
+  /// No description provided for @postHintHarvestDate.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. June 2026'**
+  String get postHintHarvestDate;
+
+  /// No description provided for @postHintCropPlantType.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Tomato, Brinjal, Onion, Mango sapling'**
+  String get postHintCropPlantType;
+
+  /// No description provided for @postHintQuantityPackSize.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 500'**
+  String get postHintQuantityPackSize;
+
+  /// No description provided for @postHintSeedBrand.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Mahyco, Syngenta, Local variety'**
+  String get postHintSeedBrand;
+
+  /// No description provided for @postHintSowingSeason.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Kharif, Rabi, Any season'**
+  String get postHintSowingSeason;
+
+  /// No description provided for @postHintVariety.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Alphonso, Devgad, Cherry Tomato'**
+  String get postHintVariety;
+
+  /// No description provided for @postHintQuantityAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 50'**
+  String get postHintQuantityAvailable;
+
+  /// No description provided for @postHintHarvestAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Ready now, July 2026'**
+  String get postHintHarvestAvailable;
+
+  /// No description provided for @postHintBreed.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Murrah, HF, Gir, Sahiwal'**
+  String get postHintBreed;
+
+  /// No description provided for @postHintAge.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 3 years, 18 months'**
+  String get postHintAge;
+
+  /// No description provided for @postHintMilkYield.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 14'**
+  String get postHintMilkYield;
+
+  /// No description provided for @postHintBrand.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Mahindra, Swaraj, John Deere'**
+  String get postHintBrand;
+
+  /// No description provided for @postHintYearManufacture.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 2019'**
+  String get postHintYearManufacture;
+
+  /// No description provided for @postHintHorsePower.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 45'**
+  String get postHintHorsePower;
+
+  /// No description provided for @postHintCondition.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Good, Excellent, Needs Repair'**
+  String get postHintCondition;
+
+  /// No description provided for @postHintTotalArea.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 5'**
+  String get postHintTotalArea;
+
+  /// No description provided for @postHintSurveyNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 142/3 (optional)'**
+  String get postHintSurveyNumber;
+
+  /// No description provided for @postHintSoilType.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Black, Red, Alluvial'**
+  String get postHintSoilType;
+
+  /// No description provided for @postHintWaterSource.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Borewell, Canal, Rain-fed'**
+  String get postHintWaterSource;
+
+  /// No description provided for @postHintRoadAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Yes – 10ft road, No'**
+  String get postHintRoadAccess;
+
+  /// No description provided for @postHintLegalStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Clear title, NA converted'**
+  String get postHintLegalStatus;
+
+  /// No description provided for @postHintTotalAreaAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 3'**
+  String get postHintTotalAreaAvailable;
+
+  /// No description provided for @postHintLeaseDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 1 year, Season-wise, 3 years'**
+  String get postHintLeaseDuration;
+
+  /// No description provided for @postHintExistingCrop.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Sugarcane, Cotton, Fallow'**
+  String get postHintExistingCrop;
+
+  /// No description provided for @postHintLeaseTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Negotiable, Fixed rent ₹8000/acre/yr'**
+  String get postHintLeaseTerms;
+
+  /// No description provided for @postHintEquipmentType.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Rotavator, JCB, Sprayer, Harvester'**
+  String get postHintEquipmentType;
+
+  /// No description provided for @postHintRentalDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Per Hour, Per Day, Weekly'**
+  String get postHintRentalDuration;
+
+  /// No description provided for @postHintDeliveryAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Yes – within 20 km, No – self pickup'**
+  String get postHintDeliveryAvailable;
+
+  /// No description provided for @postHintMachineType.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. JCB 3DX, Excavator, Loader, Bulldozer'**
+  String get postHintMachineType;
+
+  /// No description provided for @postHintOperatorIncluded.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Yes – with operator, No – machine only'**
+  String get postHintOperatorIncluded;
+
+  /// No description provided for @postSuffixLitersPerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'L/day'**
+  String get postSuffixLitersPerDay;
+
+  /// No description provided for @postSuffixAcres.
+  ///
+  /// In en, this message translates to:
+  /// **'Acres'**
+  String get postSuffixAcres;
+
+  /// No description provided for @postSuffixHp.
+  ///
+  /// In en, this message translates to:
+  /// **'HP'**
+  String get postSuffixHp;
+
+  /// No description provided for @unitQuintal.
+  ///
+  /// In en, this message translates to:
+  /// **'Quintal'**
+  String get unitQuintal;
+
+  /// No description provided for @unitKg.
+  ///
+  /// In en, this message translates to:
+  /// **'Kg'**
+  String get unitKg;
+
+  /// No description provided for @unitTon.
+  ///
+  /// In en, this message translates to:
+  /// **'Ton'**
+  String get unitTon;
+
+  /// No description provided for @unitMan.
+  ///
+  /// In en, this message translates to:
+  /// **'Man'**
+  String get unitMan;
+
+  /// No description provided for @unitBag.
+  ///
+  /// In en, this message translates to:
+  /// **'Bag'**
+  String get unitBag;
+
+  /// No description provided for @unitDozen.
+  ///
+  /// In en, this message translates to:
+  /// **'Dozen'**
+  String get unitDozen;
+
+  /// No description provided for @unitCrate.
+  ///
+  /// In en, this message translates to:
+  /// **'Crate'**
+  String get unitCrate;
+
+  /// No description provided for @unitBox.
+  ///
+  /// In en, this message translates to:
+  /// **'Box'**
+  String get unitBox;
+
+  /// No description provided for @unitGrams.
+  ///
+  /// In en, this message translates to:
+  /// **'grams'**
+  String get unitGrams;
+
+  /// No description provided for @unitPacket.
+  ///
+  /// In en, this message translates to:
+  /// **'Packet'**
+  String get unitPacket;
+
+  /// No description provided for @unitPiece.
+  ///
+  /// In en, this message translates to:
+  /// **'Piece'**
+  String get unitPiece;
+
+  /// No description provided for @unitAcre.
+  ///
+  /// In en, this message translates to:
+  /// **'Acre'**
+  String get unitAcre;
+
+  /// No description provided for @unitHectare.
+  ///
+  /// In en, this message translates to:
+  /// **'Hectare'**
+  String get unitHectare;
+
+  /// No description provided for @unitGuntha.
+  ///
+  /// In en, this message translates to:
+  /// **'Guntha'**
+  String get unitGuntha;
+
+  /// No description provided for @postForSaleListing.
+  ///
+  /// In en, this message translates to:
+  /// **'For sale listing'**
+  String get postForSaleListing;
+
+  /// No description provided for @postRentalListing.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental listing'**
+  String get postRentalListing;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

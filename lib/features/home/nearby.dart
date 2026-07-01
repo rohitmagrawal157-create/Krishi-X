@@ -279,7 +279,7 @@ class _NearbyCard extends StatelessWidget {
 
                   // Title
                   Text(
-                    listing.localizedTitle(locale),
+                    listing.displayTitle(l10n),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -299,7 +299,7 @@ class _NearbyCard extends StatelessWidget {
                       const SizedBox(width: 3),
                       Expanded(
                         child: Text(
-                          listing.location,
+                          listing.shortLocation,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(

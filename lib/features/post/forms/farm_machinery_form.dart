@@ -20,22 +20,22 @@ final farmMachineryFormConfig = PostFormConfig(
       hint:  'e.g. Rotavator, Sprayer, Thresher, Seed Drill',
       icon:  Icons.precision_manufacturing_rounded,
     ),
-    PostFormField(
-      label: 'Brand / Manufacturer',
-      hint:  'e.g. Shaktiman, Lemken, Local make',
-      icon:  Icons.branding_watermark_rounded,
-    ),
-    PostFormField(
-      label:        'Year of Purchase',
-      hint:         'e.g. 2020',
-      icon:         Icons.calendar_month_rounded,
-      keyboardType: TextInputType.number,
-      formatters:   [FilteringTextInputFormatter.digitsOnly],
-    ),
-    PostFormField(
-      label: 'Condition',
-      hint:  'e.g. Good, Excellent, Needs Repair',
-      icon:  Icons.star_outline_rounded,
-    ),
+    // PostFormField(
+    //   label: 'Brand / Manufacturer',
+    //   hint:  'e.g. Shaktiman, Lemken, Local make',
+    //   icon:  Icons.branding_watermark_rounded,
+    // ),
+    // PostFormField(
+    //   label:        'Year of Purchase',
+    //   hint:         'e.g. 2020',
+    //   icon:         Icons.calendar_month_rounded,
+    //   keyboardType: TextInputType.number,
+    //   formatters:   [FilteringTextInputFormatter.digitsOnly],
+    // ),
+    // PostFormField(
+    //   label: 'Condition',
+    //   hint:  'e.g. Good, Excellent, Needs Repair',
+    //   icon:  Icons.star_outline_rounded,
+    // ),
   ],
 );

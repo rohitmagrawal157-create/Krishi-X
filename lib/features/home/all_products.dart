@@ -270,6 +270,7 @@ class _ProductCardState extends State<_ProductCard> {
   @override
   Widget build(BuildContext context) {
     final locale = Localizations.localeOf(context);
+    final l10n   = AppLocalizations.of(context)!;
 
     return GestureDetector(
       onTap: () => _openDetail(context), // ← tap anywhere on card
@@ -374,7 +375,7 @@ class _ProductCardState extends State<_ProductCard> {
 
                   // Title
                   Text(
-                    widget.listing.localizedTitle(locale),
+                    widget.listing.displayTitle(l10n),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -396,9 +397,9 @@ class _ProductCardState extends State<_ProductCard> {
                       Expanded(
                         child: Text(
                           widget.listing.distanceKm != null
-                              ? '${widget.listing.location}  •  '
+                              ? '${widget.listing.shortLocation}  •  '
                                 '${widget.listing.distanceKm!.toStringAsFixed(1)} km'
-                              : widget.listing.location,
+                              : widget.listing.shortLocation,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -419,7 +420,7 @@ class _ProductCardState extends State<_ProductCard> {
                             size: 12, color: _kOrange),
                         const SizedBox(width: 3),
                         Text(
-                          'Verified',
+                          l10n.verifiedListingBadge,
                           style: TextStyle(
                             fontSize:   10,
                             fontWeight: FontWeight.w600,

@@ -46,13 +46,18 @@ flutter:
     - assets/images/splash.jpeg
     - assets/images/tractor.jpeg
     - assets/images/machin.jpeg
-    - assets/images/seed.jpeg
+    - assets/images/seed1.jpeg
+    - assets/images/fruits1.jpeg
+    - assets/images/pets1.jpeg
+    - assets/images/land4.jpeg
+    - assets/images/food1.jpeg
+    - assets/images/Tractor1.jpeg
     - assets/images/pets.jpeg
     - assets/images/land.jpeg
     - assets/images/services.jpeg
     - assets/images/fruits.jpeg
     - assets/images/all.jpg
-    - assets/images/Banner.jpeg
+    - assets/images/Banner2.jpeg
     - assets/images/seed.jpg
     - assets/images/food.jpeg
     - assets/images/ads1.jpeg
@@ -64,7 +69,7 @@ flutter:
     - assets/images/land2.jpeg
     - assets/images/tractor1.webp
     - assets/images/tractor2.webp
-    - assets/images/machine1.jpeg
+    - assets/images/machin1.jpeg
     - assets/images/machine2.jpeg
     - assets/images/jcb1.jpeg
     - assets/images/rent2.jpeg
@@ -78,6 +83,12 @@ flutter:
     - assets/images/veg1.jpeg
     - assets/images/veg2.jpeg
     - assets/images/banana.jpeg
+    - assets/images/wheat.jpeg
+    - assets/images/maize.jpeg
+    - assets/images/bajra.jpeg
+    - assets/images/jowar.jpeg
+    - assets/images/barley.jpeg
+    - assets/images/rice.jpeg
     - assets/images/seeds1.jpeg
     - assets/images/seeds2.jpeg
     - assets/images/seeds1.jpeg

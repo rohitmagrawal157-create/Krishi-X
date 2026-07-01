@@ -6,6 +6,7 @@ import 'package:krishix/core/data/subcategories.dart';
 import 'package:krishix/core/models/listing.dart';
 import 'package:krishix/core/models/user_location.dart';
 import 'package:krishix/features/browse/browse_screen.dart';
+import 'package:krishix/features/post/post_listing_screen.dart';
 import 'package:krishix/l10n/app_localizations.dart';
 import 'package:krishix/l10n/l10n_lookup.dart';
 
@@ -20,18 +21,57 @@ class CategoryDetailScreen extends StatelessWidget {
   const CategoryDetailScreen({
     super.key,
     required this.sectionId,
-    required this.userLocation,
+    this.userLocation,
+    this.postFlow = false,
+    this.isRent = false,
+    this.categoryLabel,
   });
 
-  final String       sectionId;
-  final UserLocation userLocation;
+  final String        sectionId;
+  final UserLocation? userLocation;
+  final bool          postFlow;
+  final bool          isRent;
+  final String?       categoryLabel;
 
-  void _openSubcategory(
+  void _onItemTap(
     BuildContext context,
     CategoryDetail detail,
     SubcategoryItem item,
     String itemLabel,
   ) {
+    if (postFlow) {
+      _openPostForm(context, detail, itemLabel);
+    } else {
+      _openSubcategoryBrowse(context, detail, item, itemLabel);
+    }
+  }
+
+  void _openPostForm(
+    BuildContext context,
+    CategoryDetail detail,
+    String itemLabel,
+  ) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => PostListingScreen(
+          sectionId:        sectionId,
+          initialCategory:  detail.listingCategory,
+          initialType:      _listingTypeForDetail(detail),
+          categoryLabel:    categoryLabel,
+          subcategoryLabel: itemLabel,
+        ),
+      ),
+    );
+  }
+
+  void _openSubcategoryBrowse(
+    BuildContext context,
+    CategoryDetail detail,
+    SubcategoryItem item,
+    String itemLabel,
+  ) {
+    final loc = userLocation;
+    if (loc == null) return;
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => BrowseScreen(
@@ -39,13 +79,16 @@ class CategoryDetailScreen extends StatelessWidget {
           initialListingType:    _listingTypeForDetail(detail),
           initialDetailLabel:    itemLabel,
           initialDetailKeywords: _keywordsForItem(item, itemLabel),
-          userLocation:          userLocation,
+          userLocation:          loc,
         ),
       ),
     );
   }
 
   ListingType? _listingTypeForDetail(CategoryDetail detail) {
+    if (postFlow) {
+      return isRent ? ListingType.rent : ListingType.sell;
+    }
     if (detail.listingCategory == ListingCategory.rental) {
       return ListingType.rent;
     }
@@ -113,41 +156,43 @@ class CategoryDetailScreen extends StatelessWidget {
       );
     }
 
-    // ── Build interleaved list: group → ad → group → ad … ──
+    final appBarColor = postFlow
+        ? (isRent ? const Color(0xFFF57C00) : AppColors.primaryGreen)
+        : AppColors.primaryGreen;
+
+    // ── Build list: group → (ad in browse mode) … ──
     final List<Widget> bodyItems = [];
 
     for (var i = 0; i < detail.groups.length; i++) {
       final group = detail.groups[i];
 
-      // ── Subcategory group ──────────────────────────────
       bodyItems.add(
         _SubcategoryGroupSection(
           group: group,
           l10n:  l10n,
           onItemTap: (item, label) =>
-              _openSubcategory(context, detail, item, label),
+              _onItemTap(context, detail, item, label),
         ),
       );
 
-      // ── Ad banner after every group ────────────────────
-      bodyItems.add(
-        _AdBanner(imagePath: _adBanners[i % _adBanners.length]),
-      );
-
-      // ── Small gap after the ad ─────────────────────────
-      bodyItems.add(const SizedBox(height: 16));
+      if (!postFlow) {
+        bodyItems.add(
+          _AdBanner(imagePath: _adBanners[i % _adBanners.length]),
+        );
+        bodyItems.add(const SizedBox(height: 16));
+      }
     }
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: AppColors.primaryGreen,
+        backgroundColor: appBarColor,
         foregroundColor: Colors.white,
         elevation:       0,
         centerTitle:     false,
         leading:         _backButton(context),
         title: Text(
-          l10nLookup(l10n, detail.titleKey),
+          categoryLabel ?? l10nLookup(l10n, detail.titleKey),
           style: const TextStyle(
             fontWeight: FontWeight.w800,
             fontSize:   AppTextSize.title,

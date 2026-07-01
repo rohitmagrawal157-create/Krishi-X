@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:krishix/core/constants/app_colors.dart';
 import 'package:krishix/features/post/sell_category_screen.dart';
+import 'package:krishix/l10n/app_localizations.dart';
 
 const Color _kGreen  = AppColors.primaryGreen;
 const Color _kOrange = Color(0xFFF57C00);
@@ -69,6 +70,7 @@ class _SellOrRentScreenState extends State<SellOrRentScreen>
 
   @override
   Widget build(BuildContext context) {
+    final l10n        = AppLocalizations.of(context)!;
     final mq          = MediaQuery.of(context);
     final screenH     = mq.size.height;
     // Compact mode for small screens (< 680 logical px body height)
@@ -148,10 +150,10 @@ class _SellOrRentScreenState extends State<SellOrRentScreen>
                             SizedBox(height: isCompact ? 16 : 28),
 
                             // ── Heading ────────────────────
-                            const Text(
-                              'List Your Item',
+                            Text(
+                              l10n.listYourItem,
                               textAlign: TextAlign.center,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color:         AppColors.textPrimary,
                                 fontSize:      26,
                                 fontWeight:    FontWeight.w900,
@@ -163,7 +165,7 @@ class _SellOrRentScreenState extends State<SellOrRentScreen>
                             SizedBox(height: isCompact ? 6 : 8),
 
                             Text(
-                              'Choose how you want to list\nyour item on KrishiX',
+                              l10n.listYourItemSubtitle,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color:      Colors.grey.shade500,
@@ -177,24 +179,26 @@ class _SellOrRentScreenState extends State<SellOrRentScreen>
 
                             // ── Sell card ──────────────────
                             _OptionCard(
-                              icon:      Icons.sell_rounded,
-                              title:     'Sell',
-                              subtitle:  'List items for a one-time sale',
-                              color:     _kGreen,
-                              compact:   isCompact,
-                              onTap:     () => _go(false),
+                              icon:        Icons.sell_rounded,
+                              title:       l10n.sell,
+                              subtitle:    l10n.sellListingSubtitle,
+                              buttonLabel: l10n.getStarted,
+                              color:       _kGreen,
+                              compact:     isCompact,
+                              onTap:       () => _go(false),
                             ),
 
                             SizedBox(height: isCompact ? 12 : 14),
 
                             // ── Rent card ──────────────────
                             _OptionCard(
-                              icon:      Icons.handshake_rounded,
-                              title:     'Rent',
-                              subtitle:  'List items for hire or rental',
-                              color:     _kOrange,
-                              compact:   isCompact,
-                              onTap:     () => _go(true),
+                              icon:        Icons.handshake_rounded,
+                              title:       l10n.rent,
+                              subtitle:    l10n.rentListingSubtitle,
+                              buttonLabel: l10n.getStarted,
+                              color:       _kOrange,
+                              compact:     isCompact,
+                              onTap:       () => _go(true),
                             ),
                           ],
                         ),
@@ -219,6 +223,7 @@ class _OptionCard extends StatefulWidget {
     required this.icon,
     required this.title,
     required this.subtitle,
+    required this.buttonLabel,
     required this.color,
     required this.compact,
     required this.onTap,
@@ -226,6 +231,7 @@ class _OptionCard extends StatefulWidget {
   final IconData     icon;
   final String       title;
   final String       subtitle;
+  final String       buttonLabel;
   final Color        color;
   final bool         compact;   // smaller padding on tiny screens
   final VoidCallback onTap;
@@ -347,9 +353,9 @@ class _OptionCardState extends State<_OptionCard>
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Text(
-                            'Get Started',
-                            style: TextStyle(
+                          Text(
+                            widget.buttonLabel,
+                            style: const TextStyle(
                               color:      Colors.white,
                               fontSize:   13,
                               fontWeight: FontWeight.w800,

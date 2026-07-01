@@ -633,6 +633,7 @@ class _SellerAdCardState extends State<_SellerAdCard> {
   @override
   Widget build(BuildContext context) {
     final locale  = Localizations.localeOf(context);
+    final l10n    = AppLocalizations.of(context)!;
     final listing = widget.listing;
 
     // Year — from postedOn or null
@@ -699,7 +700,7 @@ class _SellerAdCardState extends State<_SellerAdCard> {
 
                     // Title
                     Text(
-                      listing.localizedTitle(locale),
+                      listing.displayTitle(l10n),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
@@ -775,7 +776,7 @@ class _SellerAdCardState extends State<_SellerAdCard> {
                         const SizedBox(width: 3),
                         Flexible(
                           child: Text(
-                            listing.location,
+                            listing.shortLocation,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(

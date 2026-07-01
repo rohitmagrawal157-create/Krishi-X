@@ -204,37 +204,33 @@ class _ChatScreenState extends State<ChatScreen>
       elevation:                 0,
       centerTitle:               true,
       automaticallyImplyLeading: false,
-      title: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Text(
-            'Chats',
-            style: TextStyle(
-              fontSize:   20,
-              fontWeight: FontWeight.w800,
-              color:      Colors.white,
-            ),
-          ),
-          if (_totalUnread > 0) ...[
-            const SizedBox(width: 8),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
-              decoration: BoxDecoration(
-                gradient:     _kOrangeGrad,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                '$_totalUnread',
-                style: const TextStyle(
-                  fontSize:   11,
-                  fontWeight: FontWeight.w800,
-                  color:      Colors.white,
-                ),
-              ),
-            ),
-          ],
-        ],
+      title: const Text(
+        'Chats',
+        style: TextStyle(
+          fontSize:   20,
+          fontWeight: FontWeight.w800,
+          color:      Colors.white,
+        ),
       ),
+      // Unread count badge hidden — title shows "Chats" only.
+      // if (_totalUnread > 0) ...[
+      //   const SizedBox(width: 8),
+      //   Container(
+      //     padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+      //     decoration: BoxDecoration(
+      //       gradient:     _kOrangeGrad,
+      //       borderRadius: BorderRadius.circular(12),
+      //     ),
+      //     child: Text(
+      //       '$_totalUnread',
+      //       style: const TextStyle(
+      //         fontSize:   11,
+      //         fontWeight: FontWeight.w800,
+      //         color:      Colors.white,
+      //       ),
+      //     ),
+      //   ),
+      // ],
     );
   }
 
@@ -405,7 +401,7 @@ class _ChatTile extends StatelessWidget {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -432,7 +428,7 @@ class _ChatTile extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(width: 12),
+            const SizedBox(width: 14),
 
             // ── Info column ──────────────────────────────
             Expanded(
@@ -442,6 +438,7 @@ class _ChatTile extends StatelessWidget {
 
                   // Name + time + menu
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
                         child: Row(
@@ -451,12 +448,11 @@ class _ChatTile extends StatelessWidget {
                                 chat.buyerName,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize:   15,
-                                  fontWeight: chat.unreadCount > 0
-                                      ? FontWeight.w800
-                                      : FontWeight.w600,
-                                  color: AppColors.textPrimary,
+                                  fontWeight: FontWeight.w700,
+                                  color:      AppColors.textPrimary,
+                                  height:     1.2,
                                 ),
                               ),
                             ),
@@ -493,6 +489,7 @@ class _ChatTile extends StatelessWidget {
                           ],
                         ),
                       ),
+                      const SizedBox(width: 8),
                       Text(
                         chat.timeAgo,
                         style: TextStyle(
@@ -500,7 +497,7 @@ class _ChatTile extends StatelessWidget {
                           color:    Colors.grey.shade500,
                         ),
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: 2),
                       GestureDetector(
                         onTapDown: (d) =>
                             _showTileMenu(context, d.globalPosition),
@@ -510,9 +507,9 @@ class _ChatTile extends StatelessWidget {
                     ],
                   ),
 
-                  const SizedBox(height: 3),
+                  const SizedBox(height: 5),
 
-                  // Ad title
+                  // Ad title (product name)
                   Text(
                     chat.adTitle,
                     maxLines: 1,
@@ -520,14 +517,16 @@ class _ChatTile extends StatelessWidget {
                     style: TextStyle(
                       fontSize:   13,
                       fontWeight: FontWeight.w600,
-                      color:      Colors.grey.shade700,
+                      color:      Colors.grey.shade800,
+                      height:     1.25,
                     ),
                   ),
 
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 6),
 
                   // Last message + unread badge
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
                         child: Text(
@@ -535,14 +534,13 @@ class _ChatTile extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            fontSize:   13,
-                            fontWeight: chat.unreadCount > 0
-                                ? FontWeight.w700
-                                : FontWeight.w400,
+                            fontSize:   12,
+                            fontWeight: FontWeight.w400,
+                            height:     1.3,
                             color: chat.isAdInactive
                                 ? Colors.red.shade400
                                 : chat.unreadCount > 0
-                                    ? AppColors.textPrimary
+                                    ? Colors.grey.shade700
                                     : Colors.grey.shade500,
                           ),
                         ),
@@ -586,23 +584,23 @@ class _ChatTile extends StatelessWidget {
                   ],
 
                   // Important star
-                  if (chat.isImportant) ...[
-                    const SizedBox(height: 6),
-                    Row(
-                      children: [
-                        Icon(Icons.star_rounded, size: 13, color: _kOrange),
-                        const SizedBox(width: 4),
-                        Text(
-                          'Marked important',
-                          style: TextStyle(
-                            fontSize:   11,
-                            fontWeight: FontWeight.w600,
-                            color:      _kOrange,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                  // if (chat.isImportant) ...[
+                  //   const SizedBox(height: 6),
+                  //   Row(
+                  //     children: [
+                  //       Icon(Icons.star_rounded, size: 13, color: _kOrange),
+                  //       const SizedBox(width: 4),
+                  //       Text(
+                  //         'Marked important',
+                  //         style: TextStyle(
+                  //           fontSize:   11,
+                  //           fontWeight: FontWeight.w600,
+                  //           color:      _kOrange,
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ],
                 ],
               ),
             ),
@@ -622,16 +620,16 @@ class _ChatTile extends StatelessWidget {
       elevation: 4,
       color:     Colors.white,
       items: [
-        _menuItem('mark_important',
-            chat.isImportant
-                ? 'Remove from important'
-                : 'Mark as important',
-            chat.isImportant
-                ? Icons.star_border_rounded
-                : Icons.star_rounded),
-        _menuItem('mark_unread', 'Mark as unread',
-            Icons.mark_chat_unread_outlined),
-        _menuItem('block', 'Block user', Icons.block_rounded),
+        // _menuItem('mark_important',
+        //     chat.isImportant
+        //         ? 'Remove from important'
+        //         : 'Mark as important',
+        //     chat.isImportant
+        //         ? Icons.star_border_rounded
+        //         : Icons.star_rounded),
+        // _menuItem('mark_unread', 'Mark as unread',
+        //     Icons.mark_chat_unread_outlined),
+        // _menuItem('block', 'Block user', Icons.block_rounded),
         _menuItem('delete', 'Delete chat',
             Icons.delete_outline_rounded,
             isDestructive: true),

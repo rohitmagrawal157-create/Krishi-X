@@ -5,15 +5,9 @@ import 'package:krishix/core/constants/app_colors.dart';
 import 'package:krishix/core/models/listing.dart';
 import 'package:krishix/core/models/user_location.dart';
 import 'package:krishix/features/listings/listing_detail_screen.dart';
+import 'package:krishix/l10n/app_localizations.dart';
 
-const Color _kGreen  = AppColors.primaryGreen;
-const Color _kOrange = Color(0xFFF57C00);
-
-const LinearGradient _kGreenGrad = LinearGradient(
-  colors: [Color(0xFF43A047), Color(0xFF1B5E20)],
-  begin:  Alignment.topLeft,
-  end:    Alignment.bottomRight,
-);
+const Color _kGreen = AppColors.primaryGreen;
 
 // ─────────────────────────────────────────────────────────────
 // MOCK ADS
@@ -144,9 +138,6 @@ class _MyAdsScreenState extends State<MyAdsScreen> {
       body: ListView(
         padding: EdgeInsets.zero,
         children: [
-          // ── Promo banner ──────────────────────────────
-          _PromoBanner(onPostAd: () => _snack('Post Ad — coming soon!')),
-          // ── "View all (N) ↓" header ───────────────────
           _sectionHeader(),
           // ── Cards OR empty state ──────────────────────
           if (_ads.isEmpty)
@@ -293,80 +284,6 @@ class _MyAdsScreenState extends State<MyAdsScreen> {
 }
 
 // ─────────────────────────────────────────────────────────────
-// PROMO BANNER  — matches "Want to sell more?" screenshot style
-// ─────────────────────────────────────────────────────────────
-class _PromoBanner extends StatelessWidget {
-  const _PromoBanner({required this.onPostAd});
-  final VoidCallback onPostAd;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 0),
-      color:  Colors.white,
-      padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Icon container
-              Container(
-                width: 54, height: 54,
-                decoration: BoxDecoration(
-                  gradient:     _kGreenGrad,
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: const Icon(Icons.local_offer_rounded,
-                    color: Colors.white, size: 28),
-              ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Want to sell more?',
-                        style: TextStyle(
-                            fontSize:   16,
-                            fontWeight: FontWeight.w800,
-                            color:      AppColors.textPrimary)),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Post more Ads for less. Packages that help you save money.',
-                      style: TextStyle(
-                          fontSize: 13, color: Colors.grey.shade600, height: 1.4),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 14),
-          SizedBox(
-            width:  double.infinity,
-            height: 46,
-            child: OutlinedButton(
-              onPressed: onPostAd,
-              style: OutlinedButton.styleFrom(
-                foregroundColor: _kGreen,
-                side:  BorderSide(color: Colors.grey.shade300, width: 1),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
-              ),
-              child: const Text('Show packages',
-                  style: TextStyle(
-                      fontSize: 14, fontWeight: FontWeight.w700,
-                      color: AppColors.textPrimary)),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// ─────────────────────────────────────────────────────────────
 // AD CARD  — matches OLX card layout exactly in KrishiX colours
 //
 // ┌──────────────────────────────────────────┐
@@ -402,6 +319,7 @@ class _AdCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale   = Localizations.localeOf(context);
+    final l10n     = AppLocalizations.of(context)!;
     final postedOn = listing.postedOn ?? DateTime.now();
     final views    = listing.viewCount ?? 0;
     final likes    = listing.likeCount ?? 0;
@@ -543,7 +461,7 @@ class _AdCard extends StatelessWidget {
                       children: [
                         // Title
                         Text(
-                          listing.localizedTitle(locale),
+                          listing.displayTitle(l10n),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(

@@ -184,7 +184,7 @@ class AppLocalizationsGu extends AppLocalizations {
   String get noListingsYet => 'આ શ્રેણીમાં હજી કોઈ જાહેરાત નથી.';
 
   @override
-  String get filterAll => 'બધી';
+  String get filterAll => 'બધા';
 
   @override
   String get filterVerified => 'માત્ર ચકાસેલ';
@@ -1676,4 +1676,706 @@ class AppLocalizationsGu extends AppLocalizations {
 
   @override
   String get listingChat => 'Chat';
+
+  @override
+  String get locationScopeVillage => 'ગામ';
+
+  @override
+  String get locationScopeCityNearby => 'શહેર અને નજીકના ગામો';
+
+  @override
+  String get locationScopeState => 'સંપૂર્ણ રાજ્ય';
+
+  @override
+  String showingListingsIn(String scope, String location) {
+    return '$location માં $scope સૂચિ દર્શાવી રહ્યા છીએ';
+  }
+
+  @override
+  String dealerResultsIn(int count, String location) {
+    return '$location માં $count પરિણામ';
+  }
+
+  @override
+  String get noDealersFound => 'કોઈ ડીલર મળ્યા નહીં';
+
+  @override
+  String get agriDealers => 'કૃષિ ડીલર';
+
+  @override
+  String dealerCategoryTitle(String category) {
+    return '$category ડીલર';
+  }
+
+  @override
+  String get sortBy => 'ક્રમબદ્ધ કરો';
+
+  @override
+  String sortByOption(String option) {
+    return 'ક્રમ · $option';
+  }
+
+  @override
+  String get dealerSortTopRated => 'ટોપ રેટેડ';
+
+  @override
+  String get dealerSortNearest => 'સૌથી નજીક';
+
+  @override
+  String get dealerSortNameAz => 'અ–જ';
+
+  @override
+  String get filterCategory => 'શ્રેણી';
+
+  @override
+  String get dealerCatFertilizer => 'ખાતર';
+
+  @override
+  String get dealerCatSeeds => 'બીજ';
+
+  @override
+  String get dealerCatMachinery => 'મશીનરી';
+
+  @override
+  String get dealerCatPesticides => 'કીટનાશક';
+
+  @override
+  String get productsAndServices => 'ઉત્પાદનો અને સેવાઓ';
+
+  @override
+  String get productsLabel => 'ઉત્પાદનો';
+
+  @override
+  String get servicesLabel => 'સેવાઓ';
+
+  @override
+  String get overviewTab => 'ઝલક';
+
+  @override
+  String get photosTab => 'ફોટા';
+
+  @override
+  String get sendEnquiry => 'પૂછપરછ મોકલો';
+
+  @override
+  String get bestPrice => 'શ્રેષ્ઠ કિંમત';
+
+  @override
+  String get getBestPrice => 'શ્રેષ્ઠ કિંમત મેળવો';
+
+  @override
+  String lookingForDealers(String title) {
+    return '$title શોધી રહ્યા છો?';
+  }
+
+  @override
+  String get searchDealersHint => 'ડીલર શોધો…';
+
+  @override
+  String get veryResponsive => 'ખૂબ જ ઝડપી જવાબ';
+
+  @override
+  String yearsInBusiness(int years) {
+    return 'વ્યવસાયમાં $years વર્ષ';
+  }
+
+  @override
+  String ratingsCount(int count) {
+    return '$count રેટિંગ';
+  }
+
+  @override
+  String alsoServesAreas(String city, String areas) {
+    return '$city • $areas માં પણ સેવા';
+  }
+
+  @override
+  String openNowUntil(String time) {
+    return 'હવે ખુલ્લું: $time સુધી';
+  }
+
+  @override
+  String get primaryLabel => 'મુખ્ય';
+
+  @override
+  String get mapViewComingSoon => 'નકશો ટૂંક સમયમાં આવશે';
+
+  @override
+  String photosCount(int count) {
+    return 'ફોટા ($count)';
+  }
+
+  @override
+  String get aboutSection => 'વિગત';
+
+  @override
+  String get locationSection => 'સ્થાન';
+
+  @override
+  String nearLocation(String location) {
+    return '$location નજીક';
+  }
+
+  @override
+  String enquirySentTo(String name) {
+    return 'પૂછપરછ $name ને મોકલી';
+  }
+
+  @override
+  String priceRequestSentTo(String name) {
+    return 'કિંમત વિનંતી $name ને મોકલી';
+  }
+
+  @override
+  String get foundOnKrishiXDealers => 'KrishiX ડીલર પર મળ્યું';
+
+  @override
+  String get shareProductLabel => 'Product';
+
+  @override
+  String get shareLocationLabel => 'Location';
+
+  @override
+  String get shareQuantityLabel => 'Quantity';
+
+  @override
+  String get shareAppDownload => 'Download KrishiX';
+
+  @override
+  String get directionLabel => 'દિશા';
+
+  @override
+  String get enquiryLabel => 'પૂછપરછ';
+
+  @override
+  String get enquiryFastBadge => 'FAST ⚡';
+
+  @override
+  String get topSearchBadge => 'ટોપ શોધ';
+
+  @override
+  String get topRatedBadge => 'ટોપ રેટેડ';
+
+  @override
+  String get askForPrice => 'કિંમત પૂછો';
+
+  @override
+  String get productsAvailable => 'ઉત્પાદનો ઉપલબ્ધ';
+
+  @override
+  String get dealerLabel => 'ડીલર';
+
+  @override
+  String get verifiedListingBadge => 'ચકાસેલ';
+
+  @override
+  String get listYourItem => 'તમારી વસ્તુ સૂચિબદ્ધ કરો';
+
+  @override
+  String get listYourItemSubtitle => 'KrishiX પર તમારી વસ્તુ કેવી રીતે સૂચિબદ્ધ કરવી તે પસંદ કરો';
+
+  @override
+  String get sellListingSubtitle => 'એક વખતની વેચાણ માટે વસ્તુઓ સૂચિબદ્ધ કરો';
+
+  @override
+  String get rentListingSubtitle => 'ભાડે આપવા માટે વસ્તુઓ સૂચિબદ્ધ કરો';
+
+  @override
+  String get getStarted => 'શરૂ કરો';
+
+  @override
+  String get postAdListingDetails => 'Post Ad – Listing Details';
+
+  @override
+  String get postAdSellerDetails => 'Post Ad – Seller Details';
+
+  @override
+  String get postStepListing => 'Listing';
+
+  @override
+  String get postStepSeller => 'Seller';
+
+  @override
+  String get postTitleRequired => 'Title is required';
+
+  @override
+  String get postPriceRequired => 'Price is required';
+
+  @override
+  String get postDescRequired => 'Description is required';
+
+  @override
+  String get postPhotosLabel => 'Photos *';
+
+  @override
+  String get postPhotosHint => 'Minimum 1 photo required · up to 5 photos';
+
+  @override
+  String get postDescLabel => 'Description *';
+
+  @override
+  String get postDescInputHint => 'Write a detailed description…';
+
+  @override
+  String get postNext => 'Next';
+
+  @override
+  String get postSubmitListing => 'Submit Listing';
+
+  @override
+  String get postReviewNote => 'Your listing will be reviewed before going live.';
+
+  @override
+  String get postExpectedPrice => 'Expected Price *';
+
+  @override
+  String get postRentalPrice => 'Rental Price *';
+
+  @override
+  String get postPriceHintSell => 'e.g. 18000';
+
+  @override
+  String get postPriceHintRent => 'e.g. 4500  (per day)';
+
+  @override
+  String get postSelectCategory => 'Select Category';
+
+  @override
+  String get postSellOrRent => 'Sell or Rent?';
+
+  @override
+  String get postPhotoRequiredContinue => 'Please add at least 1 photo before continuing';
+
+  @override
+  String get postPhotoRequiredSubmit => 'Please add at least 1 photo before submitting';
+
+  @override
+  String get postAdSubmitted => 'Ad submitted! It will go live after review.';
+
+  @override
+  String get postSellerInfoNote => 'These details will be shown to buyers. Phone number is fetched from your account.';
+
+  @override
+  String get postYourName => 'Your Name *';
+
+  @override
+  String get postFullNameHint => 'Full name';
+
+  @override
+  String get postNameRequired => 'Name is required';
+
+  @override
+  String get postLocation => 'Location *';
+
+  @override
+  String get postLocationHint => 'Village / Taluka / District where the item is located';
+
+  @override
+  String get postLocationRequired => 'Location is required';
+
+  @override
+  String get postContactNumber => 'Contact Number';
+
+  @override
+  String get postPhoneNote => 'Fetched from your account — cannot be changed here';
+
+  @override
+  String get postListingSummary => 'Listing Summary';
+
+  @override
+  String get postSummaryCategory => 'Category';
+
+  @override
+  String get postSummaryType => 'Type';
+
+  @override
+  String get postSummaryTitle => 'Title';
+
+  @override
+  String get postSummaryPrice => 'Price';
+
+  @override
+  String get postSelectOption => 'Select option';
+
+  @override
+  String get postSelectUnit => 'Select unit';
+
+  @override
+  String postPhotosAdded(int count) {
+    return '$count / 5 photos added';
+  }
+
+  @override
+  String get postClearAllPhotos => 'Clear all';
+
+  @override
+  String get postAddPhoto => 'Add Photo *';
+
+  @override
+  String get postPhotoRequiredError => 'At least 1 photo is required';
+
+  @override
+  String get postPhotoPromo => 'Add at least 1 photo (required) — listings with photos get 5× more responses';
+
+  @override
+  String get postPhotoCover => 'Cover';
+
+  @override
+  String postPhotoNumber(int number) {
+    return 'Photo $number';
+  }
+
+  @override
+  String get postTitleGeneric => 'Listing Title *';
+
+  @override
+  String get postTitleCropGrain => 'Crop or Grain Name *';
+
+  @override
+  String get postTitleSeedPlant => 'Seed or Plant Name *';
+
+  @override
+  String get postTitleFruitVeg => 'Fruit or Vegetable Name *';
+
+  @override
+  String get postTitleLivestock => 'Livestock Name *';
+
+  @override
+  String get postTitleTractor => 'Tractor Name *';
+
+  @override
+  String get postTitleFarmLand => 'Farm Land Name *';
+
+  @override
+  String get postTitleEquipment => 'Equipment Name *';
+
+  @override
+  String get postTitleFarmMachinery => 'Farm Machinery Name *';
+
+  @override
+  String get postTitleTractorPart => 'Tractor Part Name *';
+
+  @override
+  String get postTitleMachineryName => 'Machinery Name *';
+
+  @override
+  String get postTitleJcb => 'JCB / Excavator Name *';
+
+  @override
+  String get postTitleTractorRental => 'Tractor Name *';
+
+  @override
+  String get postCatTractorsMachinery => 'Tractors & Machinery';
+
+  @override
+  String get postCatLandBuySell => 'Farm Land – Buy/Sell';
+
+  @override
+  String get postCatLandLease => 'Farm Land – Lease/Rent';
+
+  @override
+  String get postCatRentalEquipment => 'Rental Equipment';
+
+  @override
+  String get postTitleHintGeneric => 'Enter listing title';
+
+  @override
+  String get postTitleHintCropsGrains => 'e.g. Wheat – 20 Quintal, A-Grade';
+
+  @override
+  String get postTitleHintSeedsPlants => 'e.g. Hybrid Tomato Seeds – 500g Pack';
+
+  @override
+  String get postTitleHintFruitsVeg => 'e.g. Fresh Alphonso Mangoes – 10 Dozen';
+
+  @override
+  String get postTitleHintLivestock => 'e.g. Murrah Buffalo – High Milk Yield';
+
+  @override
+  String get postTitleHintTractors => 'e.g. Mahindra 575 DI – 2019 Model';
+
+  @override
+  String get postTitleHintLandBuy => 'e.g. 5 Acre Irrigated Farm Land for Sale';
+
+  @override
+  String get postTitleHintLandRent => 'e.g. 3 Acre Farm Land Available for Lease';
+
+  @override
+  String get postTitleHintRental => 'e.g. JCB 3DX Backhoe – Available Daily';
+
+  @override
+  String get postDescHintGeneric => 'Describe your listing in detail…';
+
+  @override
+  String get postDescHintCropsGrains => 'Describe crop quality, packaging, storage, any certifications…';
+
+  @override
+  String get postDescHintSeedsPlants => 'Describe germination rate, source, any certifications, storage advice…';
+
+  @override
+  String get postDescHintFruitsVeg => 'Describe freshness, packaging, delivery options, minimum order…';
+
+  @override
+  String get postDescHintLivestock => 'Describe health condition, vaccination history, feeding habits…';
+
+  @override
+  String get postDescHintTractors => 'Describe service history, attachments included, any repairs done…';
+
+  @override
+  String get postDescHintLandBuy => 'Describe road access, irrigation, nearby facilities, legal status…';
+
+  @override
+  String get postDescHintLandRent => 'Describe current land condition, who bears water/electricity cost, access road…';
+
+  @override
+  String get postDescHintRental => 'Describe availability, included operator, service area, terms…';
+
+  @override
+  String get postFldQuantity => 'Quantity';
+
+  @override
+  String get postFldGradeQuality => 'Grade / Quality';
+
+  @override
+  String get postFldHarvestDate => 'Harvest Date';
+
+  @override
+  String get postFldCropPlantType => 'Crop / Plant Type';
+
+  @override
+  String get postFldQuantityPackSize => 'Quantity / Pack Size';
+
+  @override
+  String get postFldSeedBrand => 'Seed / Plant Brand';
+
+  @override
+  String get postFldSowingSeason => 'Sowing Season';
+
+  @override
+  String get postFldVariety => 'Variety';
+
+  @override
+  String get postFldQuantityAvailable => 'Quantity Available';
+
+  @override
+  String get postFldHarvestAvailable => 'Harvest / Available From';
+
+  @override
+  String get postFldBreed => 'Breed';
+
+  @override
+  String get postFldAge => 'Age';
+
+  @override
+  String get postFldMilkYield => 'Milk Yield (if applicable)';
+
+  @override
+  String get postFldBrand => 'Brand';
+
+  @override
+  String get postFldYearManufacture => 'Year of Manufacture';
+
+  @override
+  String get postFldHorsePower => 'Horse Power (HP)';
+
+  @override
+  String get postFldCondition => 'Condition';
+
+  @override
+  String get postFldTotalArea => 'Total Area';
+
+  @override
+  String get postFldSurveyNumber => 'Survey Number';
+
+  @override
+  String get postFldSoilType => 'Soil Type';
+
+  @override
+  String get postFldWaterSource => 'Water Source';
+
+  @override
+  String get postFldRoadAccess => 'Road Access';
+
+  @override
+  String get postFldLegalStatus => 'Legal Status';
+
+  @override
+  String get postFldTotalAreaAvailable => 'Total Area Available';
+
+  @override
+  String get postFldLeaseDuration => 'Lease Duration';
+
+  @override
+  String get postFldExistingCrop => 'Existing Crop (if any)';
+
+  @override
+  String get postFldLeaseTerms => 'Lease Terms';
+
+  @override
+  String get postFldEquipmentType => 'Equipment Type';
+
+  @override
+  String get postFldRentalDuration => 'Rental Duration';
+
+  @override
+  String get postFldDeliveryAvailable => 'Delivery Available?';
+
+  @override
+  String get postFldMachineType => 'Machine Type';
+
+  @override
+  String get postFldOperatorIncluded => 'Operator Included?';
+
+  @override
+  String get postHintQuantity => 'e.g. 20';
+
+  @override
+  String get postHintGradeQuality => 'e.g. A-Grade, Premium, Mixed';
+
+  @override
+  String get postHintHarvestDate => 'e.g. June 2026';
+
+  @override
+  String get postHintCropPlantType => 'e.g. Tomato, Brinjal, Onion, Mango sapling';
+
+  @override
+  String get postHintQuantityPackSize => 'e.g. 500';
+
+  @override
+  String get postHintSeedBrand => 'e.g. Mahyco, Syngenta, Local variety';
+
+  @override
+  String get postHintSowingSeason => 'e.g. Kharif, Rabi, Any season';
+
+  @override
+  String get postHintVariety => 'e.g. Alphonso, Devgad, Cherry Tomato';
+
+  @override
+  String get postHintQuantityAvailable => 'e.g. 50';
+
+  @override
+  String get postHintHarvestAvailable => 'e.g. Ready now, July 2026';
+
+  @override
+  String get postHintBreed => 'e.g. Murrah, HF, Gir, Sahiwal';
+
+  @override
+  String get postHintAge => 'e.g. 3 years, 18 months';
+
+  @override
+  String get postHintMilkYield => 'e.g. 14';
+
+  @override
+  String get postHintBrand => 'e.g. Mahindra, Swaraj, John Deere';
+
+  @override
+  String get postHintYearManufacture => 'e.g. 2019';
+
+  @override
+  String get postHintHorsePower => 'e.g. 45';
+
+  @override
+  String get postHintCondition => 'e.g. Good, Excellent, Needs Repair';
+
+  @override
+  String get postHintTotalArea => 'e.g. 5';
+
+  @override
+  String get postHintSurveyNumber => 'e.g. 142/3 (optional)';
+
+  @override
+  String get postHintSoilType => 'e.g. Black, Red, Alluvial';
+
+  @override
+  String get postHintWaterSource => 'e.g. Borewell, Canal, Rain-fed';
+
+  @override
+  String get postHintRoadAccess => 'e.g. Yes – 10ft road, No';
+
+  @override
+  String get postHintLegalStatus => 'e.g. Clear title, NA converted';
+
+  @override
+  String get postHintTotalAreaAvailable => 'e.g. 3';
+
+  @override
+  String get postHintLeaseDuration => 'e.g. 1 year, Season-wise, 3 years';
+
+  @override
+  String get postHintExistingCrop => 'e.g. Sugarcane, Cotton, Fallow';
+
+  @override
+  String get postHintLeaseTerms => 'e.g. Negotiable, Fixed rent ₹8000/acre/yr';
+
+  @override
+  String get postHintEquipmentType => 'e.g. Rotavator, JCB, Sprayer, Harvester';
+
+  @override
+  String get postHintRentalDuration => 'e.g. Per Hour, Per Day, Weekly';
+
+  @override
+  String get postHintDeliveryAvailable => 'e.g. Yes – within 20 km, No – self pickup';
+
+  @override
+  String get postHintMachineType => 'e.g. JCB 3DX, Excavator, Loader, Bulldozer';
+
+  @override
+  String get postHintOperatorIncluded => 'e.g. Yes – with operator, No – machine only';
+
+  @override
+  String get postSuffixLitersPerDay => 'L/day';
+
+  @override
+  String get postSuffixAcres => 'Acres';
+
+  @override
+  String get postSuffixHp => 'HP';
+
+  @override
+  String get unitQuintal => 'Quintal';
+
+  @override
+  String get unitKg => 'Kg';
+
+  @override
+  String get unitTon => 'Ton';
+
+  @override
+  String get unitMan => 'Man';
+
+  @override
+  String get unitBag => 'Bag';
+
+  @override
+  String get unitDozen => 'Dozen';
+
+  @override
+  String get unitCrate => 'Crate';
+
+  @override
+  String get unitBox => 'Box';
+
+  @override
+  String get unitGrams => 'grams';
+
+  @override
+  String get unitPacket => 'Packet';
+
+  @override
+  String get unitPiece => 'Piece';
+
+  @override
+  String get unitAcre => 'Acre';
+
+  @override
+  String get unitHectare => 'Hectare';
+
+  @override
+  String get unitGuntha => 'Guntha';
+
+  @override
+  String get postForSaleListing => 'For sale listing';
+
+  @override
+  String get postRentalListing => 'Rental listing';
 }

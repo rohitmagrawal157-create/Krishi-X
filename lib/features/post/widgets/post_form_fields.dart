@@ -219,6 +219,9 @@ class PostQuantityField extends StatelessWidget {
     required this.units,
     required this.selectedUnit,
     required this.onUnitChanged,
+    required this.displayUnit,
+    required this.unitLabelBuilder,
+    this.selectUnitTitle,
     this.formatters,
     this.validator,
     this.accentColor = kPostFormGreen,
@@ -229,16 +232,20 @@ class PostQuantityField extends StatelessWidget {
   final List<String> units;
   final String selectedUnit;
   final ValueChanged<String> onUnitChanged;
+  final String displayUnit;
+  final String Function(String unit) unitLabelBuilder;
+  final String? selectUnitTitle;
   final List<TextInputFormatter>? formatters;
   final String? Function(String?)? validator;
   final Color accentColor;
 
   Future<void> _openUnitPicker(BuildContext context) async {
+    final options = units.map(unitLabelBuilder).toList(growable: false);
     final picked = await showMobileStringPicker(
       context:     context,
-      title:       'Select unit',
-      options:     units,
-      selected:    selectedUnit,
+      title:       selectUnitTitle ?? 'Select unit',
+      options:     options,
+      selected:    displayUnit,
       accentColor: accentColor,
     );
     if (picked != null) onUnitChanged(picked);
@@ -260,7 +267,7 @@ class PostQuantityField extends StatelessWidget {
         ),
         const SizedBox(width: 10),
         MobileOptionTrigger(
-          label:       selectedUnit,
+          label:       displayUnit,
           accentColor: accentColor,
           onTap:       () => _openUnitPicker(context),
         ),

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:krishix/core/constants/app_colors.dart';
 import 'package:krishix/core/data/subcategories.dart';
 import 'package:krishix/core/models/listing.dart';
-import 'package:krishix/features/post/post_listing_screen.dart';
+import 'package:krishix/features/category/category_detail_screen.dart';
 
 const Color _kGreen  = AppColors.primaryGreen;
 const Color _kOrange = Color(0xFFF57C00);
@@ -97,15 +97,6 @@ const _sellCategories = <_PostCategory>[
     listingCategory: ListingCategory.tractors,
     color:           Color(0xFF6D4C41),
     sectionId:       CategorySectionId.farmMachinery,
-  ),
-  _PostCategory(
-    label:           'Tractor Parts',
-    sublabel:        'Tyres, batteries, engine parts…',
-    icon:            Icons.build_rounded,
-    imagePath:       'assets/sub_ctg/KrishiX_App-18.jpg',
-    listingCategory: ListingCategory.tractors,
-    color:           Color(0xFF5D4037),
-    sectionId:       CategorySectionId.tractorsParts,
   ),
   _PostCategory(
     label:           'Farm Land',
@@ -211,11 +202,11 @@ class _SellCategoryScreenState extends State<SellCategoryScreen>
         pageBuilder: (_, animation, __) => FadeTransition(
           opacity: CurvedAnimation(
               parent: animation, curve: Curves.easeOut),
-          child: _PostListingWrapper(
-            isRent:          _isRent,
-            listingCategory: cat.listingCategory,
-            categoryLabel:   cat.label,
-            sectionId:       cat.sectionId,
+          child: CategoryDetailScreen(
+            sectionId:     cat.sectionId,
+            postFlow:      true,
+            isRent:        _isRent,
+            categoryLabel: cat.label,
           ),
         ),
       ),
@@ -503,33 +494,6 @@ class _CategoryCardState extends State<_CategoryCard>
           ),
         ),
       ),
-    );
-  }
-}
-
-// ─────────────────────────────────────────────────────────────
-// _PostListingWrapper
-// ─────────────────────────────────────────────────────────────
-class _PostListingWrapper extends StatelessWidget {
-  const _PostListingWrapper({
-    required this.isRent,
-    required this.listingCategory,
-    required this.categoryLabel,
-    required this.sectionId,
-  });
-
-  final bool            isRent;
-  final ListingCategory listingCategory;
-  final String          categoryLabel;
-  final String          sectionId;
-
-  @override
-  Widget build(BuildContext context) {
-    return PostListingScreen(
-      sectionId:       sectionId,
-      categoryLabel:   categoryLabel,
-      initialCategory: listingCategory,
-      initialType:     isRent ? ListingType.rent : ListingType.sell,
     );
   }
 }

@@ -28,6 +28,12 @@ abstract final class PostUnits {
     'Quintal',
     'Piece',
   ];
+
+  static const landArea = [
+    'Acre',
+    'Hectare',
+    'Guntha',
+  ];
 }
 
 class PostFormField {
