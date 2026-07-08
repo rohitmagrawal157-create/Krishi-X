@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:krishix/core/constants/app_colors.dart';
+import 'package:krishix/core/constants/category_images.dart';
 import 'package:krishix/core/models/listing.dart';
 import 'package:krishix/core/models/user_location.dart';
 import 'package:krishix/features/listings/listing_detail_screen.dart';
@@ -60,19 +61,8 @@ final List<Listing> _sampleAds = [
   ),
 ];
 
-const Map<ListingCategory, List<String>> _catImages = {
-  ListingCategory.livestock: ['assets/images/cow1.jpeg',     'assets/images/cow2.jpeg'],
-  ListingCategory.land:      ['assets/images/land1.jpeg',    'assets/images/land2.jpeg'],
-  ListingCategory.tractors:  ['assets/images/tractor1.webp', 'assets/images/tractor2.webp'],
-  ListingCategory.rental:    ['assets/images/rent2.jpeg',    'assets/images/jcb1.jpeg'],
-  ListingCategory.crops:     ['assets/images/mango.jpeg',    'assets/images/veg1.jpeg'],
-};
-
-String _imgFor(ListingCategory cat, int idx) {
-  final imgs = _catImages[cat];
-  if (imgs == null || imgs.isEmpty) return 'assets/images/seeds1.jpeg';
-  return imgs[idx % imgs.length];
-}
+String _imgFor(Listing listing, int idx) =>
+    CategoryImages.listingImageFor(listing, idx);
 
 String _formatPrice(int price) {
   final v = price.toString();
@@ -148,7 +138,7 @@ class _MyAdsScreenState extends State<MyAdsScreen> {
               _AdCard(
                 listing:      _ads[i],
                 status:       _stFor(i),
-                img:          _imgFor(_ads[i].category, i),
+                img:          _imgFor(_ads[i], i),
                 loc:          widget.userLocation,
                 onEdit:       () => _snack('Edit: ${_ads[i].title}'),
                 onDelete:     () => _confirmDelete(i),

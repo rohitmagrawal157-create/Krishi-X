@@ -14,7 +14,7 @@ final cropsGrainsFormConfig = PostFormConfig(
   accentColor:     const Color(0xFF689F38),
   bgColor:         const Color(0xFFE8F5E9),
   icon:            Icons.grass_rounded,
-  imagePath:       'assets/sub_ctg/KrishiX_App-31.jpg', // ← new
+  imagePath:       'assets/new_ctg/KrishiX_App-31.jpg', // ← new
   fields: [
     PostFormField(
       label:        'Quantity',

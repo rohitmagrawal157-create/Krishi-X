@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:krishix/core/data/subcategories.dart';
 import 'package:krishix/core/models/listing.dart';
 import 'package:krishix/features/post/forms/post_form_config.dart';
@@ -7,36 +6,33 @@ import 'package:krishix/features/post/forms/post_form_config.dart';
 final tractorRentalFormConfig = PostFormConfig(
   sectionId:        CategorySectionId.tractorRental,
   displayName:      'Tractor Rental',
-  titleHint:        'e.g. Mahindra 575 DI – Available for Season',
-  descHint:         'Describe availability, operator included, service area, terms…',
+  titleHint:        'e.g. Mahindra 575 DI – Available for Rent',
+  descHint:         'Describe availability, service area, terms…',
   listingCategory:  ListingCategory.rental,
   forcedType:       ListingType.rent,
-  accentColor:      Color(0xFF388E3C),
-  bgColor:          Color(0xFFE8F5E9),
- imagePath:       'assets/sub_ctg/KrishiX_App-17.jpg', 
+  accentColor:      Color(0xFFF57C00),
+  bgColor:          Color(0xFFFFF3E0),
+  imagePath:        'assets/new_ctg/KrishiX_App-17.jpg',
   fields: [
     PostFormField(
-      label: 'Tractor Brand / Model',
-      hint:  'e.g. Mahindra 575 DI, Swaraj 744 FE',
+      label: 'Tractor Brand',
+      hint:  'Selected from brand list',
+      icon:  Icons.branding_watermark_rounded,
+    ),
+    PostFormField(
+      label: 'Tractor Model',
+      hint:  'e.g. 575 DI, Farmtrac 60',
       icon:  Icons.agriculture_rounded,
     ),
-    // PostFormField(
-    //   label:        'Horse Power (HP)',
-    //   hint:         'e.g. 45',
-    //   icon:         Icons.speed_rounded,
-    //   keyboardType: TextInputType.number,
-    //   suffixText:   'HP',
-    //   formatters:   [FilteringTextInputFormatter.digitsOnly],
-    // ),
     PostFormField(
-      label: 'Rental Duration',
-      hint:  'e.g. Per Hour, Per Day, Season-wise',
-      icon:  Icons.access_time_rounded,
+      label: 'Horse Power (HP)',
+      hint:  'Select horse power range',
+      icon:  Icons.speed_rounded,
     ),
     PostFormField(
-      label: 'Operator Included?',
-      hint:  'e.g. Yes – with driver, No – self drive only',
-      icon:  Icons.person_outline_rounded,
+      label: 'Rental Price',
+      hint:  'Amount with hourly or daily basis',
+      icon:  Icons.currency_rupee_rounded,
     ),
   ],
 );

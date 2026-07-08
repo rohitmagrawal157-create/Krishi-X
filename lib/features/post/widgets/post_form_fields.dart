@@ -222,6 +222,7 @@ class PostQuantityField extends StatelessWidget {
     required this.displayUnit,
     required this.unitLabelBuilder,
     this.selectUnitTitle,
+    this.prefixText,
     this.formatters,
     this.validator,
     this.accentColor = kPostFormGreen,
@@ -235,6 +236,7 @@ class PostQuantityField extends StatelessWidget {
   final String displayUnit;
   final String Function(String unit) unitLabelBuilder;
   final String? selectUnitTitle;
+  final String? prefixText;
   final List<TextInputFormatter>? formatters;
   final String? Function(String?)? validator;
   final Color accentColor;
@@ -262,7 +264,10 @@ class PostQuantityField extends StatelessWidget {
             keyboardType:    TextInputType.number,
             inputFormatters: formatters,
             validator:       validator,
-            decoration: postInputDecoration(hint: hint),
+            decoration: postInputDecoration(
+              hint:       hint,
+              prefixText: prefixText,
+            ),
           ),
         ),
         const SizedBox(width: 10),

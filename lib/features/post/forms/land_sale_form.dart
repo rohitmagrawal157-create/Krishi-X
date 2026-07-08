@@ -13,7 +13,7 @@ final landSaleFormConfig = PostFormConfig(
   forcedType:       ListingType.sell,
   accentColor:      Color(0xFF0277BD),
   bgColor:          Color(0xFFE8F5E9),
-imagePath:       'assets/sub_ctg/KrishiX_App-65.jpg', 
+imagePath:       'assets/new_ctg/KrishiX_App-65.jpg', 
   fields: [
     PostFormField(
       label:        'Total Area',

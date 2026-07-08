@@ -1,5 +1,6 @@
 import 'package:krishix/core/data/subcategories.dart';
 import 'package:krishix/l10n/app_localizations.dart';
+import 'package:krishix/l10n/l10n_lookup.dart';
 
 /// Resolves all post-listing form labels, hints, and units for the active locale.
 class PostFormL10n {
@@ -14,11 +15,9 @@ class PostFormL10n {
     if (sectionId == CategorySectionId.tractorsParts) {
       return l10n.postTitleTractorPart;
     }
-    if (sectionId == CategorySectionId.farmMachineryRent) {
+    if (sectionId == CategorySectionId.farmMachineryRent ||
+        sectionId == CategorySectionId.jcbRental) {
       return l10n.postTitleMachineryName;
-    }
-    if (sectionId == CategorySectionId.jcbRental) {
-      return l10n.postTitleJcb;
     }
     if (sectionId == CategorySectionId.tractorRental) {
       return l10n.postTitleTractorRental;
@@ -87,8 +86,11 @@ class PostFormL10n {
     'age'                => l10n.postFldAge,
     'milkYield'          => l10n.postFldMilkYield,
     'brand'              => l10n.postFldBrand,
+    'tractorBrand'       => l10n.postFldTractorBrand,
+    'tractorModel'       => l10n.postFldTractorModel,
     'yearManufacture'    => l10n.postFldYearManufacture,
     'horsePower'         => l10n.postFldHorsePower,
+    'tractorHp'          => l10n.horse_power_hp,
     'condition'          => l10n.postFldCondition,
     'totalArea'          => l10n.postFldTotalArea,
     'surveyNumber'       => l10n.postFldSurveyNumber,
@@ -105,6 +107,9 @@ class PostFormL10n {
     'deliveryAvailable'  => l10n.postFldDeliveryAvailable,
     'machineType'        => l10n.postFldMachineType,
     'operatorIncluded'   => l10n.postFldOperatorIncluded,
+    'rentalPriceBasis'   => l10n.postFldRentalPriceBasis,
+    'otherCategory'      => l10n.postFldOtherCategory,
+    'typeName'           => l10n.postFldTypeName,
     _                    => id,
   };
 
@@ -123,8 +128,11 @@ class PostFormL10n {
     'age'                => l10n.postHintAge,
     'milkYield'          => l10n.postHintMilkYield,
     'brand'              => l10n.postHintBrand,
+    'tractorBrand'       => l10n.postHintTractorBrand,
+    'tractorModel'       => l10n.postHintTractorModel,
     'yearManufacture'    => l10n.postHintYearManufacture,
     'horsePower'         => l10n.postHintHorsePower,
+    'tractorHp'          => l10n.postHintSelectTractorHp,
     'condition'          => l10n.postHintCondition,
     'totalArea'          => l10n.postHintTotalArea,
     'surveyNumber'       => l10n.postHintSurveyNumber,
@@ -141,6 +149,9 @@ class PostFormL10n {
     'deliveryAvailable'  => l10n.postHintDeliveryAvailable,
     'machineType'        => l10n.postHintMachineType,
     'operatorIncluded'   => l10n.postHintOperatorIncluded,
+    'rentalPriceBasis'   => l10n.postHintSelectRentalPriceBasis,
+    'otherCategory'      => l10n.postHintOtherCategory,
+    'typeName'           => l10n.postHintTypeName,
     _                    => id,
   };
 
@@ -177,5 +188,16 @@ class PostFormL10n {
     final localized = localizedUnits(units);
     final index = localized.indexOf(picked);
     return index >= 0 ? units[index] : units.first;
+  }
+
+  String selectOptionLabel(String key) => l10nLookup(l10n, key);
+
+  List<String> localizedSelectOptions(List<String> keys) =>
+      keys.map(selectOptionLabel).toList(growable: false);
+
+  String selectOptionKeyFromPicker(List<String> keys, String picked) {
+    final localized = localizedSelectOptions(keys);
+    final index = localized.indexOf(picked);
+    return index >= 0 ? keys[index] : keys.first;
   }
 }

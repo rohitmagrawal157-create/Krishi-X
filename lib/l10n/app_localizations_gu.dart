@@ -1700,6 +1700,15 @@ class AppLocalizationsGu extends AppLocalizations {
   String get noDealersFound => 'કોઈ ડીલર મળ્યા નહીં';
 
   @override
+  String get dealerListBusinessBanner => 'Want to list your business on Krishi X?';
+
+  @override
+  String get dealerListBusinessCta => 'List Your Business';
+
+  @override
+  String get dealerListBusinessSnackbar => 'Thank you! We will help you list your business soon.';
+
+  @override
   String get agriDealers => 'કૃષિ ડીલર';
 
   @override
@@ -1833,10 +1842,25 @@ class AppLocalizationsGu extends AppLocalizations {
   String get shareProductLabel => 'Product';
 
   @override
+  String get shareProductsLabel => 'Products';
+
+  @override
   String get shareLocationLabel => 'Location';
 
   @override
   String get shareQuantityLabel => 'Quantity';
+
+  @override
+  String get sharePriceLabel => 'Price';
+
+  @override
+  String get shareListingHeader => 'KrishiX Listing';
+
+  @override
+  String get shareDealerListingHeader => 'KrishiX Dealer Listing';
+
+  @override
+  String get shareConnectSeller => 'Download KrishiX to view & connect with the seller.';
 
   @override
   String get shareAppDownload => 'Download KrishiX';
@@ -1897,6 +1921,9 @@ class AppLocalizationsGu extends AppLocalizations {
 
   @override
   String get postTitleRequired => 'Title is required';
+
+  @override
+  String get postFieldRequired => 'This field is required';
 
   @override
   String get postPriceRequired => 'Price is required';
@@ -2173,6 +2200,36 @@ class AppLocalizationsGu extends AppLocalizations {
   String get postFldBrand => 'Brand';
 
   @override
+  String get postFldTractorBrand => 'Tractor Brand';
+
+  @override
+  String get postFldTractorModel => 'Tractor Model';
+
+  @override
+  String get postHintTractorBrand => 'Select tractor brand';
+
+  @override
+  String get postHintTractorModel => 'e.g. 575 DI, Farmtrac 60';
+
+  @override
+  String get postFldRentalPriceBasis => 'Rental Price Basis';
+
+  @override
+  String get postFldOtherCategory => 'Category';
+
+  @override
+  String get postFldTypeName => 'Type Name *';
+
+  @override
+  String get postHintOtherCategory => 'Others';
+
+  @override
+  String get postHintTypeName => 'e.g. Farm tools, Agri supplies, Misc items';
+
+  @override
+  String get postHintSelectRentalPriceBasis => 'Select hourly or daily basis';
+
+  @override
   String get postFldYearManufacture => 'Year of Manufacture';
 
   @override
@@ -2273,6 +2330,9 @@ class AppLocalizationsGu extends AppLocalizations {
 
   @override
   String get postHintHorsePower => 'e.g. 45';
+
+  @override
+  String get postHintSelectTractorHp => 'Select horse power range';
 
   @override
   String get postHintCondition => 'e.g. Good, Excellent, Needs Repair';

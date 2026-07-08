@@ -13,6 +13,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:krishix/core/constants/app_colors.dart';
 import 'package:krishix/core/constants/app_spacing.dart';
+import 'package:krishix/core/constants/category_images.dart';
 import 'package:krishix/core/data/listing_feed.dart';
 import 'package:krishix/core/models/listing.dart';
 import 'package:krishix/core/models/user_location.dart';
@@ -715,12 +716,14 @@ class BrowseScreen extends StatefulWidget {
     this.initialListingType,
     this.initialDetailLabel,
     this.initialDetailKeywords = const [],
+    this.initialDetailKey,
     this.userLocation,
   });
   final ListingCategory? initialCategory;
   final ListingType?     initialListingType;
   final String?          initialDetailLabel;
   final List<String>     initialDetailKeywords;
+  final String?          initialDetailKey;
   final UserLocation?    userLocation;
 
   @override
@@ -739,6 +742,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
   Timer? _debounce;
   String?      _detailLabel;
   List<String> _detailKeywords = const [];
+  String?      _detailKey;
 
   @override
   void initState() {
@@ -747,6 +751,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
     _filters.listingType = widget.initialListingType;
     _detailLabel         = widget.initialDetailLabel;
     _detailKeywords      = widget.initialDetailKeywords;
+    _detailKey           = widget.initialDetailKey;
     _loadMore();
     _scrollController.addListener(_onScroll);
   }
@@ -795,13 +800,16 @@ class _BrowseScreenState extends State<BrowseScreen> {
       minPrice:       _filters.priceBand?.min,
       maxPrice:       _filters.priceBand?.max,
       detailKeywords: _detailKeywords,
+      detailKey:      _detailKey,
     );
     if (!mounted) return;
     setState(() {
       _items.addAll(batch);
       _page++;
       _isLoadingMore = false;
-      _hasMore       = batch.length == ListingFeed.pageSize;
+      _hasMore = _detailKey == null
+          ? batch.length == ListingFeed.pageSize
+          : false;
     });
   }
 
@@ -846,6 +854,16 @@ class _BrowseScreenState extends State<BrowseScreen> {
       _filters.resetCategorySpecific();
       _detailLabel    = null;
       _detailKeywords = const [];
+      _detailKey      = null;
+    });
+    _resetAndSearch();
+  }
+
+  void _clearSubcategoryFilter() {
+    setState(() {
+      _detailLabel    = null;
+      _detailKeywords = const [];
+      _detailKey      = null;
     });
     _resetAndSearch();
   }
@@ -993,6 +1011,30 @@ class _BrowseScreenState extends State<BrowseScreen> {
 
                   const SizedBox(height: 10),
 
+                  if (_detailLabel != null)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: InputChip(
+                          label: Text(
+                            _detailLabel!,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize:   12,
+                            ),
+                          ),
+                          deleteIcon: const Icon(Icons.close_rounded, size: 16),
+                          onDeleted: _clearSubcategoryFilter,
+                          backgroundColor: _kGreen.withOpacity(0.1),
+                          side: BorderSide(color: _kGreen.withOpacity(0.35)),
+                          labelStyle: const TextStyle(color: _kGreen),
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
+                        ),
+                      ),
+                    ),
+
                   // ── Category + Sort + Filters ────────────
                   Row(
                     children: [
@@ -1098,17 +1140,18 @@ class _BrowseScreenState extends State<BrowseScreen> {
                         userLocation: widget.userLocation,
                         onItemTap:    _openDetail,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                            AppSpacing.md, 0,
-                            AppSpacing.md, AppSpacing.xl),
-                        child: _BrowseGrid(
-                          items:         _items,
-                          isLoadingMore: _isLoadingMore,
-                          l10n:          l10n,
-                          onItemTap:     _openDetail,
+                      if (_detailKey == null)
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(
+                              AppSpacing.md, 0,
+                              AppSpacing.md, AppSpacing.xl),
+                          child: _BrowseGrid(
+                            items:         _items,
+                            isLoadingMore: _isLoadingMore,
+                            l10n:          l10n,
+                            onItemTap:     _openDetail,
+                          ),
                         ),
-                      ),
                     ],
                   ),
           ),
@@ -1486,29 +1529,6 @@ class _SearchBar extends StatelessWidget {
 // ═══════════════════════════════════════════════════════════════
 // IMAGE + PRICE HELPERS (shared by all card widgets)
 // ═══════════════════════════════════════════════════════════════
-const Map<ListingCategory, List<String>> _categoryImages = {
-  ListingCategory.livestock: [
-    'assets/images/cow1.jpeg', 'assets/images/cow2.jpeg'],
-  ListingCategory.land: [
-    'assets/images/land1.jpeg', 'assets/images/land2.jpeg'],
-  ListingCategory.tractors: [
-    'assets/images/tractor1.webp', 'assets/images/tractor2.webp',
-    'assets/images/machine1.jpeg', 'assets/images/jcb1.jpeg'],
-  ListingCategory.rental: [
-    'assets/images/rent2.jpeg', 'assets/images/jcb1.jpeg',
-    'assets/images/machine1.jpeg'],
-  ListingCategory.crops: [
-    'assets/images/mango.jpeg', 'assets/images/veg1.jpeg',
-    'assets/images/veg2.jpeg',  'assets/images/banana.jpeg',
-    'assets/images/seeds1.jpeg'],
-};
-
-String _imageFor(ListingCategory cat, int idx) {
-  final imgs = _categoryImages[cat];
-  if (imgs == null || imgs.isEmpty) return 'assets/images/seeds1.jpeg';
-  return imgs[idx % imgs.length];
-}
-
 String _formatPrice(int price) {
   final v    = price.toString();
   if (v.length <= 3) return '₹$v';
@@ -1572,14 +1592,19 @@ class _ProductCardState extends State<_ProductCard> {
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  Image.asset(
-                    _imageFor(widget.listing.category,
-                        widget.imageIndex),
-                    fit:           BoxFit.contain,
-                    filterQuality: FilterQuality.medium,
-                    errorBuilder: (_, __, ___) =>
-                        const ColoredBox(
-                            color: Color(0xFFF3F7F0)),
+                  ColoredBox(
+                    color: const Color(0xFFF3F7F0),
+                    child: Image.asset(
+                      CategoryImages.listingImageFor(
+                          widget.listing, widget.imageIndex),
+                      fit:           BoxFit.cover,
+                      width:         double.infinity,
+                      height:        double.infinity,
+                      filterQuality: FilterQuality.medium,
+                      errorBuilder: (_, __, ___) =>
+                          const ColoredBox(
+                              color: Color(0xFFF3F7F0)),
+                    ),
                   ),
                   Positioned(
                     top: 6, right: 6,
@@ -1863,14 +1888,19 @@ class _BrowseNearbyCardState extends State<_BrowseNearbyCard> {
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  Image.asset(
-                    _imageFor(widget.listing.category,
-                        widget.imgIdx),
-                    fit:           BoxFit.contain,
-                    filterQuality: FilterQuality.medium,
-                    errorBuilder: (_, __, ___) =>
-                        const ColoredBox(
-                            color: Color(0xFFF3F7F0)),
+                  ColoredBox(
+                    color: const Color(0xFFF3F7F0),
+                    child: Image.asset(
+                      CategoryImages.listingImageFor(
+                          widget.listing, widget.imgIdx),
+                      fit:           BoxFit.cover,
+                      width:         double.infinity,
+                      height:        double.infinity,
+                      filterQuality: FilterQuality.medium,
+                      errorBuilder: (_, __, ___) =>
+                          const ColoredBox(
+                              color: Color(0xFFF3F7F0)),
+                    ),
                   ),
                   Positioned(
                     top: 6, right: 6,

@@ -40,134 +40,246 @@ flutter:
   uses-material-design: true
   generate: true
   assets:
+    - assets/icons/app_icon.png
     - assets/images/final_krishix_logo2.png
     - assets/images/login_bottom.png
-    - assets/images/KrishiX.svg
-    - assets/images/splash.jpeg
-    - assets/images/tractor.jpeg
-    - assets/images/machin.jpeg
-    - assets/images/seed1.jpeg
-    - assets/images/fruits1.jpeg
-    - assets/images/pets1.jpeg
-    - assets/images/land4.jpeg
-    - assets/images/food1.jpeg
-    - assets/images/Tractor1.jpeg
-    - assets/images/pets.jpeg
-    - assets/images/land.jpeg
-    - assets/images/services.jpeg
-    - assets/images/fruits.jpeg
-    - assets/images/all.jpg
+    - assets/images/splash.jpg
     - assets/images/Banner2.jpeg
-    - assets/images/seed.jpg
-    - assets/images/food.jpeg
     - assets/images/ads1.jpeg
     - assets/images/ads2.jpeg
-    - assets/images/ads3.jpeg
+    # - assets/images/ads3.jpeg
+    # ── Listing images ───────────────────────────
     - assets/images/cow1.jpeg
     - assets/images/cow2.jpeg
     - assets/images/land1.jpeg
     - assets/images/land2.jpeg
+    - assets/images/land.jpg
+    - assets/images/land.jpeg
+    - assets/images/machine1.jpeg
+    - assets/images/machine2.jpeg
+    - assets/images/mango.jpeg
+    - assets/images/rent2.jpeg
+    - assets/images/seeds1.jpeg
+    - assets/images/seeds2.jpeg
     - assets/images/tractor1.webp
     - assets/images/tractor2.webp
-    - assets/images/machin1.jpeg
-    - assets/images/machine2.jpeg
-    - assets/images/jcb1.jpeg
-    - assets/images/rent2.jpeg
-    - assets/images/jcb1.jpeg
-    - assets/images/machine1.jpeg
-    - assets/images/seeds1.jpeg
-    - assets/images/seeds2.jpeg
-    - assets/images/mango.jpeg
-    - assets/images/veg1.jpeg
-    - assets/images/mango.jpeg
-    - assets/images/veg1.jpeg
-    - assets/images/veg2.jpeg
-    - assets/images/banana.jpeg
+    # ── Subcategory listing photos ─────────────────
+    - assets/images/wheat1.jpg
+    - assets/images/wheat2.jpg
     - assets/images/wheat.jpeg
-    - assets/images/maize.jpeg
-    - assets/images/bajra.jpeg
-    - assets/images/jowar.jpeg
-    - assets/images/barley.jpeg
+    - assets/images/Tomato1.jpg
+    - assets/images/tomato2.jpg
+    - assets/images/potato1.jpg
+    - assets/images/potato2.jpg
+    - assets/images/mango2.jpg
+    - assets/images/mango3.jpg
     - assets/images/rice.jpeg
-    - assets/images/seeds1.jpeg
-    - assets/images/seeds2.jpeg
-    - assets/images/seeds1.jpeg
-    - assets/images/seeds2.jpeg
-    - assets/images/mango.jpeg
-    - assets/images/veg1.jpeg
-    - assets/icons/app_icon.png
-    # ── Tractors (17–20) ──────────────────────────
-    - assets/sub_ctg/KrishiX_App-17.jpg
-    - assets/sub_ctg/KrishiX_App-18.jpg
-    - assets/sub_ctg/KrishiX_App-19.jpg
-    - assets/sub_ctg/KrishiX_App-20.jpg
-
-    # ── Farm Machinery (21–30) ────────────────────
-    - assets/sub_ctg/KrishiX_App-21.jpg
-    - assets/sub_ctg/KrishiX_App-22.jpg
-    - assets/sub_ctg/KrishiX_App-23.jpg
-    - assets/sub_ctg/KrishiX_App-24.jpg
-    - assets/sub_ctg/KrishiX_App-25.jpg
-    - assets/sub_ctg/KrishiX_App-26.jpg
-    - assets/sub_ctg/KrishiX_App-27.jpg
-    - assets/sub_ctg/KrishiX_App-28.jpg
-    - assets/sub_ctg/KrishiX_App-29.jpg
-    - assets/sub_ctg/KrishiX_App-30.jpg
-
-    # ── Crops & Grains (31–40) ────────────────────
-    - assets/sub_ctg/KrishiX_App-31.jpg
-    - assets/sub_ctg/KrishiX_App-32.jpg
-    - assets/sub_ctg/KrishiX_App-33.jpg
-    - assets/sub_ctg/KrishiX_App-34.jpg
-    - assets/sub_ctg/KrishiX_App-35.jpg
-    - assets/sub_ctg/KrishiX_App-36.jpg
-    - assets/sub_ctg/KrishiX_App-37.jpg
-    - assets/sub_ctg/KrishiX_App-38.jpg
-    - assets/sub_ctg/KrishiX_App-39.jpg
-    - assets/sub_ctg/KrishiX_App-40.jpg
-
-    # ── Vegetables (41–46) ───────────────────────
-    - assets/sub_ctg/KrishiX_App-41.jpg
-    - assets/sub_ctg/KrishiX_App-42.jpg
-    - assets/sub_ctg/KrishiX_App-43.jpg
-    - assets/sub_ctg/KrishiX_App-44.jpg
-    - assets/sub_ctg/KrishiX_App-45.jpg
-    - assets/sub_ctg/KrishiX_App-46.jpg
-
-    # ── Fruits (47–53) ───────────────────────────
-    - assets/sub_ctg/KrishiX_App-47.jpg
-    - assets/sub_ctg/KrishiX_App-48.jpg
-    - assets/sub_ctg/KrishiX_App-49.jpg
-    - assets/sub_ctg/KrishiX_App-50.jpg
-    - assets/sub_ctg/KrishiX_App-51.jpg
-    - assets/sub_ctg/KrishiX_App-52.jpg
-    - assets/sub_ctg/KrishiX_App-53.jpg
-
-    # ── Livestock (54–64) ────────────────────────
-    - assets/sub_ctg/KrishiX_App-54.jpg
-    - assets/sub_ctg/KrishiX_App-55.jpg
-    - assets/sub_ctg/KrishiX_App-56.jpg
-    - assets/sub_ctg/KrishiX_App-57.jpg
-    - assets/sub_ctg/KrishiX_App-58.jpg
-    - assets/sub_ctg/KrishiX_App-59.jpg
-    - assets/sub_ctg/KrishiX_App-60.jpg
-    - assets/sub_ctg/KrishiX_App-61.jpg
-    - assets/sub_ctg/KrishiX_App-62.jpg
-    - assets/sub_ctg/KrishiX_App-63.jpeg
-    - assets/sub_ctg/KrishiX_App-64.jpeg
-
-    # ── Land (65–70) ─────────────────────────────
-    - assets/sub_ctg/KrishiX_App-65.jpg
-    - assets/sub_ctg/KrishiX_App-66.jpg
-    - assets/sub_ctg/KrishiX_App-67.jpg
-    - assets/sub_ctg/KrishiX_App-68.jpg
-    - assets/sub_ctg/KrishiX_App-69.jpg
-    - assets/sub_ctg/KrishiX_App-70.jpg
-
-    # ── Seeds & Plants (71–74) ───────────────────
-    - assets/sub_ctg/KrishiX_App-71.jpg
-    - assets/sub_ctg/KrishiX_App-72.jpg
-    - assets/sub_ctg/KrishiX_App-73.jpg
-    - assets/sub_ctg/KrishiX_App-74.jpg
-    
-   
+    - assets/images/rice1.jpg
+    - assets/images/rice2.jpg
+    - assets/images/maize.jpeg
+    - assets/images/maize1.jpg
+    - assets/images/maize2.jpg
+    - assets/images/maize3.jpg
+    # - assets/images/jowar.jpeg
+    - assets/images/jawar1.jpg
+    - assets/images/jawar2.jpg
+    # - assets/images/bajra.jpeg
+    - assets/images/bajra1.jpg
+    - assets/images/bajara2.jpg
+    # - assets/images/barley.jpeg
+    - assets/images/cow3.jpg
+    - assets/images/buffelo1.jpg
+    - assets/images/buffelo2.jpg
+    - assets/images/buffelo3.jpg
+    - assets/images/bull1.jpg
+    - assets/images/bull2.jpg
+    - assets/images/chiken1.jpg
+    - assets/images/chicken2.jpg
+    - assets/images/duck1.jpg
+    - assets/images/duck2.jpg
+    - assets/images/banana.jpeg
+    - assets/images/banana1.jpg
+    - assets/images/banana2.jpg
+    - assets/images/orange1.jpg
+    - assets/images/orange2.jpg
+    - assets/images/anar1.jpg
+    - assets/images/anar2.jpg
+    - assets/images/garlic1.jpg
+    - assets/images/garlic2.jpg
+    - assets/images/chilli1.jpg
+    - assets/images/chilli2.jpg
+    - assets/images/onion1.jpeg
+    - assets/images/onion2.jpg
+    - assets/images/onion3.jpg
+    - assets/images/Brinjal2.jpeg
+    # - assets/images/seed1.jpg
+    # - assets/images/Tractor1.jpeg
+    # - assets/images/land4.jpeg
+    # - assets/images/machin1.jpeg
+    - assets/images/Rotavator1.webp
+    - assets/images/Rotavator2.webp
+    - assets/images/Cultivator1.webp
+    - assets/images/Cultivator2.webp
+    - assets/images/DiscHarrow1.webp
+    - assets/images/discHorrow2.webp
+    # ── Category images (new_ctg 01–159) ─────────
+    - assets/new_ctg/KrishiX_App-01.jpg
+    - assets/new_ctg/KrishiX_App-02.jpg
+    - assets/new_ctg/KrishiX_App-03.jpg
+    - assets/new_ctg/KrishiX_App-04.jpg
+    - assets/new_ctg/KrishiX_App-05.jpg
+    - assets/new_ctg/KrishiX_App-06.jpg
+    - assets/new_ctg/KrishiX_App-07.jpg
+    - assets/new_ctg/KrishiX_App-08.jpg
+    - assets/new_ctg/KrishiX_App-09.jpg
+    - assets/new_ctg/KrishiX_App-10.jpg
+    - assets/new_ctg/KrishiX_App-11.jpg
+    - assets/new_ctg/KrishiX_App-12.jpg
+    - assets/new_ctg/KrishiX_App-13.jpg
+    - assets/new_ctg/KrishiX_App-14.jpg
+    - assets/new_ctg/KrishiX_App-15.jpg
+    - assets/new_ctg/KrishiX_App-16.jpg
+    - assets/new_ctg/KrishiX_App-17.jpg
+    - assets/new_ctg/KrishiX_App-18.jpg
+    - assets/new_ctg/KrishiX_App-19.jpg
+    - assets/new_ctg/KrishiX_App-20.jpg
+    - assets/new_ctg/KrishiX_App-21.jpg
+    - assets/new_ctg/KrishiX_App-22.jpg
+    - assets/new_ctg/KrishiX_App-23.jpg
+    - assets/new_ctg/KrishiX_App-24.jpg
+    - assets/new_ctg/KrishiX_App-25.jpg
+    - assets/new_ctg/KrishiX_App-26.jpg
+    - assets/new_ctg/KrishiX_App-27.jpg
+    - assets/new_ctg/KrishiX_App-28.jpg
+    - assets/new_ctg/KrishiX_App-29.jpg
+    - assets/new_ctg/KrishiX_App-30.jpg
+    - assets/new_ctg/KrishiX_App-31.jpg
+    - assets/new_ctg/KrishiX_App-32.jpg
+    - assets/new_ctg/KrishiX_App-33.jpg
+    - assets/new_ctg/KrishiX_App-34.jpg
+    - assets/new_ctg/KrishiX_App-35.jpg
+    - assets/new_ctg/KrishiX_App-36.jpg
+    - assets/new_ctg/KrishiX_App-37.jpg
+    - assets/new_ctg/KrishiX_App-38.jpg
+    - assets/new_ctg/KrishiX_App-39.jpg
+    - assets/new_ctg/KrishiX_App-40.jpg
+    - assets/new_ctg/KrishiX_App-41.jpg
+    - assets/new_ctg/KrishiX_App-42.jpg
+    - assets/new_ctg/KrishiX_App-43.jpg
+    - assets/new_ctg/KrishiX_App-44.jpg
+    - assets/new_ctg/KrishiX_App-45.jpg
+    - assets/new_ctg/KrishiX_App-46.jpg
+    - assets/new_ctg/KrishiX_App-47.jpg
+    - assets/new_ctg/KrishiX_App-48.jpg
+    - assets/new_ctg/KrishiX_App-49.jpg
+    - assets/new_ctg/KrishiX_App-50.jpg
+    - assets/new_ctg/KrishiX_App-51.jpg
+    - assets/new_ctg/KrishiX_App-52.jpg
+    - assets/new_ctg/KrishiX_App-53.jpg
+    - assets/new_ctg/KrishiX_App-54.jpg
+    - assets/new_ctg/KrishiX_App-55.jpg
+    - assets/new_ctg/KrishiX_App-56.jpg
+    - assets/new_ctg/KrishiX_App-57.jpg
+    - assets/new_ctg/KrishiX_App-58.jpg
+    - assets/new_ctg/KrishiX_App-59.jpg
+    - assets/new_ctg/KrishiX_App-60.jpg
+    - assets/new_ctg/KrishiX_App-61.jpg
+    - assets/new_ctg/KrishiX_App-62.jpg
+    - assets/new_ctg/KrishiX_App-63.jpg
+    - assets/new_ctg/KrishiX_App-64.jpg
+    - assets/new_ctg/KrishiX_App-65.jpg
+    - assets/new_ctg/KrishiX_App-66.jpg
+    - assets/new_ctg/KrishiX_App-67.jpg
+    - assets/new_ctg/KrishiX_App-68.jpg
+    - assets/new_ctg/KrishiX_App-69.jpg
+    - assets/new_ctg/KrishiX_App-70.jpg
+    - assets/new_ctg/KrishiX_App-71.jpg
+    - assets/new_ctg/KrishiX_App-72.jpg
+    - assets/new_ctg/KrishiX_App-73.jpg
+    - assets/new_ctg/KrishiX_App-74.jpg
+    - assets/new_ctg/KrishiX_App-75.jpg
+    - assets/new_ctg/KrishiX_App-76.jpg
+    - assets/new_ctg/KrishiX_App-77.jpg
+    - assets/new_ctg/KrishiX_App-78.jpg
+    - assets/new_ctg/KrishiX_App-79.jpg
+    - assets/new_ctg/KrishiX_App-80.jpg
+    - assets/new_ctg/KrishiX_App-81.jpg
+    - assets/new_ctg/KrishiX_App-82.jpg
+    - assets/new_ctg/KrishiX_App-83.jpg
+    - assets/new_ctg/KrishiX_App-84.jpg
+    - assets/new_ctg/KrishiX_App-85.jpg
+    - assets/new_ctg/KrishiX_App-86.jpg
+    - assets/new_ctg/KrishiX_App-87.jpg
+    - assets/new_ctg/KrishiX_App-88.jpg
+    - assets/new_ctg/KrishiX_App-89.jpg
+    - assets/new_ctg/KrishiX_App-90.jpg
+    - assets/new_ctg/KrishiX_App-91.jpg
+    - assets/new_ctg/KrishiX_App-92.jpg
+    - assets/new_ctg/KrishiX_App-93.jpg
+    - assets/new_ctg/KrishiX_App-94.jpg
+    - assets/new_ctg/KrishiX_App-95.jpg
+    - assets/new_ctg/KrishiX_App-96.jpg
+    - assets/new_ctg/KrishiX_App-97.jpg
+    - assets/new_ctg/KrishiX_App-98.jpg
+    - assets/new_ctg/KrishiX_App-99.jpg
+    - assets/new_ctg/KrishiX_App-100.jpg
+    - assets/new_ctg/KrishiX_App-101.jpg
+    - assets/new_ctg/KrishiX_App-102.jpg
+    - assets/new_ctg/KrishiX_App-103.jpg
+    - assets/new_ctg/KrishiX_App-104.jpg
+    - assets/new_ctg/KrishiX_App-105.jpg
+    - assets/new_ctg/KrishiX_App-106.jpg
+    - assets/new_ctg/KrishiX_App-107.jpg
+    - assets/new_ctg/KrishiX_App-108.jpg
+    - assets/new_ctg/KrishiX_App-109.jpg
+    - assets/new_ctg/KrishiX_App-110.jpg
+    - assets/new_ctg/KrishiX_App-111.jpg
+    - assets/new_ctg/KrishiX_App-112.jpg
+    - assets/new_ctg/KrishiX_App-113.jpg
+    - assets/new_ctg/KrishiX_App-114.jpg
+    - assets/new_ctg/KrishiX_App-115.jpg
+    - assets/new_ctg/KrishiX_App-116.jpg
+    - assets/new_ctg/KrishiX_App-117.jpg
+    - assets/new_ctg/KrishiX_App-118.jpg
+    - assets/new_ctg/KrishiX_App-119.jpg
+    - assets/new_ctg/KrishiX_App-120.jpg
+    - assets/new_ctg/KrishiX_App-121.jpg
+    - assets/new_ctg/KrishiX_App-122.jpg
+    - assets/new_ctg/KrishiX_App-123.jpg
+    - assets/new_ctg/KrishiX_App-124.jpg
+    - assets/new_ctg/KrishiX_App-125.jpg
+    - assets/new_ctg/KrishiX_App-126.jpg
+    - assets/new_ctg/KrishiX_App-127.jpg
+    - assets/new_ctg/KrishiX_App-128.jpg
+    - assets/new_ctg/KrishiX_App-129.jpg
+    - assets/new_ctg/KrishiX_App-130.jpg
+    - assets/new_ctg/KrishiX_App-131.jpg
+    - assets/new_ctg/KrishiX_App-132.jpg
+    - assets/new_ctg/KrishiX_App-133.jpg
+    - assets/new_ctg/KrishiX_App-134.jpg
+    - assets/new_ctg/KrishiX_App-135.jpg
+    - assets/new_ctg/KrishiX_App-136.jpg
+    - assets/new_ctg/KrishiX_App-137.jpg
+    - assets/new_ctg/KrishiX_App-138.jpg
+    - assets/new_ctg/KrishiX_App-139.jpg
+    - assets/new_ctg/KrishiX_App-140.jpg
+    - assets/new_ctg/KrishiX_App-141.jpg
+    - assets/new_ctg/KrishiX_App-142.jpg
+    - assets/new_ctg/KrishiX_App-143.jpg
+    - assets/new_ctg/KrishiX_App-144.jpg
+    - assets/new_ctg/KrishiX_App-145.jpg
+    - assets/new_ctg/KrishiX_App-146.jpg
+    - assets/new_ctg/KrishiX_App-147.jpg
+    - assets/new_ctg/KrishiX_App-148.jpg
+    - assets/new_ctg/KrishiX_App-149.jpg
+    - assets/new_ctg/KrishiX_App-150.jpg
+    - assets/new_ctg/KrishiX_App-151.jpg
+    - assets/new_ctg/KrishiX_App-152.jpg
+    - assets/new_ctg/KrishiX_App-153.jpg
+    - assets/new_ctg/KrishiX_App-154.jpg
+    - assets/new_ctg/KrishiX_App-155.jpg
+    - assets/new_ctg/KrishiX_App-156.jpg
+    - assets/new_ctg/KrishiX_App-157.jpg
+    - assets/new_ctg/KrishiX_App-158.jpg
+    - assets/new_ctg/KrishiX_App-159.jpg
+    - assets/new_ctg/KrishiX_App-03.jpg

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math' as math;
+import 'dart:ui' show ImageFilter;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,9 +10,11 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:krishix/core/constants/app_colors.dart';
+import 'package:krishix/core/constants/category_images.dart';
 import 'package:krishix/core/models/listing.dart';
 import 'package:krishix/core/models/user_location.dart';
 import 'package:krishix/core/services/location_service.dart';
+import 'package:krishix/core/utils/share_text.dart';
 import 'package:krishix/features/listings/seller_profile_screen.dart';
 import 'package:krishix/l10n/app_localizations.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -26,72 +29,63 @@ const LinearGradient _kOrangeGrad = LinearGradient(
   end:    Alignment.bottomRight,
 );
 
-const Map<ListingCategory, List<String>> _categoryImages = {
-  ListingCategory.livestock: [
-    'assets/images/cow1.jpeg',
-    'assets/images/cow2.jpeg',
-    'assets/images/cow1.jpeg',
-  ],
-  ListingCategory.land: [
-    'assets/images/land1.jpeg',
-    'assets/images/land2.jpeg',
-    'assets/images/land1.jpeg',
-  ],
-  ListingCategory.tractors: [
-    'assets/images/tractor1.webp',
-    'assets/images/tractor2.webp',
-    'assets/images/machine1.jpeg',
-  ],
-  ListingCategory.rental: [
-    'assets/images/rent2.jpeg',
-    'assets/images/jcb1.jpeg',
-    'assets/images/machine1.jpeg',
-  ],
-  ListingCategory.crops: [
-    'assets/images/mango.jpeg',
-    'assets/images/veg1.jpeg',
-    'assets/images/veg2.jpeg',
-  ],
-};
-
-List<String> _imagesFor(ListingCategory cat) {
-  return _categoryImages[cat] ?? [
-    'assets/images/seeds1.jpeg',
-    'assets/images/veg1.jpeg',
-    'assets/images/mango.jpeg',
-  ];
+List<String> _imagesFor(Listing listing) {
+  return CategoryImages.listingImagesFor(listing);
 }
 
-String _formatPrice(int price) {
-  final v    = price.toString();
-  if (v.length <= 3) return '₹$v';
-  final last = v.substring(v.length - 3);
-  final rest = v.substring(0, v.length - 3);
-  final buf  = StringBuffer();
-  for (var i = 0; i < rest.length; i++) {
-    if (i > 0 && (rest.length - i) % 2 == 0) buf.write(',');
-    buf.write(rest[i]);
-  }
-  return '₹${buf.toString()},$last';
-}
+String _formatPrice(int price) => formatSharePrice(price);
 
-String _buildShareText(Listing listing) {
-  final buf = StringBuffer();
-  buf.writeln('🌾 *KrishiX Listing*');
-  buf.writeln();
-  buf.writeln('📌 *${listing.title}*');
-  buf.writeln('💰 Price: ${_formatPrice(listing.price)}'
-      '${listing.rentalDuration != null ? ' / ${listing.rentalDuration!.toLowerCase()}' : ''}');
-  buf.writeln('📍 ${listing.location}');
-  if (listing.distanceKm != null) {
-    buf.writeln('📏 ${listing.distanceKm!.toStringAsFixed(1)} km away');
+// ═══════════════════════════════════════════════════════════════
+// BLURRED BACKGROUND + SHARP CONTAINED IMAGE (portrait-friendly)
+// ═══════════════════════════════════════════════════════════════
+class _BlurredGalleryImage extends StatelessWidget {
+  const _BlurredGalleryImage({
+    required this.assetPath,
+    this.heroTag,
+  });
+
+  final String  assetPath;
+  final String? heroTag;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget content = Stack(
+      fit: StackFit.expand,
+      children: [
+        // Blurred zoomed fill — covers letterbox gaps for portrait photos.
+        ImageFiltered(
+          imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: Image.asset(
+            assetPath,
+            fit:           BoxFit.cover,
+            width:         double.infinity,
+            height:        double.infinity,
+            filterQuality: FilterQuality.low,
+            errorBuilder:  (_, __, ___) =>
+                const ColoredBox(color: Color(0xFF1A1A1A)),
+          ),
+        ),
+        ColoredBox(color: Colors.black.withOpacity(0.22)),
+        Image.asset(
+          assetPath,
+          fit:           BoxFit.contain,
+          width:         double.infinity,
+          height:        double.infinity,
+          filterQuality: FilterQuality.high,
+          errorBuilder:  (_, __, ___) => Center(
+            child: Icon(Icons.image_not_supported_rounded,
+                size: 60, color: Colors.grey.shade400),
+          ),
+        ),
+      ],
+    );
+
+    if (heroTag != null) {
+      content = Hero(tag: heroTag!, child: content);
+    }
+
+    return content;
   }
-  buf.writeln('👤 Seller: ${listing.sellerName}'
-      '${listing.isVerified ? ' ✅ Verified' : ''}');
-  if (listing.sellerPhone != null) buf.writeln('📞 ${listing.sellerPhone}');
-  buf.writeln();
-  buf.writeln('📲 Download KrishiX to view & connect with the seller.');
-  return buf.toString();
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -139,7 +133,7 @@ class _FullScreenGalleryState extends State<_FullScreenGallery> {
       body: Stack(
         children: [
 
-          // ── Zoomable gallery ──────────────────────────
+          // ── Zoomable gallery (plain image, no blur) ─────
           PhotoViewGallery.builder(
             pageController:  _ctrl,
             itemCount:       widget.images.length,
@@ -149,8 +143,7 @@ class _FullScreenGalleryState extends State<_FullScreenGallery> {
                 const BoxDecoration(color: Colors.black),
             builder: (context, index) {
               return PhotoViewGalleryPageOptions(
-                imageProvider:
-                    AssetImage(widget.images[index]),
+                imageProvider: AssetImage(widget.images[index]),
                 minScale: PhotoViewComputedScale.contained,
                 maxScale: PhotoViewComputedScale.covered * 3.0,
                 heroAttributes: PhotoViewHeroAttributes(
@@ -275,9 +268,9 @@ class ListingDetailScreen extends StatefulWidget {
 class _ListingDetailScreenState extends State<ListingDetailScreen> {
   bool _saved          = false;
   bool _isSharing      = false;
-  late final PageController      _pageController;
   late final List<String>        _images;
   late final ValueNotifier<int>  _imgIdx;
+  late final int                 _initialImageIndex;
   UserLocation?                  _liveLocation;
   StreamSubscription<UserLocation>? _locationSub;
 
@@ -287,10 +280,10 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
   @override
   void initState() {
     super.initState();
-    _images = _imagesFor(widget.listing.category);
-    final initialPage = widget.imageIndex.clamp(0, _images.length - 1);
-    _imgIdx         = ValueNotifier<int>(initialPage);
-    _pageController = PageController(initialPage: initialPage);
+    _images = _imagesFor(widget.listing);
+    _initialImageIndex =
+        widget.imageIndex.clamp(0, _images.length - 1);
+    _imgIdx         = ValueNotifier<int>(_initialImageIndex);
     _liveLocation   = widget.userLocation;
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
@@ -330,7 +323,6 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
   @override
   void dispose() {
     _locationSub?.cancel();
-    _pageController.dispose();
     _imgIdx.dispose();
     super.dispose();
   }
@@ -373,8 +365,9 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
     if (_isSharing) return;
     setState(() => _isSharing = true);
     try {
+      final l10n = AppLocalizations.of(context)!;
       await Share.share(
-        _buildShareText(widget.listing),
+        buildListingShareText(l10n, widget.listing),
         subject: widget.listing.title,
       );
     } finally {
@@ -389,24 +382,6 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
         initialIndex: index,
       ),
     ));
-  }
-
-  void _prevImage() {
-    if (_imgIdx.value > 0) {
-      _pageController.previousPage(
-        duration: const Duration(milliseconds: 300),
-        curve:    Curves.easeInOut,
-      );
-    }
-  }
-
-  void _nextImage() {
-    if (_imgIdx.value < _images.length - 1) {
-      _pageController.nextPage(
-        duration: const Duration(milliseconds: 300),
-        curve:    Curves.easeInOut,
-      );
-    }
   }
 
   @override
@@ -432,9 +407,9 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
 
           // ── Hero image slider ──────────────────────────
           SliverAppBar(
-            expandedHeight:            320,
+            expandedHeight:            340,
             pinned:                    true,
-            backgroundColor:           _kGreen,
+            backgroundColor:           const Color(0xFF1A1A1A),
             foregroundColor:           Colors.white,
             automaticallyImplyLeading: false,
             leading: IconButton(
@@ -570,7 +545,8 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                           height:     1.1,
                         ),
                       ),
-                      if (listing.type == ListingType.rent) ...[
+                      if (listing.type == ListingType.rent &&
+                          listing.category != ListingCategory.land) ...[
                         const SizedBox(width: 4),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 4),
@@ -745,31 +721,17 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
           options: CarouselOptions(
             height:               double.infinity,
             viewportFraction:     1.0,
+            initialPage:          _initialImageIndex,
             enableInfiniteScroll: false,
             enlargeCenterPage:    false,
             scrollPhysics:        const BouncingScrollPhysics(),
-            onPageChanged: (i, _) {
-              _imgIdx.value = i;
-              _pageController.jumpToPage(i);
-            },
+            onPageChanged: (i, _) => _imgIdx.value = i,
           ),
           itemBuilder: (context, i, _) => GestureDetector(
             onTap: () => _openFullScreen(i),
-            child: Hero(
-              tag: 'img_$i',
-              child: Image.asset(
-                _images[i],
-                fit:           BoxFit.cover,
-                width:         double.infinity,
-                filterQuality: FilterQuality.high,
-                errorBuilder:  (_, __, ___) => Container(
-                  color: const Color(0xFFF3F7F0),
-                  child: Center(
-                    child: Icon(Icons.image_not_supported_rounded,
-                        size: 60, color: Colors.grey.shade400),
-                  ),
-                ),
-              ),
+            child: _BlurredGalleryImage(
+              assetPath: _images[i],
+              heroTag:   'img_$i',
             ),
           ),
         ),

@@ -13,7 +13,7 @@ final seedsPlantsFormConfig = PostFormConfig(
   forcedType:       ListingType.sell,
   accentColor:      Color(0xFF558B2F),
   bgColor:          Color(0xFFE8F5E9),
-  imagePath:       'assets/sub_ctg/KrishiX_App-71.jpg', 
+  imagePath:       'assets/new_ctg/KrishiX_App-71.jpg', 
   fields: [
     PostFormField(
       label: 'Seed / Plant Type',

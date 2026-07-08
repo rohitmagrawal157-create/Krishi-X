@@ -1,28 +1,14 @@
 // lib/core/widgets/listing_widgets.dart
 
 import 'package:flutter/material.dart';
+import 'package:krishix/core/constants/category_images.dart';
 import 'package:krishix/core/models/listing.dart';
 
 // ═══════════════════════════════════════════════════════════════
 // IMAGE ASSET MAPPING
 // ═══════════════════════════════════════════════════════════════
 extension ListingImageAsset on Listing {
-  String get imageAsset {
-    switch (category) {
-      case ListingCategory.tractors:
-        return 'assets/images/tractor.jpeg';
-      case ListingCategory.crops:
-        return 'assets/images/food.jpeg';
-      case ListingCategory.livestock:
-        return 'assets/images/pets.jpeg';
-      case ListingCategory.land:
-        return 'assets/images/land.jpeg';
-      case ListingCategory.rental:
-        return 'assets/images/machin.jpeg';
-      default:
-        return 'assets/images/seed.jpg';
-    }
-  }
+  String get imageAsset => CategoryImages.homeListingImage(this);
 }
 
 class ListingCard extends StatelessWidget {

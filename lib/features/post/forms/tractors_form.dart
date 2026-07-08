@@ -13,12 +13,22 @@ final tractorsFormConfig = PostFormConfig(
   forcedType:       ListingType.sell,
   accentColor:      Color(0xFF388E3C),
   bgColor:          Color(0xFFE8F5E9),
- imagePath:       'assets/sub_ctg/KrishiX_App-17.jpg', 
+  imagePath:        'assets/new_ctg/KrishiX_App-17.jpg',
   fields: [
     PostFormField(
-      label: 'Brand',
-      hint:  'e.g. Mahindra, Swaraj, John Deere',
+      label: 'Tractor Brand',
+      hint:  'Select tractor brand',
       icon:  Icons.branding_watermark_rounded,
+    ),
+    PostFormField(
+      label: 'Tractor Model',
+      hint:  'e.g. 575 DI, Farmtrac 60',
+      icon:  Icons.agriculture_rounded,
+    ),
+    PostFormField(
+      label: 'Horse Power (HP)',
+      hint:  'Select horse power range',
+      icon:  Icons.speed_rounded,
     ),
     PostFormField(
       label:        'Year of Manufacture',
@@ -27,18 +37,5 @@ final tractorsFormConfig = PostFormConfig(
       keyboardType: TextInputType.number,
       formatters:   [FilteringTextInputFormatter.digitsOnly],
     ),
-    // PostFormField(
-    //   label:        'Horse Power (HP)',
-    //   hint:         'e.g. 45',
-    //   icon:         Icons.speed_rounded,
-    //   keyboardType: TextInputType.number,
-    //   suffixText:   'HP',
-    //   formatters:   [FilteringTextInputFormatter.digitsOnly],
-    // ),
-    // PostFormField(
-    //   label: 'Condition',
-    //   hint:  'e.g. Good, Excellent, Needs Repair',
-    //   icon:  Icons.star_outline_rounded,
-    // ),
   ],
 );

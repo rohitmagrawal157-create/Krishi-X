@@ -1,6 +1,7 @@
 // lib/features/home/nearby.dart
 import 'package:flutter/material.dart';
 import 'package:krishix/core/constants/app_colors.dart';
+import 'package:krishix/core/constants/category_images.dart';
 import 'package:krishix/core/models/listing.dart';
 import 'package:krishix/core/models/user_location.dart';
 import 'package:krishix/features/browse/browse_screen.dart';
@@ -10,24 +11,8 @@ import 'package:krishix/l10n/app_localizations.dart';
 // ─────────────────────────────────────────────────────────────
 // IMAGE POOL
 // ─────────────────────────────────────────────────────────────
-const Map<ListingCategory, List<String>> _nearbyImages = {
-  ListingCategory.livestock: ['assets/images/cow1.jpeg',  'assets/images/cow2.jpeg'],
-  ListingCategory.land:      ['assets/images/land1.jpeg', 'assets/images/land2.jpeg'],
-  ListingCategory.tractors:  ['assets/images/tractor1.webp','assets/images/tractor2.webp','assets/images/machine1.jpeg','assets/images/jcb1.jpeg'],
-  ListingCategory.rental:    ['assets/images/rent2.jpeg', 'assets/images/jcb1.jpeg',   'assets/images/machine1.jpeg'],
-  ListingCategory.crops:     ['assets/images/mango.jpeg', 'assets/images/veg1.jpeg',   'assets/images/veg2.jpeg','assets/images/banana.jpeg','assets/images/seeds1.jpeg'],
-};
-
-const List<String> _nearbyFallback = [
-  'assets/images/seeds1.jpeg',
-  'assets/images/mango.jpeg',
-  'assets/images/veg1.jpeg',
-];
-
-String _assetFor(ListingCategory cat, int index) {
-  final pool = _nearbyImages[cat] ?? _nearbyFallback;
-  return pool[index % pool.length];
-}
+String _assetFor(Listing listing, int index) =>
+    CategoryImages.homeListingImage(listing);
 
 // ─────────────────────────────────────────────────────────────
 // PRICE FORMATTER
@@ -247,7 +232,7 @@ class _NearbyCard extends StatelessWidget {
               child: ColoredBox(
                 color: const Color(0xFFF3F7F0),
                 child: Image.asset(
-                  _assetFor(listing.category, imgIdx),
+                  _assetFor(listing, imgIdx),
                   fit:           BoxFit.cover,
                   filterQuality: FilterQuality.medium,
                   errorBuilder: (_, __, ___) =>

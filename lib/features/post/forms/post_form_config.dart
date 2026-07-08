@@ -34,6 +34,33 @@ abstract final class PostUnits {
     'Hectare',
     'Guntha',
   ];
+
+  /// Tractor HP ranges — keys match [SubcategoryGroup] in tractors buy.
+  static const tractorHpRanges = [
+    'under_20_hp',
+    'hp_21_30',
+    'hp_31_40',
+    'hp_41_50',
+    'hp_51_60',
+    'above_60_hp',
+  ];
+
+  /// Tractor brand keys — match [SubcategoryGroup] tractor_brands items.
+  static const tractorBrands = [
+    'mahindra',
+    'swaraj',
+    'sonalika',
+    'john_deere',
+    'massey_ferguson',
+    'powertrac',
+    'others',
+  ];
+
+  /// Tractor rental price basis — keys match [l10n_lookup] hourly/daily.
+  static const tractorRentalPriceBasis = [
+    'hourly',
+    'daily',
+  ];
 }
 
 class PostFormField {

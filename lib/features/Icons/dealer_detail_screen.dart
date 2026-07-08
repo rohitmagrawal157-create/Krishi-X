@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:krishix/core/constants/app_colors.dart';
 import 'package:krishix/core/models/user_location.dart';
+import 'package:krishix/core/utils/share_text.dart';
 import 'package:krishix/features/icons/dealer_data.dart';
 import 'package:krishix/l10n/app_localizations.dart';
 import 'package:photo_view/photo_view.dart';
@@ -10,13 +11,12 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 const Color _kGreen  = AppColors.primaryGreen;
-const Color _kOrange = Color(0xFFF57C00);
 const Color _kWhatsApp = Color(0xFF25D366);
 
-const LinearGradient _kOrangeGrad = LinearGradient(
-  colors: [Color(0xFFFF8C00), Color(0xFFFF6B00)],
-  begin:  Alignment.topLeft,
-  end:    Alignment.bottomRight,
+const LinearGradient _kGreenGrad = LinearGradient(
+  colors: [Color(0xFF2E7D32), Color(0xFF43A047)],
+  begin:  Alignment.centerLeft,
+  end:    Alignment.centerRight,
 );
 
 const _kGalleryHeight = 196.0;
@@ -368,46 +368,14 @@ class _DealerHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (dealer.isVerified)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4, right: 6),
-                        child: Icon(
-                          Icons.thumb_up_alt_rounded,
-                          size:  18,
-                          color: AppColors.verifiedBlue,
-                        ),
-                      ),
-                    Expanded(
-                      child: Text(
-                        dealer.name,
-                        style: const TextStyle(
-                          fontSize:   20,
-                          fontWeight: FontWeight.w800,
-                          color:      AppColors.textPrimary,
-                          height:     1.25,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 10),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: SizedBox(
-                  width:  56,
-                  height: 56,
-                  child: _dealerAssetImage(dealerHeroImage(dealer)),
-                ),
-              ),
-            ],
+          Text(
+            dealer.name,
+            style: const TextStyle(
+              fontSize:   20,
+              fontWeight: FontWeight.w800,
+              color:      AppColors.textPrimary,
+              height:     1.25,
+            ),
           ),
           const SizedBox(height: 6),
           Text(
@@ -579,7 +547,7 @@ class _QuickAction extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 5, vertical: 2),
                       decoration: BoxDecoration(
-                        gradient:     _kOrangeGrad,
+                        gradient:     _kGreenGrad,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
@@ -818,7 +786,7 @@ class _ProductsServicesSection extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
-                    gradient:     isPrimary ? _kOrangeGrad : null,
+                    gradient:     isPrimary ? _kGreenGrad : null,
                     color:        isPrimary ? null : _kGreen.withOpacity(0.08),
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
@@ -851,14 +819,14 @@ class _ProductsServicesSection extends StatelessWidget {
               const SizedBox(height: 10),
               Row(
                 children: [
-                  Icon(Icons.sell_outlined, size: 16, color: _kOrange),
+                  Icon(Icons.sell_outlined, size: 16, color: _kGreen),
                   const SizedBox(width: 6),
                   Text(
                     dealer.priceHint ?? dealer.productsLink ?? '',
                     style: TextStyle(
                       fontSize:   13,
                       fontWeight: FontWeight.w700,
-                      color:      AppColors.verifiedBlue,
+                      color:      _kGreen,
                     ),
                   ),
                 ],
@@ -1071,26 +1039,6 @@ class _OverviewTab extends StatelessWidget {
           ),
           const SizedBox(height: 16),
         ],
-        if (dealer.highlight != null) ...[
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(Icons.bolt_rounded, size: 18, color: _kOrange),
-              const SizedBox(width: 6),
-              Expanded(
-                child: Text(
-                  dealer.highlight!,
-                  style: TextStyle(
-                    fontSize:   13,
-                    fontWeight: FontWeight.w600,
-                    color:      _kOrange,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-        ],
         Text(
           l10n.locationSection,
           style: const TextStyle(
@@ -1292,7 +1240,7 @@ class _BottomActions extends StatelessWidget {
                     child: Ink(
                       height: 44,
                       decoration: BoxDecoration(
-                        gradient:     _kOrangeGrad,
+                        gradient:     _kGreenGrad,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Row(

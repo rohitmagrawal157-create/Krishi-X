@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:krishix/core/constants/app_colors.dart';
+import 'package:krishix/core/constants/category_images.dart';
 import 'package:krishix/core/data/subcategories.dart';
 import 'package:krishix/core/models/listing.dart';
 import 'package:krishix/core/services/location_service.dart';
@@ -96,29 +97,30 @@ extension _PostCatX on _PostCat {
 }
 
 const _sectionCategoryImages = <String, String>{
-  CategorySectionId.cropsAndGrains:      'assets/sub_ctg/KrishiX_App-31.jpg',
-  CategorySectionId.fruitsVeg:           'assets/sub_ctg/KrishiX_App-47.jpg',
-  CategorySectionId.livestock:             'assets/sub_ctg/KrishiX_App-54.jpg',
-  CategorySectionId.agricultureLandSale:   'assets/sub_ctg/KrishiX_App-65.jpg',
-  CategorySectionId.seedsAndPlants:        'assets/sub_ctg/KrishiX_App-71.jpg',
-  CategorySectionId.farmMachinery:         'assets/sub_ctg/KrishiX_App-21.jpg',
-  CategorySectionId.tractorsBuy:           'assets/sub_ctg/KrishiX_App-17.jpg',
-  CategorySectionId.tractorsParts:         'assets/sub_ctg/KrishiX_App-17.jpg',
-  CategorySectionId.agricultureLandLease:  'assets/sub_ctg/KrishiX_App-65.jpg',
-  CategorySectionId.tractorRental:         'assets/sub_ctg/KrishiX_App-17.jpg',
-  CategorySectionId.farmMachineryRent:     'assets/sub_ctg/KrishiX_App-21.jpg',
-  CategorySectionId.jcbRental:             'assets/sub_ctg/KrishiX_App-23.jpg',
+  CategorySectionId.cropsAndGrains:      'assets/new_ctg/KrishiX_App-31.jpg',
+  CategorySectionId.fruitsVeg:           'assets/new_ctg/KrishiX_App-47.jpg',
+  CategorySectionId.livestock:             'assets/new_ctg/KrishiX_App-54.jpg',
+  CategorySectionId.agricultureLandSale:   'assets/new_ctg/KrishiX_App-65.jpg',
+  CategorySectionId.seedsAndPlants:        'assets/new_ctg/KrishiX_App-71.jpg',
+  CategorySectionId.farmMachinery:         'assets/new_ctg/KrishiX_App-21.jpg',
+  CategorySectionId.sellOthers:            CategoryImages.subcategoryOthers,
+  CategorySectionId.tractorsBuy:           'assets/new_ctg/KrishiX_App-17.jpg',
+  CategorySectionId.tractorsParts:         'assets/new_ctg/KrishiX_App-17.jpg',
+  CategorySectionId.agricultureLandLease:  'assets/new_ctg/KrishiX_App-65.jpg',
+  CategorySectionId.tractorRental:         'assets/new_ctg/KrishiX_App-17.jpg',
+  CategorySectionId.farmMachineryRent:     'assets/new_ctg/KrishiX_App-21.jpg',
+  CategorySectionId.jcbRental:             'assets/new_ctg/KrishiX_App-23.jpg',
 };
 
 const _defaultCategoryImages = <_PostCat, String>{
-  _PostCat.cropsGrains: 'assets/sub_ctg/KrishiX_App-31.jpg',
-  _PostCat.seedsPlants: 'assets/sub_ctg/KrishiX_App-71.jpg',
-  _PostCat.fruitsVeg:   'assets/sub_ctg/KrishiX_App-47.jpg',
-  _PostCat.livestock:   'assets/sub_ctg/KrishiX_App-54.jpg',
-  _PostCat.tractors:    'assets/sub_ctg/KrishiX_App-17.jpg',
-  _PostCat.landBuy:     'assets/sub_ctg/KrishiX_App-65.jpg',
-  _PostCat.landRent:     'assets/sub_ctg/KrishiX_App-65.jpg',
-  _PostCat.rental:      'assets/sub_ctg/KrishiX_App-21.jpg',
+  _PostCat.cropsGrains: 'assets/new_ctg/KrishiX_App-31.jpg',
+  _PostCat.seedsPlants: 'assets/new_ctg/KrishiX_App-71.jpg',
+  _PostCat.fruitsVeg:   'assets/new_ctg/KrishiX_App-47.jpg',
+  _PostCat.livestock:   'assets/new_ctg/KrishiX_App-54.jpg',
+  _PostCat.tractors:    'assets/new_ctg/KrishiX_App-17.jpg',
+  _PostCat.landBuy:     'assets/new_ctg/KrishiX_App-65.jpg',
+  _PostCat.landRent:     'assets/new_ctg/KrishiX_App-65.jpg',
+  _PostCat.rental:      'assets/new_ctg/KrishiX_App-21.jpg',
 };
 
 // Map incoming section / category → _PostCat
@@ -135,6 +137,8 @@ _PostCat _postCatFrom({
         return _PostCat.fruitsVeg;
       case CategorySectionId.seedsAndPlants:
         return _PostCat.seedsPlants;
+      case CategorySectionId.sellOthers:
+        return _PostCat.cropsGrains;
       case CategorySectionId.livestock:
         return _PostCat.livestock;
       case CategorySectionId.tractorsBuy:
@@ -177,18 +181,28 @@ class _ExtraField {
     this.formatters,
     this.unitOptions,
     this.defaultUnit,
+    this.selectOptionKeys,
+    this.required = false,
+    this.readOnly = false,
   });
   final String                    id;
   final IconData                  icon;
   final TextInputType             keyboardType;
+  final bool                      required;
+  final bool                      readOnly;
   /// Suffix resolved via [PostFormL10n.fieldSuffix] when set.
   final String?                   suffixKey;
   final List<TextInputFormatter>? formatters;
   final List<String>?             unitOptions;
   final String?                   defaultUnit;
+  /// L10n lookup keys for [PostSelectField] options.
+  final List<String>?             selectOptionKeys;
 
   bool get hasUnitPicker =>
       unitOptions != null && unitOptions!.isNotEmpty;
+
+  bool get hasSelectPicker =>
+      selectOptionKeys != null && selectOptionKeys!.isNotEmpty;
 }
 
 const Map<_PostCat, String> _titleHintKeys = {
@@ -360,10 +374,6 @@ final Map<_PostCat, List<_ExtraField>> _extraFields = {
       id:   'existingCrop',
       icon: Icons.grass_rounded,
     ),
-    _ExtraField(
-      id:   'leaseTerms',
-      icon: Icons.handshake_outlined,
-    ),
   ],
   _PostCat.rental: [
     _ExtraField(
@@ -391,13 +401,18 @@ class PostListingScreen extends StatefulWidget {
     this.initialCategory,
     this.initialType,
     this.categoryLabel,
+    this.groupLabel,
     this.subcategoryLabel,
+    this.subcategoryKey,
   });
   final String?          sectionId;
   final ListingCategory? initialCategory;
   final ListingType?     initialType;
   final String?          categoryLabel;
+  final String?          groupLabel;
   final String?          subcategoryLabel;
+  /// L10n lookup key from subcategory pick (e.g. `mahindra`).
+  final String?          subcategoryKey;
 
   @override
   State<PostListingScreen> createState() => _PostListingScreenState();
@@ -416,6 +431,7 @@ class _PostListingScreenState extends State<PostListingScreen> {
   final _descCtr  = TextEditingController();
   final Map<String, TextEditingController> _extraCtrs = {};
   final Map<String, String> _unitSelections = {};
+  final Map<String, String> _selectSelections = {};
 
   // Page 2
   final _nameCtr     = TextEditingController(text: 'Ramesh Patil');
@@ -432,9 +448,73 @@ class _PostListingScreenState extends State<PostListingScreen> {
   bool  _photosError = false;
   final _photoPickerKey = GlobalKey<PostPhotoPickerState>();
 
+  /// "Others" tile inside a subcategory group (not top-level sell_others).
+  bool get _isSubcategoryOthers =>
+      widget.subcategoryKey == 'others' &&
+      widget.sectionId != CategorySectionId.sellOthers;
+
+  bool get _isTractorSection =>
+      widget.sectionId == CategorySectionId.tractorsBuy ||
+      widget.sectionId == CategorySectionId.tractorRental;
+
+  /// User types custom product name in the Other field.
+  bool get _usesOtherTypeForm =>
+      widget.sectionId == CategorySectionId.sellOthers ||
+      _isSubcategoryOthers;
+
   List<_ExtraField> get _fields {
+    if (_usesOtherTypeForm) return const [];
     // Farm machinery name is the locked title field (from subcategory).
     if (widget.sectionId == CategorySectionId.farmMachinery) {
+      return const [];
+    }
+    if (widget.sectionId == CategorySectionId.tractorsBuy) {
+      return [
+        const _ExtraField(
+          id:       'tractorBrand',
+          icon:     Icons.branding_watermark_rounded,
+          readOnly: true,
+        ),
+        const _ExtraField(
+          id:   'tractorModel',
+          icon: Icons.agriculture_rounded,
+          required: true,
+        ),
+        const _ExtraField(
+          id:               'tractorHp',
+          icon:             Icons.speed_rounded,
+          selectOptionKeys: PostUnits.tractorHpRanges,
+        ),
+        _ExtraField(
+          id:           'yearManufacture',
+          icon:         Icons.calendar_month_rounded,
+          keyboardType: TextInputType.number,
+          formatters:   [FilteringTextInputFormatter.digitsOnly],
+          required:     true,
+        ),
+      ];
+    }
+    if (widget.sectionId == CategorySectionId.tractorRental) {
+      return [
+        const _ExtraField(
+          id:       'tractorBrand',
+          icon:     Icons.branding_watermark_rounded,
+          readOnly: true,
+        ),
+        const _ExtraField(
+          id:       'tractorModel',
+          icon:     Icons.agriculture_rounded,
+          required: true,
+        ),
+        const _ExtraField(
+          id:               'tractorHp',
+          icon:             Icons.speed_rounded,
+          selectOptionKeys: PostUnits.tractorHpRanges,
+        ),
+      ];
+    }
+    if (widget.sectionId == CategorySectionId.farmMachineryRent ||
+        widget.sectionId == CategorySectionId.jcbRental) {
       return const [];
     }
     return _extraFields[_cat] ?? [];
@@ -442,6 +522,7 @@ class _PostListingScreenState extends State<PostListingScreen> {
 
   /// Name/title comes from subcategory selection — keep the first field fixed.
   bool get _lockTitleField {
+    if (_usesOtherTypeForm) return false;
     final id = widget.sectionId;
     if (id != null) {
       const locked = {
@@ -449,8 +530,9 @@ class _PostListingScreenState extends State<PostListingScreen> {
         CategorySectionId.fruitsVeg,
         CategorySectionId.seedsAndPlants,
         CategorySectionId.livestock,
-        CategorySectionId.tractorsBuy,
         CategorySectionId.farmMachinery,
+        CategorySectionId.farmMachineryRent,
+        CategorySectionId.jcbRental,
         CategorySectionId.agricultureLandSale,
         CategorySectionId.agricultureLandLease,
       };
@@ -462,6 +544,36 @@ class _PostListingScreenState extends State<PostListingScreen> {
         _cat == _PostCat.livestock ||
         _cat == _PostCat.landBuy ||
         _cat == _PostCat.landRent;
+  }
+
+  bool get _hideTitleField =>
+      _isTractorSection && !_isSubcategoryOthers;
+
+  bool get _useInlineRentalPrice {
+    const sections = {
+      CategorySectionId.tractorRental,
+      CategorySectionId.farmMachineryRent,
+      CategorySectionId.jcbRental,
+    };
+    return widget.sectionId != null && sections.contains(widget.sectionId);
+  }
+
+  String _listingTitle(PostFormL10n pf) {
+    if (_usesOtherTypeForm) {
+      return _titleCtr.text.trim();
+    }
+    if (widget.sectionId == CategorySectionId.tractorsBuy ||
+        widget.sectionId == CategorySectionId.tractorRental) {
+      final brand = _extraCtrs['tractorBrand']?.text.trim() ?? '';
+      final model = _extraCtrs['tractorModel']?.text.trim() ?? '';
+      if (widget.sectionId == CategorySectionId.tractorsBuy) {
+        final year = _extraCtrs['yearManufacture']?.text.trim() ?? '';
+        if (model.isNotEmpty && year.isNotEmpty) return '$brand $model – $year';
+      }
+      if (model.isNotEmpty) return '$brand $model';
+      return brand;
+    }
+    return _titleCtr.text;
   }
 
   /// Sell → green top · Rent → orange top.
@@ -482,9 +594,16 @@ class _PostListingScreenState extends State<PostListingScreen> {
     );
     _type = widget.initialType ?? _cat.forcedType ?? ListingType.sell;
     _initExtraControllers();
-    final sub = widget.subcategoryLabel?.trim();
-    if (sub != null && sub.isNotEmpty) {
-      _titleCtr.text = sub;
+    if (_isTractorSection && !_isSubcategoryOthers) {
+      final brand = widget.subcategoryLabel?.trim();
+      if (brand != null && brand.isNotEmpty) {
+        _extraCtrs['tractorBrand']?.text = brand;
+      }
+    } else if (!_usesOtherTypeForm) {
+      final sub = widget.subcategoryLabel?.trim();
+      if (sub != null && sub.isNotEmpty) {
+        _titleCtr.text = sub;
+      }
     }
   }
 
@@ -492,12 +611,21 @@ class _PostListingScreenState extends State<PostListingScreen> {
     for (final c in _extraCtrs.values) c.dispose();
     _extraCtrs.clear();
     _unitSelections.clear();
+    _selectSelections.clear();
     for (final f in _fields) {
+      if (f.hasSelectPicker) {
+        _selectSelections[f.id] = f.selectOptionKeys!.first;
+        continue;
+      }
       _extraCtrs[f.id] = TextEditingController();
       if (f.hasUnitPicker) {
         _unitSelections[f.id] =
             f.defaultUnit ?? f.unitOptions!.first;
       }
+    }
+    if (_useInlineRentalPrice) {
+      _selectSelections['rentalPriceBasis'] =
+          PostUnits.tractorRentalPriceBasis.first;
     }
   }
 
@@ -704,21 +832,38 @@ class _PostListingScreenState extends State<PostListingScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _FieldLabel(
-                label: pf.titleFieldLabel(catKey, sectionId: widget.sectionId),
-                icon:  Icons.title_rounded,
-              ),
-              const SizedBox(height: 8),
-              _Field(
-                controller:     _titleCtr,
-                hint:           pf.titleHint(catKey),
-                capitalization: TextCapitalization.words,
-                readOnly:       _lockTitleField,
-                validator: (v) => (v == null || v.trim().isEmpty)
-                    ? l10n.postTitleRequired
-                    : null,
-              ),
-              const SizedBox(height: 18),
+              if (_usesOtherTypeForm) ...[
+                _FieldLabel(
+                  label: '${l10n.others} *',
+                  icon:  Icons.edit_outlined,
+                ),
+                const SizedBox(height: 8),
+                _Field(
+                  controller:     _titleCtr,
+                  hint:           l10n.others,
+                  capitalization: TextCapitalization.words,
+                  validator: (v) => (v == null || v.trim().isEmpty)
+                      ? l10n.postTitleRequired
+                      : null,
+                ),
+                const SizedBox(height: 18),
+              ] else if (!_hideTitleField) ...[
+                _FieldLabel(
+                  label: pf.titleFieldLabel(catKey, sectionId: widget.sectionId),
+                  icon:  Icons.title_rounded,
+                ),
+                const SizedBox(height: 8),
+                _Field(
+                  controller:     _titleCtr,
+                  hint:           pf.titleHint(catKey),
+                  capitalization: TextCapitalization.words,
+                  readOnly:       _lockTitleField,
+                  validator: (v) => (v == null || v.trim().isEmpty)
+                      ? l10n.postTitleRequired
+                      : null,
+                ),
+                const SizedBox(height: 18),
+              ],
               for (final field in fields) ...[
                 _FieldLabel(
                   label: pf.fieldLabel(field.id),
@@ -745,6 +890,26 @@ class _PostListingScreenState extends State<PostListingScreen> {
                       });
                     },
                   )
+                else if (field.hasSelectPicker)
+                  PostSelectField(
+                    options: field.selectOptionKeys!
+                        .map(pf.selectOptionLabel)
+                        .toList(growable: false),
+                    selected: pf.selectOptionLabel(
+                      _selectSelections[field.id]!,
+                    ),
+                    sheetTitle: pf.fieldLabel(field.id),
+                    accentColor: _accentColor,
+                    onChanged: (picked) {
+                      setState(() {
+                        _selectSelections[field.id] =
+                            pf.selectOptionKeyFromPicker(
+                          field.selectOptionKeys!,
+                          picked,
+                        );
+                      });
+                    },
+                  )
                 else
                   _Field(
                     controller:   _extraCtrs[field.id]!,
@@ -754,6 +919,12 @@ class _PostListingScreenState extends State<PostListingScreen> {
                         ? pf.fieldSuffix(field.suffixKey!)
                         : null,
                     formatters:   field.formatters,
+                    readOnly:     field.readOnly,
+                    validator: field.required
+                        ? (v) => (v == null || v.trim().isEmpty)
+                            ? l10n.postFieldRequired
+                            : null
+                        : null,
                   ),
                 const SizedBox(height: 18),
               ],
@@ -764,18 +935,46 @@ class _PostListingScreenState extends State<PostListingScreen> {
                 icon: Icons.currency_rupee_rounded,
               ),
               const SizedBox(height: 8),
-              _Field(
-                controller:   _priceCtr,
-                hint:         _type == ListingType.rent
-                    ? l10n.postPriceHintRent
-                    : l10n.postPriceHintSell,
-                prefixText:   '₹ ',
-                keyboardType: TextInputType.number,
-                formatters:   [FilteringTextInputFormatter.digitsOnly],
-                validator: (v) => (v == null || v.trim().isEmpty)
-                    ? l10n.postPriceRequired
-                    : null,
-              ),
+              if (_useInlineRentalPrice)
+                PostQuantityField(
+                  controller:    _priceCtr,
+                  hint:          l10n.postPriceHintRent,
+                  prefixText:    '₹ ',
+                  units:         PostUnits.tractorRentalPriceBasis,
+                  selectedUnit:  _selectSelections['rentalPriceBasis']!,
+                  displayUnit:   pf.selectOptionLabel(
+                    _selectSelections['rentalPriceBasis']!,
+                  ),
+                  unitLabelBuilder: pf.selectOptionLabel,
+                  selectUnitTitle: l10n.postFldRentalPriceBasis,
+                  formatters:    [FilteringTextInputFormatter.digitsOnly],
+                  accentColor:   _accentColor,
+                  validator: (v) => (v == null || v.trim().isEmpty)
+                      ? l10n.postPriceRequired
+                      : null,
+                  onUnitChanged: (picked) {
+                    setState(() {
+                      _selectSelections['rentalPriceBasis'] =
+                          pf.selectOptionKeyFromPicker(
+                        PostUnits.tractorRentalPriceBasis,
+                        picked,
+                      );
+                    });
+                  },
+                )
+              else
+                _Field(
+                  controller:   _priceCtr,
+                  hint:         _type == ListingType.rent
+                      ? l10n.postPriceHintRent
+                      : l10n.postPriceHintSell,
+                  prefixText:   '₹ ',
+                  keyboardType: TextInputType.number,
+                  formatters:   [FilteringTextInputFormatter.digitsOnly],
+                  validator: (v) => (v == null || v.trim().isEmpty)
+                      ? l10n.postPriceRequired
+                      : null,
+                ),
               const SizedBox(height: 18),
               _FieldLabel(
                 label: l10n.postPhotosLabel,
@@ -965,7 +1164,7 @@ class _PostListingScreenState extends State<PostListingScreen> {
             _ListingSummary(
               category: pf.categoryLabel(catKey),
               type:     _type == ListingType.sell ? l10n.sell : l10n.rent,
-              title:    _titleCtr.text,
+              title:    _listingTitle(pf),
               price:    _priceCtr.text,
               l10n:     l10n,
             ),

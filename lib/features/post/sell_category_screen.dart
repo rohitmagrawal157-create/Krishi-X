@@ -2,9 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:krishix/core/constants/app_colors.dart';
+import 'package:krishix/core/constants/category_images.dart';
 import 'package:krishix/core/data/subcategories.dart';
 import 'package:krishix/core/models/listing.dart';
 import 'package:krishix/features/category/category_detail_screen.dart';
+import 'package:krishix/features/post/post_listing_screen.dart';
+import 'package:krishix/l10n/app_localizations.dart';
 
 const Color _kGreen  = AppColors.primaryGreen;
 const Color _kOrange = Color(0xFFF57C00);
@@ -48,7 +51,7 @@ const _sellCategories = <_PostCategory>[
     label:           'Crops & Grains',
     sublabel:        'Wheat, rice, maize, pulses…',
     icon:            Icons.grass_rounded,
-    imagePath:       'assets/sub_ctg/KrishiX_App-31.jpg',
+    imagePath:       'assets/new_ctg/KrishiX_App-31.jpg',
     listingCategory: ListingCategory.crops,
     color:           Color(0xFF689F38),
     sectionId:       CategorySectionId.cropsAndGrains,
@@ -57,55 +60,64 @@ const _sellCategories = <_PostCategory>[
     label:           'Fruits & Vegetables',
     sublabel:        'Mangoes, onions, tomatoes…',
     icon:            Icons.eco_rounded,
-    imagePath:       'assets/sub_ctg/KrishiX_App-47.jpg',
+    imagePath:       'assets/new_ctg/KrishiX_App-47.jpg',
     listingCategory: ListingCategory.crops,
     color:           Color(0xFF7CB342),
     sectionId:       CategorySectionId.fruitsVeg,
   ),
   _PostCategory(
-    label:           'Seeds & Plants',
-    sublabel:        'Seeds, saplings, nursery…',
-    icon:            Icons.yard_rounded,
-    imagePath:       'assets/sub_ctg/KrishiX_App-71.jpg',
-    listingCategory: ListingCategory.crops,
-    color:           Color(0xFF558B2F),
-    sectionId:       CategorySectionId.seedsAndPlants,
-  ),
-  _PostCategory(
     label:           'Livestock',
     sublabel:        'Cows, buffaloes, goats…',
     icon:            Icons.pets_rounded,
-    imagePath:       'assets/sub_ctg/KrishiX_App-54.jpg',
+    imagePath:       'assets/new_ctg/KrishiX_App-54.jpg',
     listingCategory: ListingCategory.livestock,
     color:           Color(0xFF8D6E63),
     sectionId:       CategorySectionId.livestock,
   ),
   _PostCategory(
-    label:           'Tractors',
-    sublabel:        'New & used tractors',
-    icon:            Icons.agriculture_rounded,
-    imagePath:       'assets/sub_ctg/KrishiX_App-17.jpg',
-    listingCategory: ListingCategory.tractors,
-    color:           Color(0xFF388E3C),
-    sectionId:       CategorySectionId.tractorsBuy,
+    label:           'Farm Land',
+    sublabel:        'Agricultural land for sale',
+    icon:            Icons.landscape_rounded,
+    imagePath:       'assets/new_ctg/KrishiX_App-65.jpg',
+    listingCategory: ListingCategory.land,
+    color:           Color(0xFF0277BD),
+    sectionId:       CategorySectionId.agricultureLandSale,
+  ),
+  _PostCategory(
+    label:           'Seeds & Plants',
+    sublabel:        'Seeds, saplings, nursery…',
+    icon:            Icons.yard_rounded,
+    imagePath:       'assets/new_ctg/KrishiX_App-71.jpg',
+    listingCategory: ListingCategory.crops,
+    color:           AppColors.textPrimary,
+    sectionId:       CategorySectionId.seedsAndPlants,
   ),
   _PostCategory(
     label:           'Farm Machinery',
     sublabel:        'Rotavators, sprayers, pumps…',
     icon:            Icons.precision_manufacturing_rounded,
-    imagePath:       'assets/sub_ctg/KrishiX_App-21.jpg',
+    imagePath:       'assets/new_ctg/KrishiX_App-21.jpg',
     listingCategory: ListingCategory.tractors,
     color:           Color(0xFF6D4C41),
     sectionId:       CategorySectionId.farmMachinery,
   ),
   _PostCategory(
-    label:           'Farm Land',
-    sublabel:        'Agricultural land for sale',
-    icon:            Icons.landscape_rounded,
-    imagePath:       'assets/sub_ctg/KrishiX_App-65.jpg',
-    listingCategory: ListingCategory.land,
-    color:           Color(0xFF0277BD),
-    sectionId:       CategorySectionId.agricultureLandSale,
+    label:           'Tractors',
+    sublabel:        'New & used tractors',
+    icon:            Icons.agriculture_rounded,
+    imagePath:       'assets/new_ctg/KrishiX_App-17.jpg',
+    listingCategory: ListingCategory.tractors,
+    color:           Color(0xFF558B2F),
+    sectionId:       CategorySectionId.tractorsBuy,
+  ),
+  _PostCategory(
+    label:           'Others',
+    sublabel:        'Other farm products & items',
+    icon:            Icons.more_horiz_rounded,
+    imagePath:       CategoryImages.subcategoryOthers,
+    listingCategory: ListingCategory.crops,
+    color:           Color(0xFF757575),
+    sectionId:       CategorySectionId.sellOthers,
   ),
 ];
 
@@ -114,19 +126,28 @@ const _sellCategories = <_PostCategory>[
 // ═══════════════════════════════════════════════════════════════
 const _rentCategories = <_PostCategory>[
   _PostCategory(
+    label:           'Land Lease',
+    sublabel:        'Put your land on lease',
+    icon:            Icons.landscape_rounded,
+    imagePath:       'assets/new_ctg/KrishiX_App-65.jpg',
+    listingCategory: ListingCategory.land,
+    color:           Color(0xFF0277BD),
+    sectionId:       CategorySectionId.agricultureLandLease,
+  ),
+  _PostCategory(
     label:           'Tractor Rental',
-    sublabel:        'Hourly, daily or seasonal',
+    sublabel:        'Mahindra, Swaraj, Sonalika…',
     icon:            Icons.agriculture_rounded,
-    imagePath:       'assets/sub_ctg/KrishiX_App-17.jpg',
+    imagePath:       'assets/new_ctg/KrishiX_App-17.jpg',
     listingCategory: ListingCategory.rental,
-    color:           Color(0xFF388E3C),
+    color:           Color(0xFF558B2F),
     sectionId:       CategorySectionId.tractorRental,
   ),
   _PostCategory(
     label:           'Farm Machinery',
     sublabel:        'Rotavators, harvesters, seeders…',
     icon:            Icons.precision_manufacturing_rounded,
-    imagePath:       'assets/sub_ctg/KrishiX_App-21.jpg',
+    imagePath:       'assets/new_ctg/KrishiX_App-21.jpg',
     listingCategory: ListingCategory.rental,
     color:           Color(0xFF6D4C41),
     sectionId:       CategorySectionId.farmMachineryRent,
@@ -135,19 +156,10 @@ const _rentCategories = <_PostCategory>[
     label:           'JCB / Excavator',
     sublabel:        'Backhoe, loader, bulldozer…',
     icon:            Icons.construction_rounded,
-    imagePath:       'assets/sub_ctg/KrishiX_App-23.jpg',
+    imagePath:       'assets/new_ctg/KrishiX_App-23.jpg',
     listingCategory: ListingCategory.rental,
     color:           Color(0xFFF57C00),
     sectionId:       CategorySectionId.jcbRental,
-  ),
-  _PostCategory(
-    label:           'Land Lease',
-    sublabel:        'Put your land on lease',
-    icon:            Icons.landscape_rounded,
-    imagePath:       'assets/sub_ctg/KrishiX_App-65.jpg',
-    listingCategory: ListingCategory.land,
-    color:           Color(0xFF0277BD),
-    sectionId:       CategorySectionId.agricultureLandLease,
   ),
 ];
 
@@ -196,6 +208,25 @@ class _SellCategoryScreenState extends State<SellCategoryScreen>
   }
 
   void _onCategoryTap(_PostCategory cat) {
+    if (!_isRent && cat.sectionId == CategorySectionId.sellOthers) {
+      final l10n = AppLocalizations.of(context)!;
+      Navigator.of(context).push(
+        PageRouteBuilder<void>(
+          transitionDuration: const Duration(milliseconds: 320),
+          pageBuilder: (_, animation, __) => FadeTransition(
+            opacity: CurvedAnimation(
+                parent: animation, curve: Curves.easeOut),
+            child: PostListingScreen(
+              sectionId:        cat.sectionId,
+              initialCategory:  cat.listingCategory,
+              initialType:      ListingType.sell,
+              categoryLabel:    l10n.others,
+            ),
+          ),
+        ),
+      );
+      return;
+    }
     Navigator.of(context).push(
       PageRouteBuilder<void>(
         transitionDuration: const Duration(milliseconds: 320),

@@ -29,12 +29,12 @@ class _TractorPickerItem {
 const _kPickerItems = [
   _TractorPickerItem(
     label:     'Tractors',
-    imagePath: 'assets/sub_ctg/KrishiX_App-19.jpg',
+    imagePath: 'assets/new_ctg/KrishiX_App-19.jpg',
     sectionId: CategorySectionId.tractorsBuy,
   ),
   _TractorPickerItem(
     label:     'Spare Parts',
-    imagePath: 'assets/sub_ctg/KrishiX_App-17.jpg',
+    imagePath: 'assets/new_ctg/KrishiX_App-17.jpg',
     sectionId: CategorySectionId.tractorsParts,
   ),
 ];

@@ -3465,6 +3465,24 @@ abstract class AppLocalizations {
   /// **'No dealers found'**
   String get noDealersFound;
 
+  /// No description provided for @dealerListBusinessBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Want to list your business on Krishi X?'**
+  String get dealerListBusinessBanner;
+
+  /// No description provided for @dealerListBusinessCta.
+  ///
+  /// In en, this message translates to:
+  /// **'List Your Business'**
+  String get dealerListBusinessCta;
+
+  /// No description provided for @dealerListBusinessSnackbar.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you! We will help you list your business soon.'**
+  String get dealerListBusinessSnackbar;
+
   /// No description provided for @agriDealers.
   ///
   /// In en, this message translates to:
@@ -3687,6 +3705,12 @@ abstract class AppLocalizations {
   /// **'Product'**
   String get shareProductLabel;
 
+  /// No description provided for @shareProductsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Products'**
+  String get shareProductsLabel;
+
   /// No description provided for @shareLocationLabel.
   ///
   /// In en, this message translates to:
@@ -3698,6 +3722,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Quantity'**
   String get shareQuantityLabel;
+
+  /// No description provided for @sharePriceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get sharePriceLabel;
+
+  /// No description provided for @shareListingHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'KrishiX Listing'**
+  String get shareListingHeader;
+
+  /// No description provided for @shareDealerListingHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'KrishiX Dealer Listing'**
+  String get shareDealerListingHeader;
+
+  /// No description provided for @shareConnectSeller.
+  ///
+  /// In en, this message translates to:
+  /// **'Download KrishiX to view & connect with the seller.'**
+  String get shareConnectSeller;
 
   /// No description provided for @shareAppDownload.
   ///
@@ -3818,6 +3866,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Title is required'**
   String get postTitleRequired;
+
+  /// No description provided for @postFieldRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required'**
+  String get postFieldRequired;
 
   /// No description provided for @postPriceRequired.
   ///
@@ -4359,6 +4413,66 @@ abstract class AppLocalizations {
   /// **'Brand'**
   String get postFldBrand;
 
+  /// No description provided for @postFldTractorBrand.
+  ///
+  /// In en, this message translates to:
+  /// **'Tractor Brand'**
+  String get postFldTractorBrand;
+
+  /// No description provided for @postFldTractorModel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tractor Model'**
+  String get postFldTractorModel;
+
+  /// No description provided for @postHintTractorBrand.
+  ///
+  /// In en, this message translates to:
+  /// **'Select tractor brand'**
+  String get postHintTractorBrand;
+
+  /// No description provided for @postHintTractorModel.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 575 DI, Farmtrac 60'**
+  String get postHintTractorModel;
+
+  /// No description provided for @postFldRentalPriceBasis.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental Price Basis'**
+  String get postFldRentalPriceBasis;
+
+  /// No description provided for @postFldOtherCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get postFldOtherCategory;
+
+  /// No description provided for @postFldTypeName.
+  ///
+  /// In en, this message translates to:
+  /// **'Type Name *'**
+  String get postFldTypeName;
+
+  /// No description provided for @postHintOtherCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Others'**
+  String get postHintOtherCategory;
+
+  /// No description provided for @postHintTypeName.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Farm tools, Agri supplies, Misc items'**
+  String get postHintTypeName;
+
+  /// No description provided for @postHintSelectRentalPriceBasis.
+  ///
+  /// In en, this message translates to:
+  /// **'Select hourly or daily basis'**
+  String get postHintSelectRentalPriceBasis;
+
   /// No description provided for @postFldYearManufacture.
   ///
   /// In en, this message translates to:
@@ -4562,6 +4676,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'e.g. 45'**
   String get postHintHorsePower;
+
+  /// No description provided for @postHintSelectTractorHp.
+  ///
+  /// In en, this message translates to:
+  /// **'Select horse power range'**
+  String get postHintSelectTractorHp;
 
   /// No description provided for @postHintCondition.
   ///

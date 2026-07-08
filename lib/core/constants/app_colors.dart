@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 abstract final class AppColors {
   static const Color primaryGreen = Color(0xFF238208);
   static const Color bannerGreen = Color(0xFF1B8A3E);
+  /// Matches home banner (`KrishiX_App-03.jpg`) left panel.
+  static const Color bannerOrange = Color(0xFFF26522);
   static const Color primaryGreenDark = Color(0xFF1B5E20);
   static const Color accentGold = Color(0xFFF9A825);
   static const Color earthBrown = Color(0xFF6D4C41);

@@ -14,7 +14,7 @@ import 'package:krishix/l10n/l10n_lookup.dart';
 const List<String> _adBanners = [
   'assets/images/ads1.jpeg',
   'assets/images/ads2.jpeg',
-  'assets/images/ads3.jpeg',
+  // 'assets/images/ads3.jpeg',
 ];
 
 class CategoryDetailScreen extends StatelessWidget {
@@ -25,6 +25,7 @@ class CategoryDetailScreen extends StatelessWidget {
     this.postFlow = false,
     this.isRent = false,
     this.categoryLabel,
+    this.groupTitleKey,
   });
 
   final String        sectionId;
@@ -32,15 +33,18 @@ class CategoryDetailScreen extends StatelessWidget {
   final bool          postFlow;
   final bool          isRent;
   final String?       categoryLabel;
+  /// When set, only this subcategory group is shown (e.g. `vegetables` / `fruits`).
+  final String?       groupTitleKey;
 
   void _onItemTap(
     BuildContext context,
     CategoryDetail detail,
+    SubcategoryGroup group,
     SubcategoryItem item,
     String itemLabel,
   ) {
     if (postFlow) {
-      _openPostForm(context, detail, itemLabel);
+      _openPostForm(context, detail, group, item, itemLabel);
     } else {
       _openSubcategoryBrowse(context, detail, item, itemLabel);
     }
@@ -49,8 +53,11 @@ class CategoryDetailScreen extends StatelessWidget {
   void _openPostForm(
     BuildContext context,
     CategoryDetail detail,
+    SubcategoryGroup group,
+    SubcategoryItem item,
     String itemLabel,
   ) {
+    final l10n = AppLocalizations.of(context)!;
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => PostListingScreen(
@@ -58,7 +65,9 @@ class CategoryDetailScreen extends StatelessWidget {
           initialCategory:  detail.listingCategory,
           initialType:      _listingTypeForDetail(detail),
           categoryLabel:    categoryLabel,
+          groupLabel:       l10nLookup(l10n, group.titleKey),
           subcategoryLabel: itemLabel,
+          subcategoryKey:   item.labelKey,
         ),
       ),
     );
@@ -70,16 +79,15 @@ class CategoryDetailScreen extends StatelessWidget {
     SubcategoryItem item,
     String itemLabel,
   ) {
-    final loc = userLocation;
-    if (loc == null) return;
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => BrowseScreen(
           initialCategory:       detail.listingCategory,
           initialListingType:    _listingTypeForDetail(detail),
           initialDetailLabel:    itemLabel,
+          initialDetailKey:      item.labelKey,
           initialDetailKeywords: _keywordsForItem(item, itemLabel),
-          userLocation:          loc,
+          userLocation:          userLocation,
         ),
       ),
     );
@@ -115,6 +123,27 @@ class CategoryDetailScreen extends StatelessWidget {
     };
     keywords.addAll(aliases[item.labelKey] ?? const []);
     return keywords.toList(growable: false);
+  }
+
+  List<SubcategoryGroup> _visibleGroups(CategoryDetail detail) {
+    if (groupTitleKey != null) {
+      return detail.groups
+          .where((g) => g.titleKey == groupTitleKey)
+          .toList(growable: false);
+    }
+    if (postFlow &&
+        (sectionId == CategorySectionId.tractorsBuy ||
+            sectionId == CategorySectionId.tractorRental)) {
+      return detail.groups
+          .where((g) => g.titleKey == 'tractor_brands')
+          .toList(growable: false);
+    }
+    if (postFlow && sectionId == CategorySectionId.jcbRental) {
+      return detail.groups
+          .where((g) => g.titleKey == 'jcb_types')
+          .toList(growable: false);
+    }
+    return detail.groups;
   }
 
   Widget _backButton(BuildContext context) {
@@ -160,18 +189,20 @@ class CategoryDetailScreen extends StatelessWidget {
         ? (isRent ? const Color(0xFFF57C00) : AppColors.primaryGreen)
         : AppColors.primaryGreen;
 
+    final groups = _visibleGroups(detail);
+
     // ── Build list: group → (ad in browse mode) … ──
     final List<Widget> bodyItems = [];
 
-    for (var i = 0; i < detail.groups.length; i++) {
-      final group = detail.groups[i];
+    for (var i = 0; i < groups.length; i++) {
+      final group = groups[i];
 
       bodyItems.add(
         _SubcategoryGroupSection(
           group: group,
           l10n:  l10n,
           onItemTap: (item, label) =>
-              _onItemTap(context, detail, item, label),
+              _onItemTap(context, detail, group, item, label),
         ),
       );
 

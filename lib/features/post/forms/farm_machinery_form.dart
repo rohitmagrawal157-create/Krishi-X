@@ -13,7 +13,7 @@ final farmMachineryFormConfig = PostFormConfig(
   forcedType:       ListingType.sell,
   accentColor:      Color(0xFF6D4C41),
   bgColor:          Color(0xFFE8F5E9),
- imagePath:       'assets/sub_ctg/KrishiX_App-21.jpg', 
+ imagePath:       'assets/new_ctg/KrishiX_App-21.jpg', 
   fields: [
     PostFormField(
       label: 'Equipment Type',

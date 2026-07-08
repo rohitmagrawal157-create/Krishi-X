@@ -1,5 +1,6 @@
 // lib/core/data/listing_feed.dart
 
+import 'package:krishix/core/constants/category_images.dart';
 import 'package:krishix/core/data/mock_listings.dart';
 import 'package:krishix/core/data/subcategories.dart';
 import 'package:krishix/core/models/listing.dart';
@@ -24,12 +25,15 @@ abstract final class ListingFeed {
     int? minPrice,
     int? maxPrice,
     List<String> detailKeywords = const [],
+    String? detailKey,
   }) {
     final query = searchQuery.trim().toLowerCase();
     final detailTerms = detailKeywords
         .map((term) => term.trim().toLowerCase().replaceAll('_', ' '))
         .where((term) => term.isNotEmpty)
         .toList();
+    final normalizedDetailKey =
+        detailKey != null ? _normalizeDetailKey(detailKey) : null;
     final pool = List<Listing>.generate(180, (i) => _fromTemplate(i));
     final locatedPool = LocationService.withDistances(pool, userLocation);
 
@@ -44,12 +48,13 @@ abstract final class ListingFeed {
           return false;
         }
       }
-      if (detailTerms.isNotEmpty) {
-        final haystack =
-            '${listing.title} ${listing.titleHi} ${listing.description} '
-            '${listing.descriptionHi} ${listing.equipmentType ?? ''}'
-                .toLowerCase();
-        if (!detailTerms.any(haystack.contains)) return false;
+      if (normalizedDetailKey != null) {
+        if (!_matchesDetailKey(listing, normalizedDetailKey, detailTerms)) {
+          return false;
+        }
+      } else if (detailTerms.isNotEmpty) {
+        final haystack = _detailHaystack(listing);
+        if (!_keywordMatches(haystack, detailTerms)) return false;
       }
       if (query.isNotEmpty) {
         final haystack =
@@ -90,6 +95,12 @@ abstract final class ListingFeed {
         break;
     }
 
+    // Subcategory browse: one listing per product photo (2–3 max).
+    if (normalizedDetailKey != null) {
+      if (page > 0) return const [];
+      return _subcategoryShowcase(filtered, normalizedDetailKey);
+    }
+
     final start = page * pageSize;
     if (start >= filtered.length) return const [];
     return filtered.skip(start).take(pageSize).toList();
@@ -114,6 +125,203 @@ abstract final class ListingFeed {
       if (matched.isNotEmpty) return matched;
       if (scope == LocationScope.state) return listings;
       scope = LocationService.broadenScope(scope);
+    }
+  }
+
+  static String _normalizeDetailKey(String key) {
+    final normalized = key.trim().toLowerCase();
+    return normalized == 'other' ? 'others' : normalized;
+  }
+
+  /// Returns exactly one listing per available product photo.
+  static List<Listing> _subcategoryShowcase(
+    List<Listing> matches,
+    String detailKey,
+  ) {
+    final target = CategoryImages.showcaseCountForKey(detailKey);
+    if (target <= 0) return const [];
+
+    final exact = matches
+        .where(
+          (l) =>
+              l.titleKey != null &&
+              _normalizeDetailKey(l.titleKey!) == detailKey,
+        )
+        .toList()
+      ..sort((a, b) {
+        final aClone = a.title.contains('(#') ? 1 : 0;
+        final bClone = b.title.contains('(#') ? 1 : 0;
+        if (aClone != bClone) return aClone.compareTo(bClone);
+        return (a.distanceKm ?? double.infinity)
+            .compareTo(b.distanceKm ?? double.infinity);
+      });
+
+    final seed = exact.isNotEmpty
+        ? exact.first
+        : _templateListingForKey(detailKey);
+
+    if (seed == null) return const [];
+
+    final picked = <Listing>[];
+    final seenSellers = <String>{};
+
+    for (final listing in exact) {
+      if (picked.length >= target) break;
+      if (seenSellers.add(listing.sellerName)) picked.add(listing);
+    }
+
+    while (picked.length < target) {
+      picked.add(_showcaseSlot(seed, picked.length));
+    }
+
+    return picked.take(target).toList();
+  }
+
+  static Listing? _templateListingForKey(String detailKey) {
+    for (final template in _templates) {
+      if (template.titleKey != null &&
+          _normalizeDetailKey(template.titleKey!) == detailKey) {
+        return template;
+      }
+    }
+    return null;
+  }
+
+  static Listing _showcaseSlot(Listing base, int slot) {
+    final priceOffsets = [0, 3200, 7800, 5100, 9400];
+    return Listing(
+      id:                '${base.id}-slot-$slot',
+      title:             base.title,
+      titleHi:           base.titleHi,
+      titleMr:           base.titleMr,
+      titleGu:           base.titleGu,
+      titleKey:          base.titleKey,
+      price:             base.price + priceOffsets[slot % priceOffsets.length],
+      location:          _locationFor(slot),
+      category:          base.category,
+      type:              base.type,
+      isVerified:        slot.isEven,
+      sellerName:        _sellerFor(slot),
+      sellerId:          _sellerIdFor(slot),
+      sellerPhone:       _phoneFor(slot),
+      sellerMemberSince: base.sellerMemberSince,
+      viewCount:         (base.viewCount ?? 90) + slot * 37,
+      likeCount:         (base.likeCount ?? 10) + slot * 4,
+      postedOn:          base.postedOn,
+      imageEmoji:        base.imageEmoji,
+      description:       base.description,
+      descriptionHi:     base.descriptionHi,
+      descriptionMr:     base.descriptionMr,
+      descriptionGu:     base.descriptionGu,
+      distanceKm:        double.parse((2.5 + slot * 5.3).toStringAsFixed(1)),
+      brand:             base.brand,
+      condition:         base.condition,
+      year:              base.year,
+      hoursUsed:         base.hoursUsed,
+      horsePower:        base.horsePower,
+      fuelType:          base.fuelType,
+      quantity:          base.quantity,
+      unit:              base.unit,
+      grade:             base.grade,
+      harvestDate:       base.harvestDate,
+      breed:             base.breed,
+      age:               base.age,
+      milkYieldLitres:   base.milkYieldLitres,
+      animalColor:       base.animalColor,
+      areaAcres:         base.areaAcres,
+      soilType:          base.soilType,
+      waterSource:       base.waterSource,
+      landDeed:          base.landDeed,
+      equipmentType:     base.equipmentType,
+      rentalDuration:    base.rentalDuration,
+      deliveryAvailable: base.deliveryAvailable,
+    );
+  }
+
+  static String _detailHaystack(Listing listing) {
+    return '${listing.titleKey ?? ''} ${listing.title} ${listing.titleHi} '
+        '${listing.description} ${listing.descriptionHi} '
+        '${listing.brand ?? ''} ${listing.breed ?? ''} '
+        '${listing.equipmentType ?? ''}'
+        .toLowerCase()
+        .replaceAll('_', ' ')
+        .replaceAll('/', ' ');
+  }
+
+  static bool _keywordMatches(String haystack, List<String> terms) {
+    for (final term in terms) {
+      if (haystack.contains(term)) return true;
+      final words = term
+          .split(RegExp(r'\s+'))
+          .where((word) => word.length > 2)
+          .toList();
+      if (words.isNotEmpty && words.every(haystack.contains)) return true;
+    }
+    return false;
+  }
+
+  static bool _matchesDetailKey(
+    Listing listing,
+    String detailKey,
+    List<String> keywordFallback,
+  ) {
+    if (detailKey == 'others') {
+      final listingKey = listing.titleKey;
+      return listingKey == null ||
+          listingKey.isEmpty ||
+          _normalizeDetailKey(listingKey) == 'others';
+    }
+
+    if (listing.titleKey != null &&
+        _normalizeDetailKey(listing.titleKey!) == detailKey) {
+      return true;
+    }
+
+    if (_brandKeys.contains(detailKey)) {
+      final brand = listing.brand?.toLowerCase().replaceAll(' ', '_') ?? '';
+      if (brand.contains(detailKey) || detailKey.contains(brand)) {
+        return true;
+      }
+    }
+
+    final hp = listing.horsePower;
+    if (hp != null) {
+      final range = _hpRangeForKey(detailKey);
+      if (range != null && hp >= range.$1 && hp <= range.$2) return true;
+    }
+
+    return false;
+  }
+
+  static const _brandKeys = {
+    'mahindra',
+    'swaraj',
+    'sonalika',
+    'john_deere',
+    'massey_ferguson',
+    'farmtrac',
+    'powertrac',
+    'eicher',
+    'tafe',
+  };
+
+  /// Returns (minHp, maxHp) for HP-range subcategory keys.
+  static (int, int)? _hpRangeForKey(String key) {
+    switch (key) {
+      case 'under_20_hp':
+        return (0, 20);
+      case 'hp_21_30':
+        return (21, 30);
+      case 'hp_31_40':
+        return (31, 40);
+      case 'hp_41_50':
+        return (41, 50);
+      case 'hp_51_60':
+        return (51, 60);
+      case 'above_60_hp':
+        return (61, 999);
+      default:
+        return null;
     }
   }
 

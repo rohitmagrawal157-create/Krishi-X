@@ -13,7 +13,7 @@ final livestockFormConfig = PostFormConfig(
   forcedType:       ListingType.sell,
   accentColor:      Color(0xFF8D6E63),
   bgColor:          Color(0xFFE8F5E9),
- imagePath:       'assets/sub_ctg/KrishiX_App-54.jpg', 
+ imagePath:       'assets/new_ctg/KrishiX_App-54.jpg', 
   fields: [
     // PostFormField(
     //   label: 'Breed',

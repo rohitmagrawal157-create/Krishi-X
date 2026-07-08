@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:krishix/core/constants/app_colors.dart';
+import 'package:krishix/core/constants/category_images.dart';
 import 'package:krishix/core/data/mock_listings.dart';
 import 'package:krishix/core/models/listing.dart';
 import 'package:krishix/core/models/user_location.dart';
@@ -15,19 +16,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 const Color _kGreen  = AppColors.primaryGreen;
 const Color _kOrange = Color(0xFFF57C00);
 
-const Map<ListingCategory, List<String>> _categoryImages = {
-  ListingCategory.livestock: ['assets/images/cow1.jpeg', 'assets/images/cow2.jpeg'],
-  ListingCategory.land:      ['assets/images/land1.jpeg', 'assets/images/land2.jpeg'],
-  ListingCategory.tractors:  ['assets/images/tractor1.webp', 'assets/images/tractor2.webp', 'assets/images/machine1.jpeg'],
-  ListingCategory.rental:    ['assets/images/rent2.jpeg', 'assets/images/jcb1.jpeg', 'assets/images/machine1.jpeg'],
-  ListingCategory.crops:     ['assets/images/mango.jpeg', 'assets/images/veg1.jpeg', 'assets/images/veg2.jpeg'],
-};
-
-String _imageFor(ListingCategory cat, int idx) {
-  final imgs = _categoryImages[cat];
-  if (imgs == null || imgs.isEmpty) return 'assets/images/seeds1.jpeg';
-  return imgs[idx % imgs.length];
-}
+String _imageFor(Listing listing, int idx) =>
+    CategoryImages.listingImageFor(listing, idx);
 
 String _formatPrice(int price) {
   final v    = price.toString();
@@ -681,7 +671,7 @@ class _SellerAdCardState extends State<_SellerAdCard> {
               width:  120,
               height: 110,
               child: Image.asset(
-                _imageFor(listing.category, widget.imgIdx),
+                _imageFor(listing, widget.imgIdx),
                 fit:           BoxFit.cover,
                 filterQuality: FilterQuality.medium,
                 errorBuilder:  (_, __, ___) =>

@@ -13,7 +13,7 @@ final landLeaseFormConfig = PostFormConfig(
   forcedType:       ListingType.rent,
   accentColor:      Color(0xFF00838F),
   bgColor:          Color(0xFFE8F5E9),
- imagePath:       'assets/sub_ctg/KrishiX_App-65.jpg', 
+ imagePath:       'assets/new_ctg/KrishiX_App-65.jpg', 
   fields: [
     PostFormField(
       label:        'Total Area Available',
@@ -43,11 +43,6 @@ final landLeaseFormConfig = PostFormConfig(
       label: 'Existing Crop (if any)',
       hint:  'e.g. Sugarcane, Cotton, Fallow',
       icon:  Icons.grass_rounded,
-    ),
-    PostFormField(
-      label: 'Lease Terms',
-      hint:  'e.g. Negotiable, Fixed rent ₹8000/acre/yr',
-      icon:  Icons.handshake_outlined,
     ),
   ],
 );

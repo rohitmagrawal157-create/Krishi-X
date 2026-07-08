@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:krishix/core/constants/app_colors.dart';
+import 'package:krishix/core/constants/category_images.dart';
 import 'package:krishix/core/constants/app_spacing.dart';
 import 'package:krishix/core/data/listing_feed.dart';
 import 'package:krishix/core/models/listing.dart';
@@ -26,6 +27,10 @@ double _totalHeaderHeight(double statusBarH) =>
 
 enum _CategoryFilter { buy, rent, services }
 
+/// Home grid limits — See all appears only when count exceeds these.
+const _kBuySeeAllMin  = 8;
+const _kRentSeeAllMin = 4;
+
 class _HomeCategory {
   const _HomeCategory({
     required this.label,
@@ -33,12 +38,14 @@ class _HomeCategory {
     required this.color,
     required this.sectionId,
     required this.filter,
+    this.groupTitleKey,
   });
   final String          label;
   final String          imagePath;
   final Color           color;
   final String          sectionId;
   final _CategoryFilter filter;
+  final String?         groupTitleKey;
 }
 
 String _tr(String key, String locale) {
@@ -121,12 +128,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _scrollController = ScrollController();
-  final _items            = <Listing>[];
-  var   _page             = 0;
-  var   _isLoadingMore    = false;
-  var   _hasMore          = true;
   var   _activeFilter     = _CategoryFilter.buy;
   List<Listing> _nearbyItems = [];
+
+  final _allProductCards = <ShowcaseProductCard>[];
+  var   _allProductsPage = 0;
+  var   _isLoadingAllProducts = false;
 
   @override
   void initState() {
@@ -138,9 +145,9 @@ class _HomeScreenState extends State<HomeScreen> {
         statusBarBrightness:     Brightness.dark,
       ),
     );
-    _loadMore();
     _loadNearby();
     _scrollController.addListener(_onScroll);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadAllProductsPage());
   }
 
   @override
@@ -153,7 +160,6 @@ class _HomeScreenState extends State<HomeScreen> {
         oldWidget.userLocation.scope != widget.userLocation.scope ||
         oldWidget.userLocation.latitude != widget.userLocation.latitude ||
         oldWidget.userLocation.longitude != widget.userLocation.longitude) {
-      _resetAndReload();
       _loadNearby();
     }
   }
@@ -164,31 +170,26 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  void _resetAndReload() {
-    setState(() { _page = 0; _items.clear(); _hasMore = true; });
-    _loadMore();
-  }
-
   void _onScroll() {
-    if (!_hasMore || _isLoadingMore) return;
+    if (_isLoadingAllProducts) return;
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 280) {
-      _loadMore();
+      _loadAllProductsPage();
     }
   }
 
-  Future<void> _loadMore() async {
-    if (_isLoadingMore || !_hasMore) return;
-    setState(() => _isLoadingMore = true);
-    await Future.delayed(const Duration(milliseconds: 200));
-    final batch = ListingFeed.fetchPage(
-        _page, userLocation: widget.userLocation);
+  Future<void> _loadAllProductsPage() async {
+    if (_isLoadingAllProducts) return;
     if (!mounted) return;
+    setState(() => _isLoadingAllProducts = true);
+    await Future.delayed(const Duration(milliseconds: 200));
+    if (!mounted) return;
+    final l10n  = AppLocalizations.of(context)!;
+    final batch = AllProductsCatalog.fetchPage(_allProductsPage, l10n);
     setState(() {
-      _items.addAll(batch);
-      _page++;
-      _isLoadingMore = false;
-      _hasMore       = batch.length == ListingFeed.pageSize;
+      _allProductCards.addAll(batch);
+      _allProductsPage++;
+      _isLoadingAllProducts = false;
     });
   }
 
@@ -200,62 +201,102 @@ class _HomeScreenState extends State<HomeScreen> {
   List<_HomeCategory> _allCategories(AppLocalizations l10n) {
     final loc = l10n.localeName;
     return [
+      // ── Buy (home grid order) ─────────────────────────────
       _HomeCategory(
-        label: l10n.cropsAndGrains, imagePath: 'assets/images/seed1.jpeg',
-        color: const Color(0xFF689F38), sectionId: CategorySectionId.cropsAndGrains,
-        filter: _CategoryFilter.buy,
-      ),
-      _HomeCategory(
-        label: l10n.fruitsAndVegetables, imagePath: 'assets/images/fruits1.jpeg',
-        color: const Color(0xFF7CB342), sectionId: CategorySectionId.fruitsVeg,
-        filter: _CategoryFilter.buy,
-      ),
-      _HomeCategory(
-        label: l10n.categoryLivestock, imagePath: 'assets/images/pets1.jpeg',
-        color: const Color(0xFF8D6E63), sectionId: CategorySectionId.livestock,
-        filter: _CategoryFilter.buy,
-      ),
-      _HomeCategory(
-        label: l10n.categoryLand, imagePath: 'assets/images/land4.jpeg',
-        color: const Color(0xFF0277BD), sectionId: CategorySectionId.agricultureLandSale,
-        filter: _CategoryFilter.buy,
-      ),
-      _HomeCategory(
-        label: l10n.seeds, imagePath: 'assets/images/food1.jpeg',
-        color: AppColors.textPrimary, sectionId: CategorySectionId.seedsAndPlants,
-        filter: _CategoryFilter.buy,
-      ),
-      _HomeCategory(
-        label: l10n.categoryMachinery, imagePath: 'assets/images/machin1.jpeg',
-        color: const Color(0xFF6D4C41), sectionId: CategorySectionId.farmMachinery,
-        filter: _CategoryFilter.buy,
-      ),
-      _HomeCategory(
-        label: l10n.tractors, imagePath: 'assets/images/Tractor1.jpeg',
+        label: l10n.tractors, imagePath: CategoryImages.tractors,
         color: const Color(0xFF558B2F), sectionId: CategorySectionId.tractorsBuy,
         filter: _CategoryFilter.buy,
       ),
       _HomeCategory(
-        label: _tr('lease_land', loc), imagePath: 'assets/images/land4.jpeg',
+        label: l10n.categoryMachinery, imagePath: CategoryImages.farmMachinery,
+        color: const Color(0xFF6D4C41), sectionId: CategorySectionId.farmMachinery,
+        filter: _CategoryFilter.buy,
+      ),
+      _HomeCategory(
+        label: l10n.categoryLivestock, imagePath: CategoryImages.livestock,
+        color: const Color(0xFF8D6E63), sectionId: CategorySectionId.livestock,
+        filter: _CategoryFilter.buy,
+      ),
+      _HomeCategory(
+        label: l10n.categoryLand, imagePath: CategoryImages.land,
+        color: const Color(0xFF0277BD), sectionId: CategorySectionId.agricultureLandSale,
+        filter: _CategoryFilter.buy,
+      ),
+      _HomeCategory(
+        label: l10n.vegetables, imagePath: CategoryImages.vegetables,
+        color: const Color(0xFF7CB342), sectionId: CategorySectionId.fruitsVeg,
+        groupTitleKey: 'vegetables',
+        filter: _CategoryFilter.buy,
+      ),
+      _HomeCategory(
+        label: l10n.fruits, imagePath: CategoryImages.fruits,
+        color: const Color(0xFFE65100), sectionId: CategorySectionId.fruitsVeg,
+        groupTitleKey: 'fruits',
+        filter: _CategoryFilter.buy,
+      ),
+      _HomeCategory(
+        label: l10n.cropsAndGrains, imagePath: CategoryImages.cropsGrains,
+        color: const Color(0xFF689F38), sectionId: CategorySectionId.cropsAndGrains,
+        filter: _CategoryFilter.buy,
+      ),
+      _HomeCategory(
+        label: l10n.seeds, imagePath: CategoryImages.seedsPlants,
+        color: AppColors.textPrimary, sectionId: CategorySectionId.seedsAndPlants,
+        filter: _CategoryFilter.buy,
+      ),
+      _HomeCategory(
+        label: _tr('lease_land', loc), imagePath: CategoryImages.land,
         color: const Color(0xFF0277BD), sectionId: CategorySectionId.agricultureLandLease,
         filter: _CategoryFilter.rent,
       ),
       _HomeCategory(
-        label: _tr('tractor_rental', loc), imagePath: 'assets/images/Tractor1.jpeg',
+        label: _tr('tractor_rental', loc), imagePath: CategoryImages.tractors,
         color: const Color(0xFF558B2F), sectionId: CategorySectionId.tractorRental,
         filter: _CategoryFilter.rent,
       ),
       _HomeCategory(
-        label: _tr('farm_machinery_rent', loc), imagePath: 'assets/images/machin1.jpeg',
+        label: _tr('farm_machinery_rent', loc), imagePath: CategoryImages.farmMachinery,
         color: const Color(0xFF6D4C41), sectionId: CategorySectionId.farmMachineryRent,
         filter: _CategoryFilter.rent,
       ),
       _HomeCategory(
-        label: _tr('jcb_rental', loc), imagePath: 'assets/images/services.jpeg',
+        label: _tr('jcb_rental', loc), imagePath: CategoryImages.jcbRental,
         color: const Color(0xFFF57C00), sectionId: CategorySectionId.jcbRental,
         filter: _CategoryFilter.rent,
       ),
     ];
+  }
+
+  bool _shouldShowSeeAll(_CategoryFilter filter, int count) {
+    switch (filter) {
+      case _CategoryFilter.buy:
+        return count > _kBuySeeAllMin;
+      case _CategoryFilter.rent:
+        return count > _kRentSeeAllMin;
+      case _CategoryFilter.services:
+        return false;
+    }
+  }
+
+  int _gridCategoryLimit(_CategoryFilter filter) {
+    switch (filter) {
+      case _CategoryFilter.buy:
+        return _kBuySeeAllMin;
+      case _CategoryFilter.rent:
+        return _kRentSeeAllMin;
+      case _CategoryFilter.services:
+        return 0;
+    }
+  }
+
+  List<_HomeCategory> _gridCategories(
+    List<_HomeCategory> categories,
+    _CategoryFilter filter,
+  ) {
+    if (_shouldShowSeeAll(filter, categories.length)) {
+      return categories.take(_gridCategoryLimit(filter)).toList();
+    }
+    return categories;
   }
 
   void _openBrowse(BuildContext context, {ListingCategory? category}) {
@@ -267,8 +308,8 @@ class _HomeScreenState extends State<HomeScreen> {
     ));
   }
 
-  void _openCategoryDetail(BuildContext context, String sectionId) {
-    if (sectionId == CategorySectionId.tractorRental) {
+  void _openCategoryDetail(BuildContext context, _HomeCategory item) {
+    if (item.sectionId == CategorySectionId.tractorRental) {
       Navigator.of(context).push(MaterialPageRoute<void>(
         builder: (_) => BrowseScreen(
           initialCategory:       ListingCategory.rental,
@@ -282,8 +323,10 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     Navigator.of(context).push(MaterialPageRoute<void>(
       builder: (_) => CategoryDetailScreen(
-        sectionId:    sectionId,
-        userLocation: widget.userLocation,
+        sectionId:      item.sectionId,
+        userLocation:   widget.userLocation,
+        categoryLabel:  item.label,
+        groupTitleKey:  item.groupTitleKey,
       ),
     ));
   }
@@ -298,7 +341,9 @@ class _HomeScreenState extends State<HomeScreen> {
     final l10n      = AppLocalizations.of(context)!;
     final loc       = l10n.localeName;
     final allCats   = _allCategories(l10n);
-    final sheetCats = allCats.where((c) => c.filter == _activeFilter).toList();
+    final sheetCats = allCats
+        .where((c) => c.filter == _activeFilter)
+        .toList();
     final title     = _activeFilter == _CategoryFilter.buy
         ? _tr('all_buy', loc) : _tr('all_rent', loc);
 
@@ -357,28 +402,40 @@ class _HomeScreenState extends State<HomeScreen> {
               Divider(color: Colors.grey.shade200, height: 1),
               const SizedBox(height: 4),
               Flexible(
-                child: GridView.builder(
+                child: SingleChildScrollView(
                   controller: scrollCtrl,
                   padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount:  4,
-                    mainAxisSpacing: 16,
-                    crossAxisSpacing: 10,
-                    childAspectRatio: 0.78,
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      const cols      = 4;
+                      const hGap      = 10.0;
+                      const totalGaps = (cols - 1) * hGap;
+                      final tileW     =
+                          (constraints.maxWidth - totalGaps) / cols;
+                      const labelH = 32.0;
+                      final tileH  = tileW + labelH;
+
+                      return Wrap(
+                        spacing:    hGap,
+                        runSpacing: 16,
+                        children: sheetCats.map((cat) => SizedBox(
+                          width:  tileW,
+                          height: tileH,
+                          child: _SheetCategoryTile(
+                            label:     cat.label,
+                            imagePath: cat.imagePath,
+                            color:     cat.color,
+                            imgSize:   tileW,
+                            labelH:    labelH,
+                            onTap: () {
+                              Navigator.pop(sheetCtx);
+                              _openCategoryDetail(context, cat);
+                            },
+                          ),
+                        )).toList(),
+                      );
+                    },
                   ),
-                  itemCount:   sheetCats.length,
-                  itemBuilder: (_, i) {
-                    final cat = sheetCats[i];
-                    return _SheetCategoryTile(
-                      label:     cat.label,
-                      imagePath: cat.imagePath,
-                      color:     cat.color,
-                      onTap: () {
-                        Navigator.pop(sheetCtx);
-                        _openCategoryDetail(context, cat.sectionId);
-                      },
-                    );
-                  },
                 ),
               ),
             ],
@@ -394,6 +451,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final loc      = l10n.localeName;
     final allCats  = _allCategories(l10n);
     final filtered = allCats.where((c) => c.filter == _activeFilter).toList();
+    final gridCats = _gridCategories(filtered, _activeFilter);
+    final showSeeAll = _shouldShowSeeAll(_activeFilter, filtered.length);
     final statusH  = MediaQuery.of(context).padding.top;
 
     return ColoredBox(
@@ -490,7 +549,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             return Wrap(
                               spacing:    hGap,
                               runSpacing: 6,
-                              children: filtered.map((item) => SizedBox(
+                              children: gridCats.map((item) => SizedBox(
                                 width:  tileW,
                                 height: tileH,
                                 child: _CategoryTile(
@@ -499,47 +558,60 @@ class _HomeScreenState extends State<HomeScreen> {
                                   color:   item.color,
                                   imgSize: imgSize,
                                   labelH:  labelH,
-                                  onTap: () => _openCategoryDetail(
-                                      context, item.sectionId),
+                                  onTap: () =>
+                                      _openCategoryDetail(context, item),
                                 ),
                               )).toList(),
                             );
                           },
                         ),
-                        const SizedBox(height: 8),
-                        GestureDetector(
-                          onTap: () => _showAllCategoriesSheet(context),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 18, vertical: 5),
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                colors: [Color(0xFFFF9800), Color(0xFFF44336)],
-                                begin:  Alignment.centerLeft,
-                                end:    Alignment.centerRight,
-                              ),
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: [
-                                BoxShadow(
-                                  color:      const Color(0xFFF57C00)
-                                      .withOpacity(0.28),
-                                  blurRadius: 6,
-                                  offset:     const Offset(0, 2),
+                        if (showSeeAll) ...[
+                          const SizedBox(height: 8),
+                          GestureDetector(
+                            onTap: () => _showAllCategoriesSheet(context),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 18, vertical: 5),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: _activeFilter == _CategoryFilter.buy
+                                      ? const [
+                                          Color(0xFF43A047),
+                                          Color(0xFF2E7D32),
+                                        ]
+                                      : const [
+                                          Color(0xFFFF9800),
+                                          Color(0xFFF44336),
+                                        ],
+                                  begin: Alignment.centerLeft,
+                                  end:   Alignment.centerRight,
                                 ),
-                              ],
-                            ),
-                            child: Text(
-                              l10n.seeAll,
-                              style: const TextStyle(
-                                color:         Colors.white,
-                                fontSize:      11,
-                                fontWeight:    FontWeight.w700,
-                                letterSpacing: 0.3,
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: (_activeFilter ==
+                                                _CategoryFilter.buy
+                                            ? const Color(0xFF2E7D32)
+                                            : const Color(0xFFF57C00))
+                                        .withOpacity(0.28),
+                                    blurRadius: 6,
+                                    offset:     const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: Text(
+                                l10n.seeAll,
+                                style: const TextStyle(
+                                  color:         Colors.white,
+                                  fontSize:      11,
+                                  fontWeight:    FontWeight.w700,
+                                  letterSpacing: 0.3,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 4),
+                          const SizedBox(height: 4),
+                        ],
                       ],
                     ),
                   ),
@@ -547,8 +619,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
           // ── All products feed ────────────────────────────
           AllProductsSection(
-            items:         _items,
-            isLoadingMore: _isLoadingMore,
+            cards:         _allProductCards,
+            isLoadingMore: _isLoadingAllProducts,
             l10n:          l10n,
             userLocation:  widget.userLocation,
           ),
@@ -905,7 +977,8 @@ class _HomeBanner extends StatelessWidget {
   final AppLocalizations l10n;
   final VoidCallback     onBannerTap;
 
-  static const _aspectRatio = 1080 / 300;
+  /// Source asset: 4501×1668 — orange panel left, farmer photo right.
+  static const _aspectRatio = 4501 / 1668;
 
   @override
   Widget build(BuildContext context) {
@@ -913,90 +986,90 @@ class _HomeBanner extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       child: AspectRatio(
         aspectRatio: _aspectRatio,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Image.asset(
-              'assets/images/Banner2.jpeg',
-              fit:         BoxFit.cover,
-              alignment:   Alignment.centerRight,
-              errorBuilder: (_, __, ___) =>
-                  Container(color: AppColors.bannerGreen),
-            ),
-            Positioned.fill(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end:   Alignment.centerRight,
-                    stops: const [0.0, 0.38, 0.58],
-                    colors: [
-                      AppColors.bannerGreen.withOpacity(0.88),
-                      AppColors.bannerGreen.withOpacity(0.45),
-                      Colors.transparent,
-                    ],
-                  ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final w = constraints.maxWidth;
+            final h = constraints.maxHeight;
+            final titleSize = (h * 0.14).clamp(13.0, 17.0);
+            final subtitleSize = (h * 0.10).clamp(10.0, 13.0);
+            final buttonSize = (h * 0.10).clamp(10.0, 12.0);
+
+            return Stack(
+              fit: StackFit.expand,
+              children: [
+                Image.asset(
+                  'assets/new_ctg/KrishiX_App-03.jpg',
+                  fit:           BoxFit.cover,
+                  alignment:     Alignment.centerLeft,
+                  filterQuality: FilterQuality.medium,
+                  errorBuilder: (_, __, ___) =>
+                      Container(color: AppColors.bannerOrange),
                 ),
-              ),
-            ),
-            Positioned(
-              left:  12,
-              top:   10,
-              right: 100,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    l10n.bannerTractorTitle,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color:         Colors.white,
-                      fontSize:      14,
-                      fontWeight:    FontWeight.w800,
-                      height:        1.15,
-                      letterSpacing: -0.2,
-                    ),
-                  ),
-                  const SizedBox(height: 3),
-                  Text(
-                    l10n.bannerTractorSubtitle,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color:    Colors.white.withOpacity(0.92),
-                      fontSize: 11,
-                      height:   1.15,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Material(
-                    color:        Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    elevation:    0,
-                    child: InkWell(
-                      onTap:        onBannerTap,
-                      borderRadius: BorderRadius.circular(16),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 4),
-                        child: Text(
-                          l10n.searchNow,
-                          style: const TextStyle(
-                            color:      AppColors.bannerGreen,
-                            fontWeight: FontWeight.w700,
-                            fontSize:   11,
-                            height:     1.0,
+                // Text + CTA — centered on left orange panel (~42% of banner).
+                Positioned(
+                  left:   w * 0.055,
+                  top:    0,
+                  bottom: 0,
+                  width:  w * 0.36,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.bannerTractorTitle,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color:         Colors.white,
+                          fontSize:      titleSize,
+                          fontWeight:    FontWeight.w800,
+                          height:        1.12,
+                          letterSpacing: -0.3,
+                        ),
+                      ),
+                      SizedBox(height: h * 0.04),
+                      Text(
+                        l10n.bannerTractorSubtitle,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color:    Colors.white.withOpacity(0.94),
+                          fontSize: subtitleSize,
+                          height:   1.15,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(height: h * 0.08),
+                      Material(
+                        color:        Colors.white,
+                        borderRadius: BorderRadius.circular(h * 0.14),
+                        elevation:    0,
+                        child: InkWell(
+                          onTap:        onBannerTap,
+                          borderRadius: BorderRadius.circular(h * 0.14),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: w * 0.035,
+                              vertical:   h * 0.045,
+                            ),
+                            child: Text(
+                              l10n.searchNow,
+                              style: TextStyle(
+                                color:      AppColors.bannerOrange,
+                                fontWeight: FontWeight.w800,
+                                fontSize:   buttonSize,
+                                height:     1.0,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-          ],
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -1042,6 +1115,80 @@ class _BannerDetailPage extends StatelessWidget {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// CATEGORY IMAGE (shared by grid + sheet tiles)
+// ═══════════════════════════════════════════════════════════════
+class _CategoryImageBox extends StatelessWidget {
+  const _CategoryImageBox({
+    required this.imagePath,
+    required this.color,
+    this.size,
+    this.borderRadius = 10,
+    this.border,
+    this.imageScale = 1.0,
+  });
+
+  final String  imagePath;
+  final Color   color;
+  final double? size;
+  final double  borderRadius;
+  final BoxBorder? border;
+  final double  imageScale;
+
+  @override
+  Widget build(BuildContext context) {
+    final side = size;
+
+    Widget image = side == null
+        ? Image.asset(
+            imagePath,
+            fit:           BoxFit.cover,
+            filterQuality: FilterQuality.medium,
+            errorBuilder: (_, __, ___) => Icon(
+              Icons.image_not_supported_outlined,
+              color: color,
+              size:  24,
+            ),
+          )
+        : Image.asset(
+            imagePath,
+            width:         side,
+            height:        side,
+            fit:           BoxFit.cover,
+            filterQuality: FilterQuality.medium,
+            errorBuilder: (_, __, ___) => Icon(
+              Icons.image_not_supported_outlined,
+              color: color,
+              size:  side * 0.4,
+            ),
+          );
+
+    if (imageScale != 1.0) {
+      image = Transform.scale(scale: imageScale, child: image);
+    }
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(borderRadius),
+      child: Container(
+        width:  side,
+        height: side,
+        decoration: BoxDecoration(
+          color:  const Color(0xFFEDF7ED),
+          border: border,
+        ),
+        child: imageScale != 1.0
+            ? ClipRect(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: image,
+                ),
+              )
+            : image,
+      ),
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
 // CATEGORY TILE
 // ═══════════════════════════════════════════════════════════════
 class _CategoryTile extends StatelessWidget {
@@ -1068,23 +1215,11 @@ class _CategoryTile extends StatelessWidget {
         mainAxisSize:       MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Container(
-              width: imgSize, height: imgSize,
-              color: const Color(0xFFEDF7ED),
-              child: Image.asset(
-                imgPath,
-                width: imgSize, height: imgSize,
-                fit:           BoxFit.cover,
-                filterQuality: FilterQuality.medium,
-                errorBuilder: (_, __, ___) => Icon(
-                  Icons.image_not_supported_outlined,
-                  color: color,
-                  size:  imgSize * 0.4,
-                ),
-              ),
-            ),
+          _CategoryImageBox(
+            imagePath:    imgPath,
+            color:        color,
+            size:         imgSize,
+            borderRadius: 10,
           ),
           SizedBox(
             height: labelH,
@@ -1118,12 +1253,18 @@ class _SheetCategoryTile extends StatelessWidget {
     required this.label,
     required this.imagePath,
     required this.color,
+    required this.imgSize,
+    required this.labelH,
     required this.onTap,
   });
   final String       label;
   final String       imagePath;
   final Color        color;
+  final double       imgSize;
+  final double       labelH;
   final VoidCallback onTap;
+
+  static const _fruitsVegSheetScale = 1.32;
 
   @override
   Widget build(BuildContext context) {
@@ -1132,42 +1273,35 @@ class _SheetCategoryTile extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       child: Column(
         mainAxisSize:       MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color:        const Color(0xFFEDF7ED),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                    color: AppColors.primaryGreen.withOpacity(0.22)),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(11),
-                child: Image.asset(
-                  imagePath,
-                  fit:           BoxFit.cover,
-                  filterQuality: FilterQuality.medium,
-                  errorBuilder: (_, __, ___) => Icon(
-                    Icons.image_not_supported_outlined,
-                    color: color,
-                    size:  24,
-                  ),
+          _CategoryImageBox(
+            imagePath:    imagePath,
+            color:        color,
+            size:         imgSize,
+            borderRadius: 12,
+            imageScale:   imagePath == CategoryImages.fruitsVeg
+                ? _fruitsVegSheetScale
+                : 1.0,
+            border: Border.all(
+                color: AppColors.primaryGreen.withOpacity(0.22)),
+          ),
+          SizedBox(
+            height: labelH,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Text(
+                label,
+                textAlign: TextAlign.center,
+                maxLines:  2,
+                overflow:  TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize:   10.5,
+                  fontWeight: FontWeight.w700,
+                  height:     1.2,
+                  color:      AppColors.textPrimary,
                 ),
               ),
-            ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            label,
-            textAlign: TextAlign.center,
-            maxLines:  2,
-            overflow:  TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontSize:   10,
-              fontWeight: FontWeight.w700,
-              height:     1.3,
-              color:      AppColors.textPrimary,
             ),
           ),
         ],

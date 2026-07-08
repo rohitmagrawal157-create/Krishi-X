@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:krishix/core/constants/app_colors.dart';
 import 'package:krishix/core/models/user_location.dart';
-import 'package:krishix/core/widgets/mobile_option_picker.dart';
+import 'package:krishix/core/utils/share_text.dart';
 import 'package:krishix/features/icons/dealer_data.dart';
 import 'package:krishix/features/icons/dealer_detail_screen.dart';
 import 'package:krishix/l10n/app_localizations.dart';
@@ -18,12 +18,10 @@ const LinearGradient _kGreenGrad = LinearGradient(
 );
 
 const LinearGradient _kOrangeGrad = LinearGradient(
-  colors: [Color(0xFFFF8C00), Color(0xFFFF6B00)],
-  begin:  Alignment.topLeft,
-  end:    Alignment.bottomRight,
+  colors: [Color(0xFFE65100), Color(0xFFF57C00)],
+  begin:  Alignment.centerLeft,
+  end:    Alignment.centerRight,
 );
-
-enum _DealerSort { topRated, nearest, nameAz }
 
 class DealerScreen extends StatefulWidget {
   const DealerScreen({super.key, required this.userLocation});
@@ -35,9 +33,6 @@ class DealerScreen extends StatefulWidget {
 }
 
 class _DealerScreenState extends State<DealerScreen> {
-  _DealerSort     _sort         = _DealerSort.topRated;
-  DealerCategory  _category     = DealerCategory.all;
-  bool            _verifiedOnly = false;
   final _searchCtrl = TextEditingController();
   bool _showSearch  = false;
 
@@ -48,91 +43,14 @@ class _DealerScreenState extends State<DealerScreen> {
   }
 
   List<AgriDealer> get _filtered {
-    var list = allAgriDealers.where((d) {
-      if (_category != DealerCategory.all && d.category != _category) {
-        return false;
-      }
-      if (_verifiedOnly && !d.isVerified) return false;
+    final list = allAgriDealers.where((d) {
       final q = _searchCtrl.text.trim().toLowerCase();
-      if (q.isNotEmpty &&
-          !d.name.toLowerCase().contains(q) &&
-          !d.location.toLowerCase().contains(q)) {
-        return false;
-      }
-      return true;
+      if (q.isEmpty) return true;
+      return d.name.toLowerCase().contains(q) ||
+          d.location.toLowerCase().contains(q);
     }).toList();
-
-    switch (_sort) {
-      case _DealerSort.topRated:
-        list.sort((a, b) => b.rating.compareTo(a.rating));
-      case _DealerSort.nearest:
-        break;
-      case _DealerSort.nameAz:
-        list.sort((a, b) => a.name.compareTo(b.name));
-    }
+    list.sort((a, b) => b.rating.compareTo(a.rating));
     return list;
-  }
-
-  String _categoryLabel(AppLocalizations l10n, DealerCategory c) =>
-      localizedDealerCategory(l10n, c);
-
-  String _sortLabel(AppLocalizations l10n) {
-    switch (_sort) {
-      case _DealerSort.topRated:
-        return l10n.dealerSortTopRated;
-      case _DealerSort.nearest:
-        return l10n.dealerSortNearest;
-      case _DealerSort.nameAz:
-        return l10n.dealerSortNameAz;
-    }
-  }
-
-  String _sortChipLabel(AppLocalizations l10n) =>
-      l10n.sortByOption(_sortLabel(l10n));
-
-  Future<void> _pickCategory() async {
-    final l10n = AppLocalizations.of(context)!;
-    final options = dealerFilterCategories
-        .map((c) => _categoryLabel(l10n, c))
-        .toList(growable: false);
-    final picked = await showMobileStringPicker(
-      context:     context,
-      title:       l10n.filterCategory,
-      options:     options,
-      selected:    _categoryLabel(l10n, _category),
-      accentColor: _kGreen,
-    );
-    if (picked == null) return;
-    setState(() {
-      _category = dealerFilterCategories.firstWhere(
-        (c) => _categoryLabel(l10n, c) == picked,
-      );
-    });
-  }
-
-  Future<void> _pickSort() async {
-    final l10n = AppLocalizations.of(context)!;
-    final options = [
-      l10n.dealerSortTopRated,
-      l10n.dealerSortNearest,
-      l10n.dealerSortNameAz,
-    ];
-    final picked = await showMobileStringPicker(
-      context:     context,
-      title:       l10n.sortBy,
-      options:     options,
-      selected:    _sortLabel(l10n),
-      accentColor: _kGreen,
-    );
-    if (picked == null) return;
-    final index = options.indexOf(picked);
-    setState(() {
-      _sort = switch (index) {
-        1 => _DealerSort.nearest,
-        2 => _DealerSort.nameAz,
-        _ => _DealerSort.topRated,
-      };
-    });
   }
 
   Future<void> _call(String phone) async {
@@ -155,6 +73,18 @@ class _DealerScreenState extends State<DealerScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(l10n.priceRequestSentTo(dealer.name)),
+        backgroundColor: _kGreen,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      ),
+    );
+  }
+
+  void _onListBusinessTap() {
+    final l10n = AppLocalizations.of(context)!;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(l10n.dealerListBusinessSnackbar),
         backgroundColor: _kGreen,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -232,92 +162,74 @@ class _DealerScreenState extends State<DealerScreen> {
       ),
       body: Column(
         children: [
-          Material(
-            color: Colors.white,
-            elevation: 1,
-            shadowColor: Colors.black.withOpacity(0.06),
-            child: Column(
-              children: [
-                if (_showSearch)
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
-                    child: TextField(
-                      controller: _searchCtrl,
-                      onChanged: (_) => setState(() {}),
-                      decoration: InputDecoration(
-                        hintText: l10n.searchDealersHint,
-                        prefixIcon: const Icon(
-                          Icons.search_rounded,
-                          size:  20,
-                          color: _kGreen,
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 0, horizontal: 12),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: Colors.grey.shade200),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: Colors.grey.shade200),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: _kGreen, width: 1.5),
-                        ),
-                      ),
+          if (_showSearch)
+            Material(
+              color: Colors.white,
+              elevation: 1,
+              shadowColor: Colors.black.withOpacity(0.06),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
+                child: TextField(
+                  controller: _searchCtrl,
+                  onChanged: (_) => setState(() {}),
+                  decoration: InputDecoration(
+                    hintText: l10n.searchDealersHint,
+                    prefixIcon: const Icon(
+                      Icons.search_rounded,
+                      size:  20,
+                      color: _kGreen,
                     ),
-                  ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  height: 44,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-                    children: [
-                      _FilterChip(
-                        icon:   Icons.category_rounded,
-                        label:  _categoryLabel(l10n, _category),
-                        active: _category != DealerCategory.all,
-                        onTap:  _pickCategory,
-                      ),
-                      const SizedBox(width: 8),
-                      _FilterChip(
-                        icon:   Icons.swap_vert_rounded,
-                        label:  _sortChipLabel(l10n),
-                        active: _sort != _DealerSort.topRated,
-                        onTap:  _pickSort,
-                      ),
-                      const SizedBox(width: 8),
-                      _FilterChip(
-                        icon:   Icons.verified_rounded,
-                        label:  l10n.verifiedSeller,
-                        active: _verifiedOnly,
-                        onTap:  () => setState(
-                            () => _verifiedOnly = !_verifiedOnly),
-                      ),
-                    ],
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 0, horizontal: 12),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade200),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade200),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: _kGreen, width: 1.5),
+                    ),
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
           Expanded(
             child: dealers.isEmpty
-                ? Center(
-                    child: Text(
-                      l10n.noDealersFound,
-                      style: TextStyle(
-                        color: Colors.grey.shade600,
-                        fontSize: 15,
+                ? ListView(
+                    padding: const EdgeInsets.fromLTRB(16, 14, 16, 24),
+                    children: [
+                      _DealerBusinessBanner(
+                        headline:   l10n.dealerListBusinessBanner,
+                        buttonLabel: l10n.dealerListBusinessCta,
+                        onTap:      _onListBusinessTap,
                       ),
-                    ),
+                      const SizedBox(height: 24),
+                      Center(
+                        child: Text(
+                          l10n.noDealersFound,
+                          style: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ],
                   )
                 : ListView(
                     padding: const EdgeInsets.fromLTRB(16, 14, 16, 24),
                     children: [
+                      _DealerBusinessBanner(
+                        headline:   l10n.dealerListBusinessBanner,
+                        buttonLabel: l10n.dealerListBusinessCta,
+                        onTap:      _onListBusinessTap,
+                      ),
+                      const SizedBox(height: 14),
                       Text(
                         l10n.dealerResultsIn(dealers.length, location),
                         style: const TextStyle(
@@ -346,93 +258,100 @@ class _DealerScreenState extends State<DealerScreen> {
   }
 }
 
-class _FilterChip extends StatelessWidget {
-  const _FilterChip({
-    required this.icon,
-    required this.label,
+class _DealerBusinessBanner extends StatelessWidget {
+  const _DealerBusinessBanner({
+    required this.headline,
+    required this.buttonLabel,
     required this.onTap,
-    this.active = false,
   });
 
-  final IconData     icon;
-  final String       label;
+  final String       headline;
+  final String       buttonLabel;
   final VoidCallback onTap;
-  final bool         active;
 
   @override
   Widget build(BuildContext context) {
-    return _DealerChip(
-      icon:   icon,
-      label:  label,
-      active: active,
-      onTap:  onTap,
-    );
-  }
-}
-
-/// Shared chip — orange gradient when selected, white when not.
-class _DealerChip extends StatelessWidget {
-  const _DealerChip({
-    required this.label,
-    required this.onTap,
-    this.active = false,
-    this.icon,
-  });
-
-  final String       label;
-  final VoidCallback onTap;
-  final bool         active;
-  final IconData?    icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(20),
-        child: Ink(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-          decoration: BoxDecoration(
-            gradient:     active ? _kOrangeGrad : null,
-            color:        active ? null : Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            border: active
-                ? null
-                : Border.all(color: Colors.grey.shade300),
-            boxShadow: active
-                ? [
-                    BoxShadow(
-                      color:      _kOrange.withOpacity(0.28),
-                      blurRadius: 6,
-                      offset:     const Offset(0, 2),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(14),
+        gradient: _kGreenGrad,
+        boxShadow: [
+          BoxShadow(
+            color:      _kGreen.withOpacity(0.22),
+            blurRadius: 10,
+            offset:     const Offset(0, 4),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.fromLTRB(16, 14, 12, 14),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  headline,
+                  style: const TextStyle(
+                    color:      Colors.white,
+                    fontSize:   15,
+                    fontWeight: FontWeight.w800,
+                    height:     1.3,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Material(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(20),
+                  child: InkWell(
+                    onTap: onTap,
+                    borderRadius: BorderRadius.circular(20),
+                    splashColor: Colors.white.withOpacity(0.25),
+                    highlightColor: Colors.white.withOpacity(0.12),
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        gradient: _kOrangeGrad,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color:      _kOrange.withOpacity(0.35),
+                            blurRadius: 6,
+                            offset:     const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 8),
+                      child: Text(
+                        buttonLabel,
+                        style: const TextStyle(
+                          color:      Colors.white,
+                          fontWeight: FontWeight.w800,
+                          fontSize:   12,
+                        ),
+                      ),
                     ),
-                  ]
-                : null,
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (icon != null) ...[
-                Icon(
-                  icon,
-                  size:  15,
-                  color: active ? Colors.white : _kOrange,
+                  ),
                 ),
-                const SizedBox(width: 5),
               ],
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize:   13,
-                  fontWeight: FontWeight.w700,
-                  height:     1.2,
-                  color:      active ? Colors.white : AppColors.textPrimary,
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+          const SizedBox(width: 8),
+          Container(
+            width:  52,
+            height: 52,
+            decoration: BoxDecoration(
+              color:  Colors.white.withOpacity(0.16),
+              shape:  BoxShape.circle,
+              border: Border.all(color: Colors.white.withOpacity(0.30)),
+            ),
+            child: const Icon(
+              Icons.storefront_rounded,
+              color: Colors.white,
+              size:  26,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -486,8 +405,8 @@ class _DealerListCard extends StatelessWidget {
                     const SizedBox(width: 12),
                     Expanded(
                       child: _DealerInfo(
-                        dealer:      dealer,
-                        onPriceTap:  onBestPrice,
+                        dealer:     dealer,
+                        onPriceTap: onBestPrice,
                       ),
                     ),
                   ],
@@ -547,54 +466,60 @@ class _DealerThumbnail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final badge = dealer.isTopSearch ? l10n.topSearchBadge : null;
+    final verified = dealer.isVerified;
 
     return SizedBox(
-      width:  _size,
-      height: _size,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Image.asset(
-              dealerHeroImage(dealer),
-              fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => ColoredBox(
-                color: _kGreen.withOpacity(0.08),
-                child: const Icon(
-                  Icons.storefront_rounded,
-                  color: _kGreen,
-                  size:  36,
+      width: _size,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border:       Border.all(color: Colors.grey.shade200),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width:  _size,
+                height: _size,
+                child: Image.asset(
+                  dealerHeroImage(dealer),
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => ColoredBox(
+                    color: _kGreen.withOpacity(0.08),
+                    child: const Icon(
+                      Icons.storefront_rounded,
+                      color: _kGreen,
+                      size:  36,
+                    ),
+                  ),
                 ),
               ),
-            ),
-            if (badge != null)
-              Positioned(
-                left:  0,
-                right: 0,
-                bottom: 0,
-                child: Container(
+              if (verified)
+                Container(
+                  width: double.infinity,
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 6, vertical: 4),
-                  decoration: BoxDecoration(
-                    gradient: _kGreenGrad,
+                      horizontal: 4, vertical: 5),
+                  decoration: const BoxDecoration(
+                    gradient: _kOrangeGrad,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize:     MainAxisSize.min,
                     children: [
                       const Icon(
-                        Icons.travel_explore_rounded,
+                        Icons.verified_rounded,
                         size:  11,
                         color: Colors.white,
                       ),
                       const SizedBox(width: 3),
                       Flexible(
                         child: Text(
-                          badge,
+                          l10n.verifiedListingBadge,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
                           style: const TextStyle(
                             color:      Colors.white,
                             fontSize:   9,
@@ -605,8 +530,8 @@ class _DealerThumbnail extends StatelessWidget {
                     ],
                   ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -646,56 +571,17 @@ class _DealerInfo extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 6),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 2),
-              child: Icon(Icons.thumb_up_alt_rounded,
-                  size: 16, color: Colors.grey.shade800),
-            ),
-            const SizedBox(width: 5),
-            Expanded(
-              child: Text(
-                dealer.name,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontSize:   14,
-                  fontWeight: FontWeight.w800,
-                  color:      AppColors.textPrimary,
-                  height:     1.25,
-                ),
-              ),
-            ),
-          ],
-        ),
-        if (dealer.isVerified) ...[
-          const SizedBox(height: 6),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(2),
-                decoration: BoxDecoration(
-                  color:        _kGreen.withOpacity(0.12),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: const Icon(Icons.verified_rounded,
-                    size: 14, color: _kGreen),
-              ),
-              const SizedBox(width: 3),
-              Text(
-                l10n.verifiedListingBadge,
-                style: const TextStyle(
-                  fontSize:   11,
-                  fontWeight: FontWeight.w700,
-                  color:      _kGreen,
-                ),
-              ),
-            ],
+        Text(
+          dealer.name,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(
+            fontSize:   14,
+            fontWeight: FontWeight.w800,
+            color:      AppColors.textPrimary,
+            height:     1.25,
           ),
-        ],
+        ),
         const SizedBox(height: 4),
         Text(
           dealer.location,
@@ -707,25 +593,6 @@ class _DealerInfo extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
         ),
-        if (dealer.highlight != null) ...[
-          const SizedBox(height: 5),
-          Row(
-            children: [
-              Icon(Icons.bolt_rounded, size: 14, color: _kOrange),
-              const SizedBox(width: 4),
-              Expanded(
-                child: Text(
-                  dealer.highlight!,
-                  style: TextStyle(
-                    fontSize:   11,
-                    fontWeight: FontWeight.w600,
-                    color:      _kOrange.withOpacity(0.95),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
         const SizedBox(height: 4),
         GestureDetector(
           onTap: onPriceTap,

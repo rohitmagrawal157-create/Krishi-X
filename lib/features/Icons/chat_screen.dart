@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:krishix/core/constants/app_colors.dart';
+import 'package:krishix/core/constants/category_images.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 const Color _kGreen  = AppColors.primaryGreen;
@@ -53,7 +54,7 @@ const _buyingChats = <_MockChat>[
     adTitle:      'Mahindra 575 DI XP Plus Tractor',
     lastMessage:  'Hello, is this still available?',
     timeAgo:      '2 hrs ago',
-    adImageAsset: 'assets/images/tractor1.webp',
+    adImageAsset: CategoryImages.tractor1,
     isBuying:     true,
     unreadCount:  2,
     sellerPhone:  '9876543210',
@@ -64,7 +65,7 @@ const _buyingChats = <_MockChat>[
     adTitle:      'Swaraj 744 FE Tractor',
     lastMessage:  'Mobile number : 9422380…',
     timeAgo:      '3 days ago',
-    adImageAsset: 'assets/images/tractor2.webp',
+    adImageAsset: CategoryImages.tractor2,
     isBuying:     true,
     unreadCount:  1,
     sellerPhone:  '9422380000',
@@ -75,7 +76,7 @@ const _buyingChats = <_MockChat>[
     adTitle:      '2 Acre Irrigated Farm Land',
     lastMessage:  'Messaged 3 days ago, reply?',
     timeAgo:      '5 days ago',
-    adImageAsset: 'assets/images/land1.jpeg',
+    adImageAsset: CategoryImages.land1,
     isBuying:     true,
     isAdInactive: true,
   ),
@@ -85,7 +86,7 @@ const _buyingChats = <_MockChat>[
     adTitle:      'Fresh Alphonso Mangoes',
     lastMessage:  'What is the price per dozen?',
     timeAgo:      '1 week ago',
-    adImageAsset: 'assets/images/mango.jpeg',
+    adImageAsset: CategoryImages.mango,
     isBuying:     true,
     isImportant:  true,
   ),
@@ -98,7 +99,7 @@ const _sellingChats = <_MockChat>[
     adTitle:      'JCB Rental — Per Day',
     lastMessage:  'Can I rent for 3 days?',
     timeAgo:      '1 hr ago',
-    adImageAsset: 'assets/images/jcb1.jpeg',
+    adImageAsset: CategoryImages.rent2,
     isBuying:     false,
     unreadCount:  3,
     sellerPhone:  '9988776655',
@@ -109,7 +110,7 @@ const _sellingChats = <_MockChat>[
     adTitle:      'HF Cow — High Milk Yield',
     lastMessage:  'Is she vaccinated?',
     timeAgo:      '2 days ago',
-    adImageAsset: 'assets/images/cow1.jpeg',
+    adImageAsset: CategoryImages.cow1,
     isBuying:     false,
   ),
 ];

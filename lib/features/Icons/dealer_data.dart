@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:krishix/core/constants/category_images.dart';
 import 'package:krishix/l10n/app_localizations.dart';
 
 enum DealerCategory { all, fertilizer, seeds, machinery, pesticide }
@@ -11,7 +12,7 @@ class AgriDealer {
     required this.ratingCount,
     required this.location,
     required this.phone,
-    required this.imagePath,
+    // required this.imagePath,
     required this.yearsInBusiness,
     required this.galleryImages,
     required this.services,
@@ -33,7 +34,7 @@ class AgriDealer {
   final int ratingCount;
   final String location;
   final String phone;
-  final String imagePath;
+  // final String imagePath;
   final int yearsInBusiness;
   final List<String> galleryImages;
   final List<String> services;
@@ -48,22 +49,6 @@ class AgriDealer {
   final String? servesAlso;
   final String? about;
   final String openUntil;
-}
-
-/// Play Store link for share messages.
-const krishiXAppLink =
-    'https://play.google.com/store/apps/details?id=in.krishix.krishix';
-
-String buildDealerShareText(AppLocalizations l10n, AgriDealer dealer) {
-  final products = dealer.productCategories
-      .map((c) => localizedDealerCategory(l10n, c))
-      .join(', ');
-  final quantity = '${dealer.productCategories.length}';
-  return '${dealer.name}\n'
-      '${l10n.shareProductLabel}: $products\n'
-      '${l10n.shareLocationLabel}: ${dealer.location}\n'
-      '${l10n.shareQuantityLabel}: $quantity\n\n'
-      '${l10n.shareAppDownload}: $krishiXAppLink';
 }
 
 String localizedDealerCategory(AppLocalizations l10n, DealerCategory c) {
@@ -113,49 +98,60 @@ IconData dealerCategoryIcon(DealerCategory c) {
 }
 
 /// Verified non-empty asset paths only (empty files on disk are excluded).
+const _fertilizerGallery = [
+  CategoryImages.seeds1,
+  CategoryImages.seeds2,
+  CategoryImages.veg1,
+  CategoryImages.mango,
+];
+
+const _seedsGallery = [
+  CategoryImages.seeds1,
+  CategoryImages.seeds2,
+  CategoryImages.veg1,
+  CategoryImages.mango,
+];
+
+const _machineryGallery = [
+  CategoryImages.machine1,
+  CategoryImages.machine2,
+  CategoryImages.tractor1,
+  CategoryImages.rent2,
+];
+
+const _pesticideGallery = [
+  CategoryImages.veg1,
+  CategoryImages.veg2,
+  CategoryImages.mango,
+  CategoryImages.cow1,
+];
+
+const _allGallery = [
+  CategoryImages.mango,
+  CategoryImages.machine1,
+  CategoryImages.veg1,
+  CategoryImages.cow1,
+];
+
 List<String> defaultGalleryFor(DealerCategory category) {
   switch (category) {
     case DealerCategory.fertilizer:
-      return const [
-        'assets/images/seeds1.jpeg',
-        'assets/images/seeds2.jpeg',
-        'assets/images/seed.jpeg',
-        'assets/images/mango.jpeg',
-      ];
+      return _fertilizerGallery;
     case DealerCategory.seeds:
-      return const [
-        'assets/images/seeds1.jpeg',
-        'assets/images/seeds2.jpeg',
-        'assets/images/seed.jpeg',
-        'assets/images/fruits.jpeg',
-      ];
+      return _seedsGallery;
     case DealerCategory.machinery:
-      return const [
-        'assets/images/machine1.jpeg',
-        'assets/images/machine2.jpeg',
-        'assets/images/tractor1.webp',
-        'assets/images/jcb1.jpeg',
-      ];
+      return _machineryGallery;
     case DealerCategory.pesticide:
-      return const [
-        'assets/images/veg1.jpeg',
-        'assets/images/veg2.jpeg',
-        'assets/images/pets.jpeg',
-        'assets/images/mango.jpeg',
-      ];
+      return _pesticideGallery;
     case DealerCategory.all:
-      return const [
-        'assets/images/seeds1.jpeg',
-        'assets/images/machine1.jpeg',
-        'assets/images/veg1.jpeg',
-      ];
+      return _allGallery;
   }
 }
 
 /// Best image for list/card hero — uses gallery first valid entry.
 String dealerHeroImage(AgriDealer dealer) {
   if (dealer.galleryImages.isNotEmpty) return dealer.galleryImages.first;
-  return dealer.imagePath;
+  return CategoryImages.defaultFallback;
 }
 
 /// Category chips shown in the filter row (excludes "All" duplicate issues).
@@ -175,14 +171,9 @@ const allAgriDealers = <AgriDealer>[
     ratingCount:      75,
     location:         'Aurangabad, Maharashtra',
     phone:            '9876543210',
-    imagePath:        'assets/images/seeds1.jpeg',
+    // imagePath:        'assets/images/seeds1.jpg',
     yearsInBusiness:  7,
-    galleryImages:    [
-      'assets/images/seeds1.jpeg',
-      'assets/images/seeds2.jpeg',
-      'assets/images/seed.jpeg',
-      'assets/images/mango.jpeg',
-    ],
+    galleryImages:    _fertilizerGallery,
     productCategories: [
       DealerCategory.fertilizer,
       DealerCategory.seeds,
@@ -210,14 +201,9 @@ const allAgriDealers = <AgriDealer>[
     ratingCount:      89,
     location:         'Paithan, Maharashtra',
     phone:            '9123456780',
-    imagePath:        'assets/images/seeds2.jpeg',
+    // imagePath:        'assets/images/seeds2.jpg',
     yearsInBusiness:  5,
-    galleryImages:    [
-      'assets/images/seeds2.jpeg',
-      'assets/images/seeds1.jpeg',
-      'assets/images/seed.jpeg',
-      'assets/images/fruits.jpeg',
-    ],
+    galleryImages:    _fertilizerGallery,
     productCategories: [
       DealerCategory.fertilizer,
       DealerCategory.seeds,
@@ -243,14 +229,9 @@ const allAgriDealers = <AgriDealer>[
     ratingCount:      52,
     location:         'Jalna, Maharashtra',
     phone:            '9988776655',
-    imagePath:        'assets/images/seeds1.jpeg',
+    // imagePath:        'assets/images/seeds1.jpg',
     yearsInBusiness:  9,
-    galleryImages:    [
-      'assets/images/seeds1.jpeg',
-      'assets/images/seeds2.jpeg',
-      'assets/images/seed.jpeg',
-      'assets/images/banana.jpeg',
-    ],
+    galleryImages:    _seedsGallery,
     productCategories: [
       DealerCategory.seeds,
       DealerCategory.fertilizer,
@@ -276,14 +257,9 @@ const allAgriDealers = <AgriDealer>[
     ratingCount:      34,
     location:         'Beed, Maharashtra',
     phone:            '9012345678',
-    imagePath:        'assets/images/machine1.jpeg',
+    // imagePath:        'assets/images/machine1.jpg',
     yearsInBusiness:  6,
-    galleryImages:    [
-      'assets/images/machine1.jpeg',
-      'assets/images/machine2.jpeg',
-      'assets/images/tractor1.webp',
-      'assets/images/jcb1.jpeg',
-    ],
+    galleryImages:    _machineryGallery,
     productCategories: [DealerCategory.machinery],
     services:         [
       'Rotavator & cultivator parts',
@@ -306,14 +282,9 @@ const allAgriDealers = <AgriDealer>[
     ratingCount:      41,
     location:         'Nashik, Maharashtra',
     phone:            '9822334455',
-    imagePath:        'assets/images/veg1.jpeg',
+    // imagePath:        'assets/images/veg1.jpg',
     yearsInBusiness:  8,
-    galleryImages:    [
-      'assets/images/veg1.jpeg',
-      'assets/images/veg2.jpeg',
-      'assets/images/pets.jpeg',
-      'assets/images/mango.jpeg',
-    ],
+    galleryImages:    _pesticideGallery,
     productCategories: [
       DealerCategory.pesticide,
       DealerCategory.fertilizer,
