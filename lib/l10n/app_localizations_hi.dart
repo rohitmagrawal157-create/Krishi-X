@@ -412,7 +412,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get searchNow => 'अभी खोजें';
 
   @override
-  String get categoryMachinery => 'मशीनरी';
+  String get categoryMachinery => 'पुरानी मशीनरी';
 
   @override
   String get categoryFertilizer => 'खाद बीज';

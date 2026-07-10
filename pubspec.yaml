@@ -22,6 +22,7 @@ dependencies:
   geolocator: ^13.0.2
   geocoding: ^3.0.0
   http: ^1.2.2
+  google_fonts: ^6.3.0
 
 dev_dependencies:
   flutter_test:
@@ -130,7 +131,7 @@ flutter:
     - assets/new_ctg/KrishiX_App-05.jpg
     - assets/new_ctg/KrishiX_App-06.jpg
     - assets/new_ctg/KrishiX_App-07.jpg
-    - assets/new_ctg/KrishiX_App-08.jpg
+    - assets/new_ctg/KrishiX_App-08.jpeg
     - assets/new_ctg/KrishiX_App-09.jpg
     - assets/new_ctg/KrishiX_App-10.jpg
     - assets/new_ctg/KrishiX_App-11.jpg
@@ -283,3 +284,71 @@ flutter:
     - assets/new_ctg/KrishiX_App-158.jpg
     - assets/new_ctg/KrishiX_App-159.jpg
     - assets/new_ctg/KrishiX_App-03.jpg
+    - assets/new_ctg/KrishiX_App-160.jpeg
+    - assets/new_ctg/KrishiX_App-161.jpeg
+    - assets/new_ctg/KrishiX_App-162.jpeg
+    - assets/new_ctg/KrishiX_App-163.jpeg
+    - assets/new_ctg/KrishiX_App-164.jpeg
+    - assets/new_ctg/KrishiX_App-165.jpeg
+    - assets/new_ctg/KrishiX_App-166.jpeg
+    - assets/new_ctg/KrishiX_App-167.jpeg
+    - assets/new_ctg/KrishiX_App-168.jpeg
+    - assets/new_ctg/KrishiX_App-169.jpeg
+    - assets/new_ctg/KrishiX_App-170.jpeg
+    - assets/new_ctg/KrishiX_App-171.jpeg
+    - assets/new_ctg/KrishiX_App-172.jpeg
+    - assets/new_ctg/KrishiX_App-173.jpeg
+    - assets/new_ctg/KrishiX_App-174.jpeg
+    - assets/new_ctg/KrishiX_App-175.jpeg
+    - assets/new_ctg/KrishiX_App-176.jpeg
+    - assets/new_ctg/KrishiX_App-177.jpeg
+    - assets/new_ctg/KrishiX_App-178.jpeg
+    - assets/new_ctg/KrishiX_App-179.jpeg
+    - assets/new_ctg/KrishiX_App-180.jpeg
+    - assets/new_ctg/KrishiX_App-181.jpeg
+    - assets/new_ctg/KrishiX_App-182.jpeg
+    - assets/new_ctg/KrishiX_App-183.jpeg
+    - assets/new_ctg/KrishiX_App-184.jpeg
+    - assets/new_ctg/KrishiX_App-185.jpeg
+    - assets/new_ctg/KrishiX_App-186.jpeg
+    - assets/new_ctg/KrishiX_App-187.jpeg
+    - assets/new_ctg/KrishiX_App-188.jpeg
+    - assets/new_ctg/KrishiX_App-189.jpeg
+    - assets/new_ctg/KrishiX_App-190.jpeg
+    - assets/new_ctg/KrishiX_App-191.jpeg
+    - assets/new_ctg/KrishiX_App-192.jpeg
+    - assets/new_ctg/KrishiX_App-193.jpeg
+    - assets/new_ctg/KrishiX_App-194.jpeg
+    - assets/new_ctg/KrishiX_App-195.jpeg
+    - assets/new_ctg/KrishiX_App-196.jpeg
+    - assets/new_ctg/KrishiX_App-197.jpeg
+    - assets/new_ctg/KrishiX_App-198.jpeg
+    - assets/new_ctg/KrishiX_App-199.jpeg
+    - assets/new_ctg/KrishiX_App-200.jpeg
+    - assets/new_ctg/KrishiX_App-201.jpg
+    - assets/new_ctg/KrishiX_App-202.jpg
+    - assets/new_ctg/KrishiX_App-203.jpg
+    - assets/new_ctg/KrishiX_App-204.jpg
+    - assets/new_ctg/KrishiX_App-205.jpg
+    - assets/new_ctg/KrishiX_App-206.jpg
+    - assets/new_ctg/KrishiX_App-207.jpg
+    - assets/new_ctg/KrishiX_App-208.jpg
+    - assets/new_ctg/KrishiX_App-209.jpg
+    - assets/new_ctg/KrishiX_App-210.jpg
+    - assets/new_ctg/KrishiX_App-211.jpg
+    - assets/new_ctg/KrishiX_App-212.jpg
+    - assets/new_ctg/KrishiX_App-213.jpg
+    - assets/new_ctg/KrishiX_App-214.jpg
+    - assets/new_ctg/KrishiX_App-215.jpg
+    - assets/new_ctg/KrishiX_App-216.jpg
+    - assets/new_ctg/KrishiX_App-217.jpg
+    - assets/new_ctg/KrishiX_App-218.jpg
+    - assets/new_ctg/KrishiX_App-219.jpg
+    - assets/new_ctg/KrishiX_App-220.jpg
+    - assets/new_ctg/KrishiX_App-221.jpg
+    - assets/new_ctg/KrishiX_App-222.jpg
+    - assets/new_ctg/KrishiX_App-223.jpg
+    - assets/new_ctg/KrishiX_App-224.jpg
+    # - assets/new_ctg/KrishiX_App-225.jpg
+    # - assets/new_ctg/KrishiX_App-226.jpg
+    # - assets/new_ctg/KrishiX_App-227.jpg

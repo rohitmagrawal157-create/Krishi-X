@@ -33,6 +33,13 @@ class _PostCategory {
     required this.listingCategory,
     required this.color,
     required this.sectionId,
+    this.groupTitleKey, // NEW — disambiguates categories that share one
+                        // sectionId but map to a specific group within it
+                        // (e.g. 'vegetables' vs 'fruits' both live under
+                        // CategorySectionId.fruitsVeg). Must match a
+                        // SubcategoryGroup.titleKey in subcategories.dart.
+                        // Leave null for categories that own their whole
+                        // section (e.g. Tractors, Livestock).
   });
   final String          label;
   final String          sublabel;
@@ -41,35 +48,36 @@ class _PostCategory {
   final ListingCategory listingCategory;
   final Color           color;
   final String          sectionId;
+  final String?         groupTitleKey;
 }
 
 // ═══════════════════════════════════════════════════════════════
 // SELL (BUY) CATEGORIES
 // ═══════════════════════════════════════════════════════════════
 const _sellCategories = <_PostCategory>[
-  _PostCategory(
-    label:           'Crops & Grains',
-    sublabel:        'Wheat, rice, maize, pulses…',
-    icon:            Icons.grass_rounded,
-    imagePath:       'assets/new_ctg/KrishiX_App-31.jpg',
-    listingCategory: ListingCategory.crops,
-    color:           Color(0xFF689F38),
-    sectionId:       CategorySectionId.cropsAndGrains,
+   _PostCategory(
+    label:           'Tractors',
+    sublabel:        'New & used tractors',
+    icon:            Icons.agriculture_rounded,
+    imagePath:       'assets/new_ctg/KrishiX_App-10.jpg',
+    listingCategory: ListingCategory.tractors,
+    color:           Color(0xFF558B2F),
+    sectionId:       CategorySectionId.tractorsBuy,
   ),
-  _PostCategory(
-    label:           'Fruits & Vegetables',
-    sublabel:        'Mangoes, onions, tomatoes…',
-    icon:            Icons.eco_rounded,
-    imagePath:       'assets/new_ctg/KrishiX_App-47.jpg',
-    listingCategory: ListingCategory.crops,
-    color:           Color(0xFF7CB342),
-    sectionId:       CategorySectionId.fruitsVeg,
+   _PostCategory(
+    label:           'Farm Machinery',
+    sublabel:        'Rotavators, sprayers, pumps…',
+    icon:            Icons.precision_manufacturing_rounded,
+    imagePath:       'assets/new_ctg/KrishiX_App-09.jpg',
+    listingCategory: ListingCategory.tractors,
+    color:           Color(0xFF6D4C41),
+    sectionId:       CategorySectionId.farmMachinery,
   ),
-  _PostCategory(
+   _PostCategory(
     label:           'Livestock',
     sublabel:        'Cows, buffaloes, goats…',
     icon:            Icons.pets_rounded,
-    imagePath:       'assets/new_ctg/KrishiX_App-54.jpg',
+    imagePath:       'assets/new_ctg/KrishiX_App-06.jpg',
     listingCategory: ListingCategory.livestock,
     color:           Color(0xFF8D6E63),
     sectionId:       CategorySectionId.livestock,
@@ -83,33 +91,49 @@ const _sellCategories = <_PostCategory>[
     color:           Color(0xFF0277BD),
     sectionId:       CategorySectionId.agricultureLandSale,
   ),
+   _PostCategory(
+    label:           'Vegetables',
+    sublabel:        'Onions, tomatoes, potatoes…',
+    icon:            Icons.eco_rounded,
+    imagePath:       'assets/new_ctg/KrishiX_App-168.jpeg',
+    listingCategory: ListingCategory.crops,
+    color:           Color(0xFF7CB342),
+    sectionId:       CategorySectionId.fruitsVeg,
+    groupTitleKey:   'vegetables', // FIX: was missing — this + Fruits
+                                   // below both pointed at fruitsVeg with
+                                   // no way to tell them apart downstream.
+  ),
   _PostCategory(
+    label:           'Fruits',
+    sublabel:        'Mangoes, apples, bananas…', 
+    icon:            Icons.eco_rounded,
+    imagePath:       'assets/new_ctg/KrishiX_App-167.jpeg',
+    listingCategory: ListingCategory.crops,
+    color:           Color(0xFF7CB342),
+    sectionId:       CategorySectionId.fruitsVeg,
+    groupTitleKey:   'fruits', // FIX: see note above
+  ),
+  _PostCategory(
+    label:           'Crops & Grains',
+    sublabel:        'Wheat, rice, maize, pulses…',
+    icon:            Icons.grass_rounded,
+    imagePath:       'assets/new_ctg/KrishiX_App-31.jpg',
+    listingCategory: ListingCategory.crops,
+    color:           Color(0xFF689F38),
+    sectionId:       CategorySectionId.cropsAndGrains,
+  ),
+   _PostCategory(
     label:           'Seeds & Plants',
     sublabel:        'Seeds, saplings, nursery…',
     icon:            Icons.yard_rounded,
-    imagePath:       'assets/new_ctg/KrishiX_App-71.jpg',
+    imagePath:       'assets/new_ctg/KrishiX_App-08.jpeg',
     listingCategory: ListingCategory.crops,
     color:           AppColors.textPrimary,
     sectionId:       CategorySectionId.seedsAndPlants,
   ),
-  _PostCategory(
-    label:           'Farm Machinery',
-    sublabel:        'Rotavators, sprayers, pumps…',
-    icon:            Icons.precision_manufacturing_rounded,
-    imagePath:       'assets/new_ctg/KrishiX_App-21.jpg',
-    listingCategory: ListingCategory.tractors,
-    color:           Color(0xFF6D4C41),
-    sectionId:       CategorySectionId.farmMachinery,
-  ),
-  _PostCategory(
-    label:           'Tractors',
-    sublabel:        'New & used tractors',
-    icon:            Icons.agriculture_rounded,
-    imagePath:       'assets/new_ctg/KrishiX_App-17.jpg',
-    listingCategory: ListingCategory.tractors,
-    color:           Color(0xFF558B2F),
-    sectionId:       CategorySectionId.tractorsBuy,
-  ),
+ 
+ 
+ 
   _PostCategory(
     label:           'Others',
     sublabel:        'Other farm products & items',
@@ -138,7 +162,7 @@ const _rentCategories = <_PostCategory>[
     label:           'Tractor Rental',
     sublabel:        'Mahindra, Swaraj, Sonalika…',
     icon:            Icons.agriculture_rounded,
-    imagePath:       'assets/new_ctg/KrishiX_App-17.jpg',
+    imagePath:       'assets/new_ctg/KrishiX_App-10.jpg',
     listingCategory: ListingCategory.rental,
     color:           Color(0xFF558B2F),
     sectionId:       CategorySectionId.tractorRental,
@@ -147,7 +171,7 @@ const _rentCategories = <_PostCategory>[
     label:           'Farm Machinery',
     sublabel:        'Rotavators, harvesters, seeders…',
     icon:            Icons.precision_manufacturing_rounded,
-    imagePath:       'assets/new_ctg/KrishiX_App-21.jpg',
+    imagePath:       'assets/new_ctg/KrishiX_App-09.jpg',
     listingCategory: ListingCategory.rental,
     color:           Color(0xFF6D4C41),
     sectionId:       CategorySectionId.farmMachineryRent,
@@ -156,7 +180,7 @@ const _rentCategories = <_PostCategory>[
     label:           'JCB / Excavator',
     sublabel:        'Backhoe, loader, bulldozer…',
     icon:            Icons.construction_rounded,
-    imagePath:       'assets/new_ctg/KrishiX_App-23.jpg',
+    imagePath:       'assets/new_ctg/KrishiX_App-172.jpeg',
     listingCategory: ListingCategory.rental,
     color:           Color(0xFFF57C00),
     sectionId:       CategorySectionId.jcbRental,
@@ -238,6 +262,14 @@ class _SellCategoryScreenState extends State<SellCategoryScreen>
             postFlow:      true,
             isRent:        _isRent,
             categoryLabel: cat.label,
+            groupTitleKey: cat.groupTitleKey, // FIX: now forwarded, so
+                                               // Vegetables vs Fruits (and
+                                               // any future split
+                                               // category) actually filter
+                                               // to their own group inside
+                                               // CategoryDetailScreen
+                                               // instead of both showing
+                                               // every item in fruitsVeg.
           ),
         ),
       ),
@@ -291,54 +323,13 @@ class _SellCategoryScreenState extends State<SellCategoryScreen>
 
                 const SizedBox(height: 6),
 
-                // Subtitle
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 20),
-                //   child: Text(
-                //     _isRent
-                //         ? 'Select a category to list your rental'
-                //         : 'Select a category to list your item',
-                //     style: TextStyle(
-                //       color:    Colors.white.withOpacity(0.85),
-                //       fontSize: 13,
-                //     ),
-                //   ),
-                // ),
-
-                // Category count badge
-                // Padding(
-                //   padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
-                //   child: Container(
-                //     padding: const EdgeInsets.symmetric(
-                //         horizontal: 10, vertical: 4),
-                //     decoration: BoxDecoration(
-                //       color:        Colors.white.withOpacity(0.20),
-                //       borderRadius: BorderRadius.circular(20),
-                //     ),
-                //     // child: Text(
-                //     //   '${_cats.length} categories',
-                //     //   style: const TextStyle(
-                //     //     color:      Colors.white,
-                //     //     fontSize:   11,
-                //     //     fontWeight: FontWeight.w700,
-                //     //   ),
-                //     // ),
-                //   ),
-                // ),
-
-                // const SizedBox(height: 16),
-
                 // Category grid
                 Expanded(
                   child: Container(
                     decoration: const BoxDecoration(
                       color:        Colors.white,
-                      // borderRadius: BorderRadius.vertical(
-                      //     top: Radius.circular(24)),
                     ),
                     child: ClipRRect(
-                      // borderRadius: const BorderRadius.vertical(
-                      //     top: Radius.circular(24)),
                       child: FadeTransition(
                         opacity: _fade,
                         child: SlideTransition(

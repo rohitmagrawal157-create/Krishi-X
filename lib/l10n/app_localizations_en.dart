@@ -412,7 +412,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchNow => 'Search now';
 
   @override
-  String get categoryMachinery => 'Machinery';
+  String get categoryMachinery => 'Used Machinery';
 
   @override
   String get categoryFertilizer => 'Fertilizer & Seeds';

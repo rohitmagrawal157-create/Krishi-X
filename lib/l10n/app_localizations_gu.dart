@@ -412,7 +412,7 @@ class AppLocalizationsGu extends AppLocalizations {
   String get searchNow => 'હવે શોધો';
 
   @override
-  String get categoryMachinery => 'મશીનરી';
+  String get categoryMachinery => 'વપરાયેલ મશીનરી';
 
   @override
   String get categoryFertilizer => 'ખાતર બીજ';

@@ -140,6 +140,7 @@ final Map<String, CategoryDetail> kCategoryDetails = {
           SubcategoryItem(labelKey: 'tomato',      imagePath: 'assets/new_ctg/KrishiX_App-43.jpg'),
           SubcategoryItem(labelKey: 'potato',      imagePath: 'assets/new_ctg/KrishiX_App-139.jpg'),
           SubcategoryItem(labelKey: 'garlic',      imagePath: 'assets/new_ctg/KrishiX_App-44.jpg'),
+          SubcategoryItem(labelKey: 'Ginger',    imagePath: 'assets/new_ctg/KrishiX_App-133.jpg'),
           SubcategoryItem(labelKey: 'chilli',      imagePath: 'assets/new_ctg/KrishiX_App-45.jpg'),
           SubcategoryItem(labelKey: 'brinjal',     imagePath: 'assets/new_ctg/KrishiX_App-46.jpg'),
           SubcategoryItem(labelKey: 'cabbage',     imagePath: 'assets/new_ctg/KrishiX_App-85.jpg'),
@@ -150,7 +151,16 @@ final Map<String, CategoryDetail> kCategoryDetails = {
           SubcategoryItem(labelKey: 'spinach',    imagePath: 'assets/new_ctg/KrishiX_App-145.jpg'),
           SubcategoryItem(labelKey: 'Safflower',    imagePath: 'assets/new_ctg/KrishiX_App-146.jpg'),
           SubcategoryItem(labelKey: 'Fenugreek',    imagePath: 'assets/new_ctg/KrishiX_App-147.jpg'),
-           SubcategoryItem(labelKey: 'coriander leaves',    imagePath: 'assets/new_ctg/KrishiX_App-148.jpg'),
+         SubcategoryItem(labelKey: 'coriander leaves',    imagePath: 'assets/new_ctg/KrishiX_App-148.jpg'),
+           SubcategoryItem(labelKey: 'carrot',    imagePath: 'assets/new_ctg/KrishiX_App-210.jpg'),
+           SubcategoryItem(labelKey: 'Radish',    imagePath: 'assets/new_ctg/KrishiX_App-211.jpg'),
+           SubcategoryItem(labelKey: 'Beetroot',    imagePath: 'assets/new_ctg/KrishiX_App-212.jpg'),
+           SubcategoryItem(labelKey: 'Curry Leaves',    imagePath: 'assets/new_ctg/KrishiX_App-213.jpg'),
+           SubcategoryItem(labelKey: 'Spring Onion	',    imagePath: 'assets/new_ctg/KrishiX_App-214.jpg'),
+           SubcategoryItem(labelKey: 'Cluster Beans',    imagePath: 'assets/new_ctg/KrishiX_App-215.jpg'),
+           SubcategoryItem(labelKey: 'Cowpea',    imagePath: 'assets/new_ctg/KrishiX_App-216.jpg'),
+           SubcategoryItem(labelKey: 'Field Beans',    imagePath: 'assets/new_ctg/KrishiX_App-219.jpg'),
+
         ],
       ),
       subcategoryGroup(
@@ -172,9 +182,11 @@ final Map<String, CategoryDetail> kCategoryDetails = {
           SubcategoryItem(labelKey: 'Java Plum',  imagePath: 'assets/new_ctg/KrishiX_App-156.jpg'),
           SubcategoryItem(labelKey: 'Indian jujube',  imagePath: 'assets/new_ctg/KrishiX_App-155.jpg'),
           SubcategoryItem(labelKey: 'fig',  imagePath: 'assets/new_ctg/KrishiX_App-159.jpg'),
-
-          
-        ],
+          SubcategoryItem(labelKey: 'Dragon Fruit',  imagePath: 'assets/new_ctg/KrishiX_App-221.jpg'),
+          SubcategoryItem(labelKey: 'Avocado',  imagePath: 'assets/new_ctg/KrishiX_App-222.jpg'),
+          SubcategoryItem(labelKey: 'Lychee',  imagePath: 'assets/new_ctg/KrishiX_App-223.jpg'),
+          SubcategoryItem(labelKey: 'Strawberry',  imagePath: 'assets/new_ctg/KrishiX_App-224.jpg'),
+                  ],
       ),
     ],
   ),
@@ -190,7 +202,7 @@ final Map<String, CategoryDetail> kCategoryDetails = {
         items: [
           SubcategoryItem(labelKey: 'cow',     imagePath: 'assets/new_ctg/KrishiX_App-54.jpg'),
           SubcategoryItem(labelKey: 'buffalo', imagePath: 'assets/new_ctg/KrishiX_App-56.jpg'),
-          SubcategoryItem(labelKey: 'bull',    imagePath: 'assets/new_ctg/KrishiX_App-55.jpg'),
+          SubcategoryItem(labelKey: 'bull',    imagePath: 'assets/new_ctg/KrishiX_App-57.jpg'),
           SubcategoryItem(labelKey: 'goat',    imagePath: 'assets/new_ctg/KrishiX_App-59.jpg'),
           SubcategoryItem(labelKey: 'sheep',   imagePath: 'assets/new_ctg/KrishiX_App-60.jpg'),
         ],
@@ -235,12 +247,12 @@ final Map<String, CategoryDetail> kCategoryDetails = {
     subcategoryGroup(
       titleKey: 'cereal_crops',
       items: [
-        SubcategoryItem(labelKey: 'wheat',                  imagePath: 'assets/new_ctg/KrishiX_App-71.jpg'),
-        SubcategoryItem(labelKey: 'rice_paddy',             imagePath: 'assets/new_ctg/KrishiX_App-71.jpg'),
-        SubcategoryItem(labelKey: 'sorghum_jowar',          imagePath: 'assets/new_ctg/KrishiX_App-71.jpg'),
-        SubcategoryItem(labelKey: 'pearl_millet_bajra',     imagePath: 'assets/new_ctg/KrishiX_App-71.jpg'),
-        SubcategoryItem(labelKey: 'maize_corn',             imagePath: 'assets/new_ctg/KrishiX_App-71.jpg'),
-        SubcategoryItem(labelKey: 'barnyard_millet_bhagar', imagePath: 'assets/new_ctg/KrishiX_App-71.jpg'),
+        SubcategoryItem(labelKey: 'wheat',                  imagePath: 'assets/new_ctg/KrishiX_App-185.jpeg'),
+        // SubcategoryItem(labelKey: 'rice_paddy',             imagePath: 'assets/new_ctg/KrishiX_App-186.jpeg'),
+        SubcategoryItem(labelKey: 'sorghum_jowar',          imagePath: 'assets/new_ctg/KrishiX_App-186.jpeg'),
+        SubcategoryItem(labelKey: 'pearl_millet_bajra',     imagePath: 'assets/new_ctg/KrishiX_App-187.jpeg'),
+        SubcategoryItem(labelKey: 'maize_corn',             imagePath: 'assets/new_ctg/KrishiX_App-188.jpeg'),
+        SubcategoryItem(labelKey: 'barnyard_millet_bhagar', imagePath: 'assets/new_ctg/KrishiX_App-189.jpeg'),
       ],
     ),
 
@@ -248,14 +260,14 @@ final Map<String, CategoryDetail> kCategoryDetails = {
     subcategoryGroup(
       titleKey: 'pulse_crops',
       items: [
-        SubcategoryItem(labelKey: 'pigeon_pea_tur',     imagePath: 'assets/new_ctg/KrishiX_App-71.jpg'),
-        SubcategoryItem(labelKey: 'chickpea_chana',     imagePath: 'assets/new_ctg/KrishiX_App-71.jpg'),
-        SubcategoryItem(labelKey: 'green_gram_moong',   imagePath: 'assets/new_ctg/KrishiX_App-71.jpg'),
-        SubcategoryItem(labelKey: 'black_gram_urad',    imagePath: 'assets/new_ctg/KrishiX_App-71.jpg'),
-        SubcategoryItem(labelKey: 'lentil_masoor',      imagePath: 'assets/new_ctg/KrishiX_App-71.jpg'),
-        SubcategoryItem(labelKey: 'field_pea_vatana',   imagePath: 'assets/new_ctg/KrishiX_App-71.jpg'),
-        SubcategoryItem(labelKey: 'cowpea_chawli',      imagePath: 'assets/new_ctg/KrishiX_App-71.jpg'),
-        SubcategoryItem(labelKey: 'kidney_bean_rajma',  imagePath: 'assets/new_ctg/KrishiX_App-71.jpg'),
+        SubcategoryItem(labelKey: 'pigeon_pea_tur',     imagePath: 'assets/new_ctg/KrishiX_App-190.jpeg'),
+        SubcategoryItem(labelKey: 'chickpea_chana',     imagePath: 'assets/new_ctg/KrishiX_App-191.jpeg'),
+        SubcategoryItem(labelKey: 'green_gram_moong',   imagePath: 'assets/new_ctg/KrishiX_App-192.jpeg'),
+        SubcategoryItem(labelKey: 'black_gram_urad',    imagePath: 'assets/new_ctg/KrishiX_App-193.jpeg'),
+        SubcategoryItem(labelKey: 'lentil_masoor',      imagePath: 'assets/new_ctg/KrishiX_App-194.jpeg'),
+        SubcategoryItem(labelKey: 'field_pea_vatana',   imagePath: 'assets/new_ctg/KrishiX_App-195.jpeg'),
+        SubcategoryItem(labelKey: 'cowpea_chawli',      imagePath: 'assets/new_ctg/KrishiX_App-196.jpeg'),
+        SubcategoryItem(labelKey: 'kidney_bean_rajma',  imagePath: 'assets/new_ctg/KrishiX_App-197.jpeg'),
       ],
     ),
 
@@ -263,38 +275,38 @@ final Map<String, CategoryDetail> kCategoryDetails = {
     subcategoryGroup(
       titleKey: 'oil_seeds',
       items: [
-        SubcategoryItem(labelKey: 'groundnut',  imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'groundnut',  imagePath: 'assets/new_ctg/KrishiX_App-126.jpg'),
         SubcategoryItem(labelKey: 'mustard',    imagePath: 'assets/new_ctg/KrishiX_App-127.jpg'),
-        SubcategoryItem(labelKey: 'sesame',     imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
-        SubcategoryItem(labelKey: 'safflower',  imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
-        SubcategoryItem(labelKey: 'linseed',    imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
-        SubcategoryItem(labelKey: 'castor',     imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'sesame',     imagePath: 'assets/new_ctg/KrishiX_App-128.jpg'),
+        SubcategoryItem(labelKey: 'safflower',  imagePath: 'assets/new_ctg/KrishiX_App-129.jpg'),
+        // SubcategoryItem(labelKey: 'linseed',    imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
+        // SubcategoryItem(labelKey: 'castor',     imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
       ],
     ),
 
     // ── CASH CROPS ────────────────────────────────────────
-    subcategoryGroup(
-      titleKey: 'cash_crops',
-      items: [
-        SubcategoryItem(labelKey: 'sugarcane', imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
-        SubcategoryItem(labelKey: 'turmeric',  imagePath: 'assets/new_ctg/KrishiX_App-132.jpg'),
-        SubcategoryItem(labelKey: 'ginger',    imagePath: 'assets/new_ctg/KrishiX_App-133.jpg'),
-        SubcategoryItem(labelKey: 'cotton',    imagePath: 'assets/new_ctg/KrishiX_App-136.jpg'),
-        SubcategoryItem(labelKey: 'soybean',   imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
-      ],
-    ),
+    // subcategoryGroup(
+    //   titleKey: 'cash_crops',
+    //   items: [
+    //     SubcategoryItem(labelKey: 'sugarcane', imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
+    //     SubcategoryItem(labelKey: 'turmeric',  imagePath: 'assets/new_ctg/KrishiX_App-132.jpg'),
+    //     SubcategoryItem(labelKey: 'ginger',    imagePath: 'assets/new_ctg/KrishiX_App-133.jpg'),
+    //     SubcategoryItem(labelKey: 'cotton',    imagePath: 'assets/new_ctg/KrishiX_App-136.jpg'),
+    //     SubcategoryItem(labelKey: 'soybean',   imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
+    //   ],
+    // ),
 
     // ── SPICE CROPS ───────────────────────────────────────
     subcategoryGroup(
       titleKey: 'spice_crops',
       items: [
-        SubcategoryItem(labelKey: 'turmeric',   imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
-        SubcategoryItem(labelKey: 'ginger',     imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
-        SubcategoryItem(labelKey: 'garlic',     imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
-        SubcategoryItem(labelKey: 'chilli',     imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
-        SubcategoryItem(labelKey: 'coriander',  imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
-        SubcategoryItem(labelKey: 'fenugreek',  imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
-        SubcategoryItem(labelKey: 'onion_seed', imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'turmeric',   imagePath: 'assets/new_ctg/KrishiX_App-199.jpeg'),
+        SubcategoryItem(labelKey: 'ginger',     imagePath: 'assets/new_ctg/KrishiX_App-198.jpeg'),
+        SubcategoryItem(labelKey: 'garlic',     imagePath: 'assets/new_ctg/KrishiX_App-201.jpg'),
+        SubcategoryItem(labelKey: 'onion_seed',     imagePath: 'assets/new_ctg/KrishiX_App-202.jpg'),
+        // SubcategoryItem(labelKey: 'coriander',  imagePath: 'assets/new_ctg/KrishiX_App-203.jpg'),
+        // SubcategoryItem(labelKey: 'fenugreek',  imagePath: 'assets/new_ctg/KrishiX_App-204.jpg'),
+        // SubcategoryItem(labelKey: 'onion_seed', imagePath: 'assets/new_ctg/KrishiX_App-205.jpg'),
       ],
     ),
 
@@ -302,53 +314,53 @@ final Map<String, CategoryDetail> kCategoryDetails = {
     subcategoryGroup(
       titleKey: 'vegetable_seeds',
       items: [
-        SubcategoryItem(labelKey: 'onion',        imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
-        SubcategoryItem(labelKey: 'potato',       imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
-        SubcategoryItem(labelKey: 'okra',         imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
-        SubcategoryItem(labelKey: 'chilli',       imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
-        SubcategoryItem(labelKey: 'cucumber',     imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
-        SubcategoryItem(labelKey: 'ridge_gourd',  imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
-        SubcategoryItem(labelKey: 'bitter_gourd', imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
-        SubcategoryItem(labelKey: 'bottle_gourd', imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
-        SubcategoryItem(labelKey: 'dill',         imagePath: 'assets/new_ctg/KrishiX_App-72.jpg'),
+        SubcategoryItem(labelKey: 'onion',        imagePath: 'assets/new_ctg/KrishiX_App-202.jpg'),
+        SubcategoryItem(labelKey: 'potato',       imagePath: 'assets/new_ctg/KrishiX_App-203.jpg'),
+        SubcategoryItem(labelKey: 'okra',         imagePath: 'assets/new_ctg/KrishiX_App-204.jpg'),
+        SubcategoryItem(labelKey: 'chilli',       imagePath: 'assets/new_ctg/KrishiX_App-205.jpg'),
+        SubcategoryItem(labelKey: 'cucumber',     imagePath: 'assets/new_ctg/KrishiX_App-206.jpg'),
+        SubcategoryItem(labelKey: 'ridge_gourd',  imagePath: 'assets/new_ctg/KrishiX_App-207.jpg'),
+        SubcategoryItem(labelKey: 'bitter_gourd', imagePath: 'assets/new_ctg/KrishiX_App-208.jpg'),
+        SubcategoryItem(labelKey: 'bottle_gourd', imagePath: 'assets/new_ctg/KrishiX_App-209.jpg'),
+        // SubcategoryItem(labelKey: 'dill',         imagePath: 'assets/new_ctg/KrishiX_App-210.jpg'),
       ],
     ),
 
     // ── FRUIT CROPS ───────────────────────────────────────
-    subcategoryGroup(
-      titleKey: 'fruit_crops',
-      items: [
-        SubcategoryItem(labelKey: 'mango',          imagePath: 'assets/new_ctg/KrishiX_App-73.jpg'),
-        SubcategoryItem(labelKey: 'custard_apple',  imagePath: 'assets/new_ctg/KrishiX_App-73.jpg'),
-        SubcategoryItem(labelKey: 'papaya',         imagePath: 'assets/new_ctg/KrishiX_App-73.jpg'),
-        SubcategoryItem(labelKey: 'jamun',          imagePath: 'assets/new_ctg/KrishiX_App-73.jpg'),
-      ],
-    ),
+    // subcategoryGroup(
+    //   titleKey: 'fruit_crops',
+    //   items: [
+    //     SubcategoryItem(labelKey: 'mango',          imagePath: 'assets/new_ctg/KrishiX_App-73.jpg'),
+    //     SubcategoryItem(labelKey: 'custard_apple',  imagePath: 'assets/new_ctg/KrishiX_App-73.jpg'),
+    //     SubcategoryItem(labelKey: 'papaya',         imagePath: 'assets/new_ctg/KrishiX_App-73.jpg'),
+    //     SubcategoryItem(labelKey: 'jamun',          imagePath: 'assets/new_ctg/KrishiX_App-73.jpg'),
+    //   ],
+    // ),
 
     // ── FODDER CROPS ──────────────────────────────────────
-    subcategoryGroup(
-      titleKey: 'fodder_crops',
-      items: [
-        SubcategoryItem(labelKey: 'fodder_maize',        imagePath: 'assets/new_ctg/KrishiX_App-71.jpg'),
-        SubcategoryItem(labelKey: 'fodder_sorghum',      imagePath: 'assets/new_ctg/KrishiX_App-71.jpg'),
-        SubcategoryItem(labelKey: 'fodder_pearl_millet', imagePath: 'assets/new_ctg/KrishiX_App-71.jpg'),
-      ],
-    ),
+    // subcategoryGroup(
+    //   titleKey: 'fodder_crops',
+    //   items: [
+    //     SubcategoryItem(labelKey: 'fodder_maize',        imagePath: 'assets/new_ctg/KrishiX_App-71.jpg'),
+    //     SubcategoryItem(labelKey: 'fodder_sorghum',      imagePath: 'assets/new_ctg/KrishiX_App-71.jpg'),
+    //     SubcategoryItem(labelKey: 'fodder_pearl_millet', imagePath: 'assets/new_ctg/KrishiX_App-71.jpg'),
+    //   ],
+    // ),
 
     // ── PLANTS & SAPLINGS ─────────────────────────────────
     subcategoryGroup(
       titleKey: 'plants_and_saplings',
       items: [
-        SubcategoryItem(labelKey: 'mango_sapling',       imagePath: 'assets/new_ctg/KrishiX_App-74.jpg'),
-        SubcategoryItem(labelKey: 'pomegranate_sapling', imagePath: 'assets/new_ctg/KrishiX_App-74.jpg'),
-        SubcategoryItem(labelKey: 'sweet_lime_sapling',  imagePath: 'assets/new_ctg/KrishiX_App-74.jpg'),
-        SubcategoryItem(labelKey: 'orange_sapling',      imagePath: 'assets/new_ctg/KrishiX_App-74.jpg'),
-        SubcategoryItem(labelKey: 'cashew_sapling',      imagePath: 'assets/new_ctg/KrishiX_App-74.jpg'),
-        SubcategoryItem(labelKey: 'coconut_sapling',     imagePath: 'assets/new_ctg/KrishiX_App-74.jpg'),
-        SubcategoryItem(labelKey: 'teak_sapling',        imagePath: 'assets/new_ctg/KrishiX_App-74.jpg'),
-        SubcategoryItem(labelKey: 'bamboo_sapling',      imagePath: 'assets/new_ctg/KrishiX_App-74.jpg'),
-        SubcategoryItem(labelKey: 'tissue_culture_plants', imagePath: 'assets/new_ctg/KrishiX_App-74.jpg'),
-        SubcategoryItem(labelKey: 'nursery_plants',      imagePath: 'assets/new_ctg/KrishiX_App-74.jpg'),
+        SubcategoryItem(labelKey: 'mango_sapling',       imagePath: 'assets/new_ctg/KrishiX_App-176.jpeg'),
+        SubcategoryItem(labelKey: 'pomegranate_sapling', imagePath: 'assets/new_ctg/KrishiX_App-177.jpeg'),
+        SubcategoryItem(labelKey: 'sweet_lime_sapling',  imagePath: 'assets/new_ctg/KrishiX_App-178.jpeg'),
+        SubcategoryItem(labelKey: 'orange_sapling',      imagePath: 'assets/new_ctg/KrishiX_App-179.jpeg'),
+        SubcategoryItem(labelKey: 'cashew_sapling',      imagePath: 'assets/new_ctg/KrishiX_App-180.jpeg'),
+        SubcategoryItem(labelKey: 'coconut_sapling',     imagePath: 'assets/new_ctg/KrishiX_App-181.jpeg'),
+        SubcategoryItem(labelKey: 'teak_sapling',        imagePath: 'assets/new_ctg/KrishiX_App-182.jpeg'),
+        SubcategoryItem(labelKey: 'bamboo_sapling',      imagePath: 'assets/new_ctg/KrishiX_App-183.jpeg'),
+        SubcategoryItem(labelKey: 'tissue_culture_plants', imagePath: 'assets/new_ctg/KrishiX_App-184.jpeg'),
+        // SubcategoryItem(labelKey: 'nursery_plants',      imagePath: 'assets/new_ctg/KrishiX_App-185.jpeg'),
       ],
     ),
 
@@ -440,7 +452,7 @@ final Map<String, CategoryDetail> kCategoryDetails = {
         items: [
           SubcategoryItem(labelKey: 'water_pump',       imagePath: 'assets/new_ctg/KrishiX_App-109.jpg'),
           SubcategoryItem(labelKey: 'solar_pump',       imagePath: 'assets/new_ctg/KrishiX_App-110.jpg'),
-          SubcategoryItem(labelKey: 'drip_system',      imagePath: 'assets/new_ctg/KrishiX_App-.jpg'),
+          SubcategoryItem(labelKey: 'drip_system',      imagePath: 'assets/new_ctg/KrishiX_App-169.jpeg'),
           SubcategoryItem(labelKey: 'sprinkler_system', imagePath: 'assets/new_ctg/KrishiX_App-111.jpg'),
         ],
       ),
@@ -464,12 +476,12 @@ final Map<String, CategoryDetail> kCategoryDetails = {
       subcategoryGroup(
         titleKey: 'horse_power_hp',
         items: [
-          SubcategoryItem(labelKey: 'under_20_hp', imagePath: 'assets/new_ctg/KrishiX_App-17.jpg'),
-          SubcategoryItem(labelKey: 'hp_21_30',    imagePath: 'assets/new_ctg/KrishiX_App-18.jpg'),
-          SubcategoryItem(labelKey: 'hp_31_40',    imagePath: 'assets/new_ctg/KrishiX_App-19.jpg'),
-          SubcategoryItem(labelKey: 'hp_41_50',    imagePath: 'assets/new_ctg/KrishiX_App-20.jpg'),
-          SubcategoryItem(labelKey: 'hp_51_60',    imagePath: 'assets/new_ctg/KrishiX_App-17.jpg'),
-          SubcategoryItem(labelKey: 'above_60_hp', imagePath: 'assets/new_ctg/KrishiX_App-18.jpg'),
+          SubcategoryItem(labelKey: 'under_20_hp', imagePath: 'assets/new_ctg/KrishiX_App-160.jpeg'),
+          SubcategoryItem(labelKey: 'hp_21_30',    imagePath: 'assets/new_ctg/KrishiX_App-161.jpeg'),
+          SubcategoryItem(labelKey: 'hp_31_40',    imagePath: 'assets/new_ctg/KrishiX_App-162.jpeg'),
+          SubcategoryItem(labelKey: 'hp_41_50',    imagePath: 'assets/new_ctg/KrishiX_App-163.jpeg'),
+          SubcategoryItem(labelKey: 'hp_51_60',    imagePath: 'assets/new_ctg/KrishiX_App-164.jpeg'),
+          SubcategoryItem(labelKey: 'above_60_hp', imagePath: 'assets/new_ctg/KrishiX_App-165.jpeg'),
         ],
       ),
       subcategoryGroup(
@@ -584,10 +596,10 @@ final Map<String, CategoryDetail> kCategoryDetails = {
       subcategoryGroup(
         titleKey: 'jcb_types',
         items: [
-          SubcategoryItem(labelKey: 'jcb_backhoe',   imagePath: 'assets/new_ctg/KrishiX_App-23.jpg'),
-          SubcategoryItem(labelKey: 'jcb_excavator',  imagePath: 'assets/new_ctg/KrishiX_App-22.jpg'),
-          SubcategoryItem(labelKey: 'jcb_loader',     imagePath: 'assets/new_ctg/KrishiX_App-21.jpg'),
-          SubcategoryItem(labelKey: 'jcb_bulldozer',  imagePath: 'assets/new_ctg/KrishiX_App-27.jpg'),
+          SubcategoryItem(labelKey: 'jcb_backhoe',   imagePath: 'assets/new_ctg/KrishiX_App-172.jpeg'),
+          SubcategoryItem(labelKey: 'jcb_excavator',  imagePath: 'assets/new_ctg/KrishiX_App-170.jpeg'),
+          SubcategoryItem(labelKey: 'jcb_pockland',     imagePath: 'assets/new_ctg/KrishiX_App-171.jpeg'),
+          SubcategoryItem(labelKey: 'mini_Excavator',  imagePath: 'assets/new_ctg/KrishiX_App-174.jpeg'),
         ],
       ),
     ],

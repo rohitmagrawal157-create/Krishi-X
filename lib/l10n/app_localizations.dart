@@ -912,7 +912,7 @@ abstract class AppLocalizations {
   /// No description provided for @categoryMachinery.
   ///
   /// In en, this message translates to:
-  /// **'Machinery'**
+  /// **'Used Machinery'**
   String get categoryMachinery;
 
   /// No description provided for @categoryFertilizer.

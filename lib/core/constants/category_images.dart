@@ -6,14 +6,14 @@ abstract final class CategoryImages {
   // ── Main category tiles (home, sell/rent picker) ───────────
   static const cropsGrains   = 'assets/new_ctg/KrishiX_App-04.jpg';
   static const fruitsVeg     = 'assets/new_ctg/KrishiX_App-05.jpg';
-  static const vegetables    = 'assets/new_ctg/KrishiX_App-43.jpg';
-  static const fruits        = 'assets/new_ctg/KrishiX_App-48.jpg';
+  static const vegetables    = 'assets/new_ctg/KrishiX_App-168.jpeg';
+  static const fruits        = 'assets/new_ctg/KrishiX_App-167.jpeg';
   static const livestock     = 'assets/new_ctg/KrishiX_App-06.jpg';
   static const land          = 'assets/new_ctg/KrishiX_App-07.jpg';
-  static const seedsPlants   = 'assets/new_ctg/KrishiX_App-08.jpg';
+  static const seedsPlants   = 'assets/new_ctg/KrishiX_App-08.jpeg';
   static const farmMachinery = 'assets/new_ctg/KrishiX_App-09.jpg';
   static const tractors      = 'assets/new_ctg/KrishiX_App-10.jpg';
-  static const jcbRental     = 'assets/new_ctg/KrishiX_App-23.jpg';
+  static const jcbRental     = 'assets/new_ctg/KrishiX_App-172.jpeg';
 
   /// Catch-all tile shown at the end of every subcategory group grid.
   static const subcategoryOthers = 'assets/new_ctg/KrishiX_App-11.jpg';
