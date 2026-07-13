@@ -16,7 +16,7 @@ abstract final class CategoryImages {
   static const jcbRental     = 'assets/new_ctg/KrishiX_App-172.jpeg';
 
   /// Catch-all tile shown at the end of every subcategory group grid.
-  static const subcategoryOthers = 'assets/new_ctg/KrishiX_App-11.jpg';
+  static const subcategoryOthers = 'assets/new_ctg/KrishiX_App.jpeg';
 
   // ── Listing images (assets/images/) ────────────────────────
   static const wheat1    = 'assets/images/wheat1.jpg';

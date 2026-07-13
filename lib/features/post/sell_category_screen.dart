@@ -185,6 +185,15 @@ const _rentCategories = <_PostCategory>[
     color:           Color(0xFFF57C00),
     sectionId:       CategorySectionId.jcbRental,
   ),
+  _PostCategory(
+    label:           'Others',
+    sublabel:        'Other equipment & rentals',
+    icon:            Icons.more_horiz_rounded,
+    imagePath:       CategoryImages.subcategoryOthers,
+    listingCategory: ListingCategory.rental,
+    color:           Color(0xFF757575),
+    sectionId:       CategorySectionId.sellOthers,
+  ),
 ];
 
 // ═══════════════════════════════════════════════════════════════
@@ -232,7 +241,7 @@ class _SellCategoryScreenState extends State<SellCategoryScreen>
   }
 
   void _onCategoryTap(_PostCategory cat) {
-    if (!_isRent && cat.sectionId == CategorySectionId.sellOthers) {
+    if (cat.sectionId == CategorySectionId.sellOthers) {
       final l10n = AppLocalizations.of(context)!;
       Navigator.of(context).push(
         PageRouteBuilder<void>(
@@ -243,7 +252,7 @@ class _SellCategoryScreenState extends State<SellCategoryScreen>
             child: PostListingScreen(
               sectionId:        cat.sectionId,
               initialCategory:  cat.listingCategory,
-              initialType:      ListingType.sell,
+              initialType:      _isRent ? ListingType.rent : ListingType.sell,
               categoryLabel:    l10n.others,
             ),
           ),

@@ -78,6 +78,8 @@ String _tr(String key, String locale) {
     case 'lease_land':
       if (locale == 'hi') return 'जमीन किराये पर';
       if (locale == 'mr') return 'जमीन भाड्याने';
+      // Was: 'જमीন ভাড়े' — mixed Devanagari ('म','ी') + Bengali ('ন','ভ','ড়','े')
+      // characters posing as Gujarati. Rebuilt with pure Gujarati glyphs.
       if (locale == 'gu') return 'જમીન ભાડે';
       return 'Lease Land';
     case 'tractor_rental':
@@ -88,21 +90,29 @@ String _tr(String key, String locale) {
     case 'farm_machinery_rent':
       if (locale == 'hi') return 'कृषि यंत्र किराया';
       if (locale == 'mr') return 'शेती यंत्र भाडे';
+      // Was: 'ખेत મशीन ভাড়े' — mixed Devanagari ('े','त','श','ी','न') +
+      // Bengali ('া','ড়') characters. Rebuilt with pure Gujarati glyphs.
       if (locale == 'gu') return 'ખેત મશીન ભાડે';
       return 'Farm Machinery';
     case 'jcb_rental':
       if (locale == 'hi') return 'JCB किराया';
       if (locale == 'mr') return 'JCB भाडे';
+      // Was: 'JCB ভाড়े' — mixed Bengali ('ভ','ড়') + Devanagari ('ा','े')
+      // characters. Rebuilt with pure Gujarati glyphs.
       if (locale == 'gu') return 'JCB ભાડે';
       return 'JCB Rental';
     case 'all_buy':
       if (locale == 'hi') return 'सभी खरीद श्रेणियां';
       if (locale == 'mr') return 'सर्व खरेदी श्रेणी';
+      // Was: 'બधी ખरीद શ્रेणIઓ' — mixed Devanagari ('ध','र','ी','े') and a
+      // stray Latin 'I'. Rebuilt with pure Gujarati glyphs.
       if (locale == 'gu') return 'બધી ખરીદ શ્રેણીઓ';
       return 'All Buy Categories';
     case 'all_rent':
       if (locale == 'hi') return 'सभी किराया श्रेणियां';
       if (locale == 'mr') return 'सर्व भाडे श्रेणी';
+      // Was: 'બধी ভাড়े શ্রेणIઓ' — mixed Bengali ('ধ','ভ','া','ড়','ে','র')
+      // and Devanagari/Latin fragments. Rebuilt with pure Gujarati glyphs.
       if (locale == 'gu') return 'બધી ભાડે શ્રેણીઓ';
       return 'All Rent Categories';
     default:
@@ -138,22 +148,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // REMOVED: the old imperative SystemChrome.setSystemUIOverlayStyle(...)
-    // call that lived here.
-    //
-    // WHY IT WAS THE BUG: it forced statusBarIconBrightness: Brightness.light
-    // (white icons) + a green statusBarColor — settings that made sense back
-    // when this screen's header was green. It ran exactly once, in
-    // initState, so it was never re-applied when this screen scrolled back
-    // into view after visiting a screen (like "My Ads") that sets its own
-    // green/light-icon style. Since the header here is now WHITE, those
-    // white icons became invisible against it — the exact bug in the
-    // screenshots (battery/wifi/clock disappearing on the white screen).
-    //
-    // FIX: status bar styling is now handled reactively via
-    // AnnotatedRegion<SystemUiOverlayStyle> wrapping the widget tree in
-    // build() below, so it's re-asserted every time this screen is the
-    // active route — no stale state, no manual re-sync needed.
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor:          Colors.white,
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness:     Brightness.dark,
+      ),
+    );
     _loadNearby();
     _scrollController.addListener(_onScroll);
     WidgetsBinding.instance.addPostFrameCallback((_) => _loadAllProductsPage());
@@ -464,192 +465,176 @@ class _HomeScreenState extends State<HomeScreen> {
     final showSeeAll = _shouldShowSeeAll(_activeFilter, filtered.length);
     final statusH  = MediaQuery.of(context).padding.top;
 
-    // NEW: AnnotatedRegion replaces the old one-shot SystemChrome call.
-    //
-    // This screen's header/background is WHITE, so the status bar icons
-    // (battery, wifi, signal, clock) need to be DARK to stay visible.
-    // Unlike the removed initState() call, this is re-evaluated by the
-    // framework every time this screen becomes the topmost UI — including
-    // when navigating back from a differently-colored screen (e.g. the
-    // green "My Ads" screen) — so the icon color can never get "stuck"
-    // from a previous screen's style.
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.dark.copyWith(
-        statusBarColor:           Colors.transparent,
-        statusBarIconBrightness:  Brightness.dark,  // Android
-        statusBarBrightness:      Brightness.light, // iOS
-      ),
-      child: ColoredBox(
-        color: Colors.white,
-        child: CustomScrollView(
-          controller: _scrollController,
-          physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics()),
-          slivers: [
+    return ColoredBox(
+      color: Colors.white,
+      child: CustomScrollView(
+        controller: _scrollController,
+        physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics()),
+        slivers: [
 
-            // ── TWO-ROW PINNED HEADER ──────────────────────────
-            SliverPersistentHeader(
-              pinned: true,
-              delegate: _TwoRowHeaderDelegate(
-                statusBarHeight:   statusH,
-                locationName:      widget.userLocation.headerLabel,
-                onMenuTap:         widget.onMenuTap,
-                onLocationTap:     widget.onLocationTap,
-                onSearchTap:       () => _openBrowse(context),
-                onNotificationTap: () {},
-                onWishlistTap: () {
-                  Navigator.of(context).push(MaterialPageRoute<void>(
-                    builder: (_) => const WishlistScreen(),
-                  ));
-                },
-                l10n: l10n,
+          // ── TWO-ROW PINNED HEADER ──────────────────────────
+          SliverPersistentHeader(
+            pinned: true,
+            delegate: _TwoRowHeaderDelegate(
+              statusBarHeight:   statusH,
+              locationName:      widget.userLocation.headerLabel,
+              onMenuTap:         widget.onMenuTap,
+              onLocationTap:     widget.onLocationTap,
+              onSearchTap:       () => _openBrowse(context),
+              onNotificationTap: () {},
+              onWishlistTap: () {
+                Navigator.of(context).push(MaterialPageRoute<void>(
+                  builder: (_) => const WishlistScreen(),
+                ));
+              },
+              l10n: l10n,
+            ),
+          ),
+
+          // ── Banner ───────────────────────────────────────
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
+              child: _HomeBanner(
+                l10n:        l10n,
+                onBannerTap: () => _openBannerPage(context),
               ),
             ),
+          ),
 
-            // ── Banner ───────────────────────────────────────
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
-                child: _HomeBanner(
-                  l10n:        l10n,
-                  onBannerTap: () => _openBannerPage(context),
-                ),
+          // ── Buy / Rent / Services filter chips ───────────
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 18, 16, 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _FilterChip(
+                    label:  _tr('buy', loc),
+                    active: _activeFilter == _CategoryFilter.buy,
+                    color:  const Color(0xFF2E7D32),
+                    onTap:  () => setState(
+                        () => _activeFilter = _CategoryFilter.buy),
+                  ),
+                  const SizedBox(width: 10),
+                  _FilterChip(
+                    label:  _tr('rent', loc),
+                    active: _activeFilter == _CategoryFilter.rent,
+                    color:  const Color(0xFFF57C00),
+                    onTap:  () => setState(
+                        () => _activeFilter = _CategoryFilter.rent),
+                  ),
+                  const SizedBox(width: 10),
+                  _FilterChip(
+                    label:  _tr('services', loc),
+                    active: _activeFilter == _CategoryFilter.services,
+                    color:  const Color(0xFF0277BD),
+                    onTap:  () => setState(
+                        () => _activeFilter = _CategoryFilter.services),
+                  ),
+                ],
               ),
             ),
+          ),
 
-            // ── Buy / Rent / Services filter chips ───────────
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 18, 16, 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _FilterChip(
-                      label:  _tr('buy', loc),
-                      active: _activeFilter == _CategoryFilter.buy,
-                      color:  const Color(0xFF2E7D32),
-                      onTap:  () => setState(
-                          () => _activeFilter = _CategoryFilter.buy),
-                    ),
-                    const SizedBox(width: 10),
-                    _FilterChip(
-                      label:  _tr('rent', loc),
-                      active: _activeFilter == _CategoryFilter.rent,
-                      color:  const Color(0xFFF57C00),
-                      onTap:  () => setState(
-                          () => _activeFilter = _CategoryFilter.rent),
-                    ),
-                    const SizedBox(width: 10),
-                    _FilterChip(
-                      label:  _tr('services', loc),
-                      active: _activeFilter == _CategoryFilter.services,
-                      color:  const Color(0xFF0277BD),
-                      onTap:  () => setState(
-                          () => _activeFilter = _CategoryFilter.services),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+          // ── Category grid OR coming soon ─────────────────
+          SliverToBoxAdapter(
+            child: _activeFilter == _CategoryFilter.services
+                ? _ComingSoonCard(locale: loc)
+                : Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      children: [
+                        LayoutBuilder(
+                          builder: (context, constraints) {
+                            const cols      = 4;
+                            const hGap      = 6.0;
+                            const totalGaps = (cols - 1) * hGap;
+                            final tileW     = (constraints.maxWidth - totalGaps) / cols;
+                            final imgSize   = tileW;
+                            const labelH    = 32.0;
+                            final tileH     = imgSize + labelH;
 
-            // ── Category grid OR coming soon ─────────────────
-            SliverToBoxAdapter(
-              child: _activeFilter == _CategoryFilter.services
-                  ? _ComingSoonCard(locale: loc)
-                  : Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Column(
-                        children: [
-                          LayoutBuilder(
-                            builder: (context, constraints) {
-                              const cols      = 4;
-                              const hGap      = 6.0;
-                              const totalGaps = (cols - 1) * hGap;
-                              final tileW     = (constraints.maxWidth - totalGaps) / cols;
-                              final imgSize   = tileW;
-                              const labelH    = 32.0;
-                              final tileH     = imgSize + labelH;
-
-                              return Wrap(
-                                spacing:    hGap,
-                                runSpacing: 6,
-                                children: gridCats.map((item) => SizedBox(
-                                  width:  tileW,
-                                  height: tileH,
-                                  child: _CategoryTile(
-                                    label:   item.label,
-                                    imgPath: item.imagePath,
-                                    color:   item.color,
-                                    imgSize: imgSize,
-                                    labelH:  labelH,
-                                    onTap: () =>
-                                        _openCategoryDetail(context, item),
-                                  ),
-                                )).toList(),
-                              );
-                            },
-                          ),
-                          if (showSeeAll) ...[
-                            const SizedBox(height: 8),
-                            GestureDetector(
-                              onTap: () => _showAllCategoriesSheet(context),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 18, vertical: 5),
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: _activeFilter == _CategoryFilter.buy
-                                        ? const [
-                                            Color(0xFF43A047),
-                                            Color(0xFF2E7D32),
-                                          ]
-                                        : const [
-                                            Color(0xFFFF9800),
-                                            Color(0xFFF44336),
-                                          ],
-                                    begin: Alignment.centerLeft,
-                                    end:   Alignment.centerRight,
-                                  ),
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: (_activeFilter ==
-                                                  _CategoryFilter.buy
-                                              ? const Color(0xFF2E7D32)
-                                              : const Color(0xFFF57C00))
-                                          .withOpacity(0.28),
-                                      blurRadius: 6,
-                                      offset:     const Offset(0, 2),
-                                    ),
-                                  ],
+                            return Wrap(
+                              spacing:    hGap,
+                              runSpacing: 6,
+                              children: gridCats.map((item) => SizedBox(
+                                width:  tileW,
+                                height: tileH,
+                                child: _CategoryTile(
+                                  label:   item.label,
+                                  imgPath: item.imagePath,
+                                  color:   item.color,
+                                  imgSize: imgSize,
+                                  labelH:  labelH,
+                                  onTap: () =>
+                                      _openCategoryDetail(context, item),
                                 ),
-                                child: Text(
-                                  l10n.seeAll,
-                                  style: const TextStyle(
-                                    color:         Colors.white,
-                                    fontSize:      11,
-                                    fontWeight:    FontWeight.w700,
-                                    letterSpacing: 0.3,
+                              )).toList(),
+                            );
+                          },
+                        ),
+                        if (showSeeAll) ...[
+                          const SizedBox(height: 8),
+                          GestureDetector(
+                            onTap: () => _showAllCategoriesSheet(context),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 18, vertical: 5),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: _activeFilter == _CategoryFilter.buy
+                                      ? const [
+                                          Color(0xFF43A047),
+                                          Color(0xFF2E7D32),
+                                        ]
+                                      : const [
+                                          Color(0xFFFF9800),
+                                          Color(0xFFF44336),
+                                        ],
+                                  begin: Alignment.centerLeft,
+                                  end:   Alignment.centerRight,
+                                ),
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: (_activeFilter ==
+                                                _CategoryFilter.buy
+                                            ? const Color(0xFF2E7D32)
+                                            : const Color(0xFFF57C00))
+                                        .withOpacity(0.28),
+                                    blurRadius: 6,
+                                    offset:     const Offset(0, 2),
                                   ),
+                                ],
+                              ),
+                              child: Text(
+                                l10n.seeAll,
+                                style: const TextStyle(
+                                  color:         Colors.white,
+                                  fontSize:      11,
+                                  fontWeight:    FontWeight.w700,
+                                  letterSpacing: 0.3,
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 4),
-                          ],
+                          ),
+                          const SizedBox(height: 4),
                         ],
-                      ),
+                      ],
                     ),
-            ),
+                  ),
+          ),
 
-            // ── All products feed ────────────────────────────
-            AllProductsSection(
-              cards:         _allProductCards,
-              isLoadingMore: _isLoadingAllProducts,
-              l10n:          l10n,
-              userLocation:  widget.userLocation,
-            ),
-          ],
-        ),
+          // ── All products feed ────────────────────────────
+          AllProductsSection(
+            cards:         _allProductCards,
+            isLoadingMore: _isLoadingAllProducts,
+            l10n:          l10n,
+            userLocation:  widget.userLocation,
+          ),
+        ],
       ),
     );
   }
@@ -658,11 +643,11 @@ class _HomeScreenState extends State<HomeScreen> {
 // ═══════════════════════════════════════════════════════════════
 // TWO-ROW PINNED HEADER
 //
-//  ┌──────────────────────────────────────────────────┐  ← white
+//  ┌──────────────────────────────────────────────────┐  ← green
 //  │ ☰   📍 Aurangabad, MH  ▾                         │  Row 1
 //  ├──────────────────────────────────────────────────┤  1px divider
 //  │ 🔍 Search anything…       ♡   🔔                 │  Row 2
-//  └──────────────────────────────────────────────────┘  ← white
+//  └──────────────────────────────────────────────────┘  ← green
 // ═══════════════════════════════════════════════════════════════
 class _TwoRowHeaderDelegate extends SliverPersistentHeaderDelegate {
   _TwoRowHeaderDelegate({
@@ -778,7 +763,7 @@ class _TwoRowHeaderDelegate extends SliverPersistentHeaderDelegate {
           // ── thin divider ─────────────────────────────────
           Container(
             height: _kDividerHeight,
-            color:  Colors.grey.shade200,
+            color:  Colors.white.withOpacity(0.18),
           ),
 
           // ── ROW 2: Search  ·  Wishlist  ·  Notification ──
@@ -1125,42 +1110,29 @@ class _BannerDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    // NEW: this page has a GREEN AppBar, so it needs LIGHT (white) status
-    // bar icons — the opposite of HomeScreen's white background. Wrapping
-    // it here means the correct style is asserted the instant this page
-    // becomes active, and HomeScreen's AnnotatedRegion above takes back
-    // over automatically the instant you navigate back — no shared
-    // mutable state, no stale leftovers between screens.
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light.copyWith(
-        statusBarColor:          AppColors.primaryGreen,
-        statusBarIconBrightness: Brightness.light,
-        statusBarBrightness:     Brightness.dark,
+    return Scaffold(
+      backgroundColor: const Color(0xFFF4FBF0),
+      appBar: AppBar(
+        backgroundColor: AppColors.primaryGreen,
+        foregroundColor: Colors.white,
+        title: Text(l10n.bannerTractorTitle,
+            style: const TextStyle(fontWeight: FontWeight.w700)),
+        elevation: 0,
       ),
-      child: Scaffold(
-        backgroundColor: const Color(0xFFF4FBF0),
-        appBar: AppBar(
-          backgroundColor: AppColors.primaryGreen,
-          foregroundColor: Colors.white,
-          title: Text(l10n.bannerTractorTitle,
-              style: const TextStyle(fontWeight: FontWeight.w700)),
-          elevation: 0,
-        ),
-        body: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.agriculture,
-                  size: 80, color: AppColors.primaryGreen),
-              const SizedBox(height: 16),
-              Text(l10n.comingSoon,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                      fontSize:   18,
-                      fontWeight: FontWeight.w600,
-                      color:      AppColors.primaryGreen)),
-            ],
-          ),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.agriculture,
+                size: 80, color: AppColors.primaryGreen),
+            const SizedBox(height: 16),
+            Text(l10n.comingSoon,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                    fontSize:   18,
+                    fontWeight: FontWeight.w600,
+                    color:      AppColors.primaryGreen)),
+          ],
         ),
       ),
     );

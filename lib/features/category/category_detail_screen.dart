@@ -126,24 +126,48 @@ class CategoryDetailScreen extends StatelessWidget {
   }
 
   List<SubcategoryGroup> _visibleGroups(CategoryDetail detail) {
+    List<SubcategoryGroup> groups;
     if (groupTitleKey != null) {
-      return detail.groups
+      groups = detail.groups
           .where((g) => g.titleKey == groupTitleKey)
           .toList(growable: false);
-    }
-    if (postFlow &&
+    } else if (postFlow &&
         (sectionId == CategorySectionId.tractorsBuy ||
             sectionId == CategorySectionId.tractorRental)) {
-      return detail.groups
+      groups = detail.groups
           .where((g) => g.titleKey == 'tractor_brands')
           .toList(growable: false);
-    }
-    if (postFlow && sectionId == CategorySectionId.jcbRental) {
-      return detail.groups
+    } else if (postFlow && sectionId == CategorySectionId.jcbRental) {
+      groups = detail.groups
           .where((g) => g.titleKey == 'jcb_types')
           .toList(growable: false);
+    } else {
+      groups = detail.groups;
     }
-    return detail.groups;
+
+    if (postFlow) {
+      return groups
+          .map((g) {
+            if (g.items.any((i) => i.labelKey == 'others')) return g;
+            return SubcategoryGroup(
+              titleKey: g.titleKey,
+              items: [...g.items, kSubcategoryOthersItem],
+            );
+          })
+          .toList(growable: false);
+    }
+
+    return groups
+        .map(
+          (g) => SubcategoryGroup(
+            titleKey: g.titleKey,
+            items: g.items
+                .where((i) => i.labelKey != 'others')
+                .toList(growable: false),
+          ),
+        )
+        .where((g) => g.items.isNotEmpty)
+        .toList(growable: false);
   }
 
   Widget _backButton(BuildContext context) {

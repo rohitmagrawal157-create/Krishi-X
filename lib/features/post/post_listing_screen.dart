@@ -138,7 +138,7 @@ _PostCat _postCatFrom({
       case CategorySectionId.seedsAndPlants:
         return _PostCat.seedsPlants;
       case CategorySectionId.sellOthers:
-        return _PostCat.cropsGrains;
+        return type == ListingType.rent ? _PostCat.rental : _PostCat.cropsGrains;
       case CategorySectionId.livestock:
         return _PostCat.livestock;
       case CategorySectionId.tractorsBuy:

@@ -43,10 +43,13 @@ SubcategoryGroup subcategoryGroup({
   required String titleKey,
   required List<SubcategoryItem> items,
 }) {
-  final hasOthers = items.any((i) => i.labelKey == 'others');
+  // Others tile is hidden in home browse; appended only in post/sell flow
+  // via CategoryDetailScreen when postFlow is true.
+  // final hasOthers = items.any((i) => i.labelKey == 'others');
   return SubcategoryGroup(
     titleKey: titleKey,
-    items: hasOthers ? items : [...items, kSubcategoryOthersItem],
+    items: items,
+    // items: hasOthers ? items : [...items, kSubcategoryOthersItem],
   );
 }
 
